@@ -1,2 +1,1 @@
-# holidaze
-project exam 2
+Hello readme
