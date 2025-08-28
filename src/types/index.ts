@@ -1,3 +1,9 @@
+// src/types/index.ts
+
+// ============================================================================
+// API & META TYPES
+// ============================================================================
+
 /**
  * Defines the shape of the error object returned by the API.
  */
@@ -8,9 +14,9 @@ export interface ApiErrorResponse {
 }
 
 /**
- * Defines the shape of the pagination metadata from the API.
+ * Defines the shape of the pagination metadata from list endpoints.
  */
-export interface Meta {
+export interface PaginationMeta {
   isFirstPage: boolean;
   isLastPage: boolean;
   currentPage: number;
@@ -20,16 +26,45 @@ export interface Meta {
   totalCount: number;
 }
 
+// ============================================================================
+// AUTHENTICATION & PROFILE TYPES
+// ============================================================================
+
 /**
- * Defines the response structure for fetching a list of venues.
+ * Represents the public-facing profile of any user (e.g., a venue owner or a customer on a booking).
  */
-export interface VenuesApiResponse {
-  data: Venue[];
-  meta: Meta;
+export interface PublicProfile {
+  name: string;
+  email: string;
+  bio: string | null;
+  avatar: { url: string; alt: string } | null;
+  banner: { url: string; alt: string } | null;
 }
 
 /**
- * Represents the fundamental Venue object.
+ * Represents the core data for the currently authenticated user session.
+ * This is stored in AuthContext and localStorage.
+ */
+export interface AuthenticatedUser extends PublicProfile {
+  venueManager: boolean;
+}
+
+/**
+ * Represents the full, rich profile data for the logged-in user, including their venues and bookings.
+ * Fetched for the main dashboard page.
+ */
+export interface FullUserProfile extends AuthenticatedUser {
+  venues: Venue[];
+  bookings: ProfileBooking[];
+  _count: { venues: number; bookings: number };
+}
+
+// ============================================================================
+// VENUE & BOOKING CORE MODELS
+// ============================================================================
+
+/**
+ * Represents the fundamental Venue object without any extra relations.
  */
 export interface Venue {
   id: string;
@@ -53,29 +88,15 @@ export interface Venue {
     zip: string | null;
     country: string | null;
     continent: string | null;
-    lat: number;
-    lng: number;
+    lat: number | null; // API can return null
+    lng: number | null; // API can return null
   };
 }
 
 /**
- * Represents a user's profile information.
- * Used for the venue owner and the logged-in user's profile.
+ * Represents the fundamental booking object.
  */
-export interface Profile {
-  name: string;
-  email: string;
-  avatar: {
-    url: string;
-    alt: string;
-  } | null;
-  isVenueManager: boolean;
-}
-
-/**
- * Represents a single booking.
- */
-export interface Booking {
+export interface BaseBooking {
   id: string;
   dateFrom: string;
   dateTo: string;
@@ -84,34 +105,126 @@ export interface Booking {
   updated: string;
 }
 
+// ============================================================================
+// COMPOSED & EXTENDED TYPES
+// ============================================================================
+
 /**
- * Represents a Venue that includes the owner's profile information.
- * Used for the single venue page.
+ * A booking as it appears in a VENUE's booking list. Includes the customer's public profile.
+ * Used for `venue.bookings` array on the venue detail page.
  */
-export interface VenueWithOwner extends Venue {
-  owner: Profile;
+export interface VenueBooking extends BaseBooking {
+  customer: PublicProfile;
 }
 
 /**
- * Represents a Venue that includes its list of bookings.
+ * A booking as it appears in a USER's own booking list. Includes the venue's details.
+ * Used for the `MyBookings` component on the dashboard.
  */
-export interface VenueWithBookings extends Venue {
-  bookings: Booking[];
-}
-
-/**
-
- * Represents a Booking that includes information about the venue it's for.
- * Used when fetching a user's list of their own bookings.
- */
-export interface BookingWithVenue extends Booking {
+export interface ProfileBooking extends BaseBooking {
   venue: Venue;
 }
 
 /**
- * A comprehensive type for a single venue page that includes everything.
+ * Represents a Venue that includes all possible relations: owner, bookings, and counts.
+ * This is the primary type for your Venue Detail Page.
  */
-export interface FullVenue extends VenueWithOwner, VenueWithBookings {}
+export interface FullVenue extends Venue {
+  owner: PublicProfile;
+  bookings: VenueBooking[];
+  _count: {
+    bookings: number;
+  };
+}
 
-// The type for a single venue API response is simply the fully detailed venue object itself.
-export type SingleVenueApiResponse = FullVenue;
+// ============================================================================
+// API PAYLOADS & RESPONSE TYPES
+// ============================================================================
+
+/**
+ * Defines the shape of the data sent to the /auth/login endpoint.
+ */
+export interface LoginPayload {
+  email: string;
+  password: string;
+}
+
+/**
+ * Defines the shape of the data sent to the /auth/register endpoint.
+ */
+export interface RegisterPayload extends LoginPayload {
+  name: string;
+  venueManager?: boolean;
+  avatar?: { url: string; alt?: string };
+  banner?: { url: string; alt?: string };
+  bio?: string;
+}
+
+/**
+ * Defines the shape of the data sent to the API when creating a new booking.
+ */
+export interface BookingFormData {
+  dateFrom: string; // ISO date string
+  dateTo: string; // ISO date string
+  guests: number;
+  venueId: string;
+}
+
+/**
+ * Defines the shape of the data sent to the API when creating or updating a venue.
+ */
+export interface VenueFormData {
+  name: string;
+  description: string;
+  media: { url: string; alt: string }[];
+  price: number;
+  maxGuests: number;
+  rating?: number;
+  meta: {
+    wifi: boolean;
+    parking: boolean;
+    breakfast: boolean;
+    pets: boolean;
+  };
+  location: {
+    address?: string;
+    city?: string;
+    zip?: string;
+    country?: string;
+    continent?: string;
+    lat?: number;
+    lng?: number;
+  };
+}
+
+/**
+ * Represents the full response from the /auth/login or /auth/register endpoint.
+ */
+export interface AuthResponse {
+  data: AuthenticatedUser & { accessToken: string };
+  meta: {};
+}
+
+/**
+ * Represents the entire API response from fetching a list of venues.
+ */
+export interface VenuesApiResponse {
+  data: Venue[];
+  meta: PaginationMeta;
+}
+
+/**
+ * Represents the entire API response from fetching a single venue.
+ */
+export interface SingleVenueApiResponse {
+  data: FullVenue;
+  meta: {};
+}
+
+/**
+ * Represents the entire API response from fetching the user's full profile.
+ */
+export interface ProfileApiResponse {
+  data: FullUserProfile;
+  meta: {};
+}
