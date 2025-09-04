@@ -2,6 +2,9 @@ import { useRoutes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Layout from "./components/layout/Layout";
+import HomePage from "./features/venues/HomePage";
+import NotFoundPage from "./pages/NotFoundPage";
+import RegisterPage from "./features/authentication/RegisterPage";
 
 /**
  * The main application component that defines and renders all routes.
@@ -11,7 +14,11 @@ function App() {
     {
       path: "/",
       element: <Layout />,
-      children: [],
+      children: [
+        { index: true, element: <HomePage /> },
+        { path: "/register", element: <RegisterPage /> },
+        { path: "*", element: <NotFoundPage /> },
+      ],
     },
   ]);
 

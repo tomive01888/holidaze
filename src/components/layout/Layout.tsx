@@ -20,6 +20,7 @@ const Layout = () => {
       <main id="main-content" tabIndex={-1} className="flex-grow container mx-auto p-4 focus:outline-none min-h-svh">
         <Outlet />
       </main>
+
       <Footer />
     </div>
   );
