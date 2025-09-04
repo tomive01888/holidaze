@@ -1,0 +1,68 @@
+import React from "react";
+
+type ButtonVariant = "primary" | "secondary" | "destructive";
+type ButtonSize = "sm" | "md" | "lg";
+
+export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  /**
+   * The content to be displayed inside the button. Can be text, an icon, or both.
+   */
+  children: React.ReactNode;
+  /**
+   * The visual style of the button.
+   * @default 'primary'
+   */
+  variant?: ButtonVariant;
+  /**
+   * The size of the button.
+   * @default 'md'
+   */
+  size?: ButtonSize;
+  /**
+   * Optional custom CSS classes to be added to the button for specific adjustments.
+   */
+  className?: string;
+}
+
+/**
+ * A versatile and accessible button component with pre-defined styles and sizes.
+ * It's built to be the standard button for the entire application, ensuring
+ * a consistent look and feel.
+ */
+const Button: React.FC<ButtonProps> = ({
+  children,
+  variant = "primary",
+  size = "md",
+  className = "",
+  disabled = false,
+  ...props
+}) => {
+  const baseClasses =
+    "font-bold rounded-md cursor-pointer transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2";
+
+  const variantClasses: Record<ButtonVariant, string> = {
+    primary: "bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500",
+    secondary: "bg-neutral-200 text-neutral-800 hover:bg-neutral-300 focus:ring-neutral-400",
+    destructive: "bg-neutral-800/20 text-white hover:text-white hover:bg-red-700 focus:ring-red-500",
+  };
+
+  const sizeClasses: Record<ButtonSize, string> = {
+    sm: "py-1 px-3 text-md",
+    md: "py-2 px-4 text-base",
+    lg: "py-3 px-6 text-lg",
+  };
+
+  const disabledClasses = "disabled:bg-neutral-200 disabled:text-neutral-400 disabled:cursor-not-allowed";
+
+  const finalClassName = [baseClasses, variantClasses[variant], sizeClasses[size], disabledClasses, className].join(
+    " "
+  );
+
+  return (
+    <button className={finalClassName} disabled={disabled} {...props}>
+      {children}
+    </button>
+  );
+};
+
+export default Button;
