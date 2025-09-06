@@ -17,7 +17,11 @@ const Layout = () => {
       </a>
       <Header />
 
-      <main id="main-content" tabIndex={-1} className="flex-grow container mx-auto p-4 focus:outline-none min-h-svh">
+      <main
+        id="main-content"
+        tabIndex={-1}
+        className="flex-grow container mx-auto p-4 focus:outline-none min-h-svh pt-20"
+      >
         <Outlet />
       </main>
 
