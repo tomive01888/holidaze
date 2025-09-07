@@ -11,7 +11,7 @@ type RegisterRole = "customer" | "manager";
 
 /**
  * A page for new users to create an account as either a Customer or a Venue Manager.
- * It handles form input, validation, API submission, and subsequent auto-login.
+ * It handles form input, validation and API submission.
  */
 const RegisterPage = () => {
   const [role, setRole] = useState<RegisterRole>("customer");

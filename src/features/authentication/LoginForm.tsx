@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { useAuth } from "../../contexts/AuthContext";
 import { apiClient, ApiError } from "../../api/apiClient";
 import { endpoints } from "../../constants/endpoints";
 import type { AuthResponse, LoginPayload } from "../../types";
 import Button from "../../components/ui/Button";
+import { useAuth } from "../../hooks/useAuth";
 
 export interface LoginFormProps {
   /**

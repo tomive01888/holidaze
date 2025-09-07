@@ -1,6 +1,6 @@
 import { endpoints } from "../constants/endpoints";
-import { triggerLogout } from "../contexts/AuthContext";
 import type { ApiErrorResponse } from "../types";
+import { triggerLogout } from "../utils/authUtils";
 const API_BASE_URL = "https://v2.api.noroff.dev";
 const API_KEY = import.meta.env.VITE_API_KEY;
 
@@ -89,8 +89,29 @@ async function request<T>(endpoint: string, options: RequestInit = {}): Promise<
  * Provides convenient methods for all HTTP verbs.
  */
 export const apiClient = {
+  /**
+   * Performs a GET request.
+   * @template T The expected type of the full API response object.
+   */
   get: <T>(endpoint: string, options?: RequestInit) => request<T>(endpoint, { method: "GET", ...options }),
-  post: <T>(endpoint: string, data: any) => request<T>(endpoint, { method: "POST", body: JSON.stringify(data) }),
-  put: <T>(endpoint: string, data: any) => request<T>(endpoint, { method: "PUT", body: JSON.stringify(data) }),
+
+  /**
+   * Performs a POST request.
+   * @template T The expected type of the full API response object.
+   * @param data The body of the request. Can be any JSON-serializable value.
+   */
+  post: <T>(endpoint: string, data: unknown) => request<T>(endpoint, { method: "POST", body: JSON.stringify(data) }),
+
+  /**
+   * Performs a PUT request.
+   * @template T The expected type of the full API response object.
+   * @param data The body of the request. Can be any JSON-serializable value.
+   */
+  put: <T>(endpoint: string, data: unknown) => request<T>(endpoint, { method: "PUT", body: JSON.stringify(data) }),
+
+  /**
+   * Performs a DELETE request.
+   * @template T The expected type of the full API response object.
+   */
   delete: <T>(endpoint: string) => request<T>(endpoint, { method: "DELETE" }),
 };

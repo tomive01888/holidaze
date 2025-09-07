@@ -1,11 +1,11 @@
 import { useEffect } from "react";
-import { useAuth } from "../../contexts/AuthContext";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FaUserCircle } from "react-icons/fa";
 import holidazeLogo from "../../assets/holidaze_logo.png";
 import Button from "../ui/Button";
 import Modal from "../ui/Modal";
 import LoginForm from "../../features/authentication/LoginForm";
+import { useAuth } from "../../hooks/useAuth";
 
 /**
  * The main application header. It's responsible for displaying the main navigation,
@@ -18,7 +18,7 @@ const Header = () => {
 
   useEffect(() => {
     if (location.state?.openLoginModal) {
-      const { openLoginModal: shouldOpenModal, ...restState } = location.state;
+      const { openLoginModal, ...restState } = location.state;
       navigate(location.pathname, { state: restState, replace: true });
 
       if (!user) {

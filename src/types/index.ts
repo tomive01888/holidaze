@@ -202,7 +202,7 @@ export interface VenueFormData {
  */
 export interface AuthResponse {
   data: AuthenticatedUser & { accessToken: string };
-  meta: {};
+  meta: Record<string, never>;
 }
 
 /**
@@ -218,7 +218,7 @@ export interface VenuesApiResponse {
  */
 export interface SingleVenueApiResponse {
   data: FullVenue;
-  meta: {};
+  meta: Record<string, never>;
 }
 
 /**
@@ -226,5 +226,5 @@ export interface SingleVenueApiResponse {
  */
 export interface ProfileApiResponse {
   data: FullUserProfile;
-  meta: {};
+  meta: Record<string, never>;
 }
