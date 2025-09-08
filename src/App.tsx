@@ -16,7 +16,24 @@ function App() {
       element: <Layout />,
       children: [
         { index: true, element: <HomePage /> },
-        { path: "/register", element: <RegisterPage /> },
+        // { path: "venue/:id", element: <VenueDetailPage /> },
+        { path: "register", element: <RegisterPage /> },
+
+        // {
+        //   element: <ProtectedRoute />,
+        //   children: [
+        //     { path: "dashboard", element: <DashboardPage /> },
+        //     { path: "profile", element: <DashboardPage /> },
+        //   ],
+        // },
+
+        // {
+        //   element: <VenueManagerRoute />,
+        //   children: [
+        //     { path: "venue/create", element: <CreateVenuePage /> },
+        //     { path: "venue/edit/:id", element: <EditVenuePage /> },
+        //   ],
+        // },
         { path: "*", element: <NotFoundPage /> },
       ],
     },
