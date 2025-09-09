@@ -1,6 +1,5 @@
-// src/components/specific/SearchBar.tsx
 import React from "react";
-import { MdSearch } from "react-icons/md"; // A great, lightweight icon library
+import { MdSearch } from "react-icons/md";
 
 export interface SearchBarProps {
   /**
