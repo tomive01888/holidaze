@@ -1,15 +1,14 @@
-import React, { useEffect, useId } from "react";
+import { useEffect, useId, useRef, ReactNode, FC } from "react";
 import { createPortal } from "react-dom";
 import { MdClose } from "react-icons/md";
 
 export interface ModalProps {
   /**
-   * The content to be displayed inside the modal.
+   * The content to be displayed inside the modal's body.
    */
-  children: React.ReactNode;
+  children: ReactNode;
   /**
    * A function to be called to close the modal.
-   * Triggered by the close button, Escape key, or overlay click.
    */
   onClose: () => void;
   /**
@@ -19,12 +18,14 @@ export interface ModalProps {
 }
 
 /**
- * A reusable and accessible modal component that renders its children in a portal.
- * It includes features like closing on Escape key, closing on overlay click,
- * and focus management for a professional user experience.
+ * A reusable and highly accessible modal component that renders its children in a portal.
+ * It includes robust focus management and keyboard accessibility (Escape key).
+ * The modal is closed via the dedicated close button or the Escape key.
  */
-const Modal: React.FC<ModalProps> = ({ children, onClose, className = "" }) => {
+const Modal: FC<ModalProps> = ({ children, onClose, className = "" }) => {
   const titleId = useId();
+  const modalRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     const handleEsc = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
@@ -32,54 +33,37 @@ const Modal: React.FC<ModalProps> = ({ children, onClose, className = "" }) => {
       }
     };
     window.addEventListener("keydown", handleEsc);
-
     return () => {
       window.removeEventListener("keydown", handleEsc);
     };
   }, [onClose]);
 
-  const modalRef = React.useRef<HTMLDivElement>(null);
   useEffect(() => {
     const previouslyFocusedElement = document.activeElement as HTMLElement;
-
     modalRef.current?.focus();
-
     return () => {
       previouslyFocusedElement?.focus();
     };
   }, []);
 
-  const handleOverlayClick = () => {
-    onClose();
-  };
-
-  const handleContentClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
-  };
-
   return createPortal(
-    <div
-      className="fixed top- inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm"
-      onClick={handleOverlayClick}
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby={titleId}
-    >
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm min-h-[110vh] -top-[5vh]">
       <div
         ref={modalRef}
         tabIndex={-1}
-        className={`bg-white p-6 rounded-lg shadow-2xl w-full max-w-3xl relative -top-20 sm:top-0 mx-4 ${className}`}
-        onClick={handleContentClick}
+        className={`bg-white p-6 rounded-lg shadow-2xl w-full max-w-xl relative mx-4 text-black ${className}`}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby={titleId}
       >
         <button
           onClick={onClose}
-          className="absolute top-3 right-3 text-neutral-500 hover:text-neutral-800 transition-colors"
+          className="absolute top-3 right-3 p-1 text-neutral-500 hover:text-neutral-800 transition-colors rounded-full focus:outline-none focus:ring-2 focus:ring-primary-500"
           aria-label="Close modal"
         >
           <MdClose size={24} />
         </button>
-
-        {children}
+        <div className="modal-body">{children}</div>
       </div>
     </div>,
     document.body
