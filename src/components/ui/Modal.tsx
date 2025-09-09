@@ -1,4 +1,4 @@
-import { useEffect, useId, useRef, ReactNode, FC } from "react";
+import { useEffect, useId, useRef, type ReactNode, type FC } from "react";
 import { createPortal } from "react-dom";
 import { MdClose } from "react-icons/md";
 
