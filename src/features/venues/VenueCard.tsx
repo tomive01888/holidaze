@@ -36,7 +36,7 @@ const VenueCard: React.FC<VenueCardProps> = ({ venue }) => {
                 aria-label={`Rating: ${venue.rating > 0 ? `${venue.rating.toFixed(1)} out of 5 stars` : "Not rated"}`}
               >
                 <FaStar className="text-yellow-400 mb-1" aria-hidden="true" />
-                <span>{venue.rating > 0 ? venue.rating.toFixed(1) : "0"}</span>
+                <span>{venue.rating > 0 ? venue.rating.toFixed(1) : "N/A"}</span>
               </div>
 
               <span aria-hidden="true">·</span>
