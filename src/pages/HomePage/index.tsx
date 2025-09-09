@@ -1,14 +1,14 @@
 import { useState, useEffect, useCallback, useRef } from "react";
-import { toast } from "react-toastify";
 import type { Venue, VenuesApiResponse } from "../../types";
-import { endpoints } from "../../constants/endpoints";
 import { apiClient, ApiError } from "../../api/apiClient";
-import Spinner from "../../components/ui/Spinner";
-import ErrorBoundary from "../../components/ui/ErrorBoundary";
-import VenueCard from "./VenueCard";
-import Button from "../../components/ui/Button";
-import SearchBar from "./SearchBar";
 import { useDebounce } from "../../hooks/useDebounce";
+import { endpoints } from "../../constants/endpoints";
+import ErrorBoundary from "../../components/ui/ErrorBoundary";
+import Spinner from "../../components/ui/Spinner";
+import Button from "../../components/ui/Button";
+import VenueCard from "./components/VenueCard";
+import SearchBar from "./components/SearchBar";
+import { toast } from "react-toastify";
 
 const VENUES_PER_PAGE = 12;
 

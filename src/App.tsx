@@ -2,9 +2,9 @@ import { useRoutes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Layout from "./components/layout/Layout";
-import HomePage from "./features/venues/HomePage";
 import NotFoundPage from "./pages/NotFoundPage";
-import RegisterPage from "./features/authentication/RegisterPage";
+import RegisterPage from "./pages/RegisterPage";
+import HomePage from "./pages/HomePage/";
 
 /**
  * The main application component that defines and renders all routes.

@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { FaStar, FaUserFriends } from "react-icons/fa";
-import { formatCurrency } from "../../utils/currencyUtils";
-import type { Venue } from "../../types";
+import type { Venue } from "../../../types";
+import { formatCurrency } from "../../../utils/currencyUtils";
 
 /**
  * Props for the VenueCard component.
