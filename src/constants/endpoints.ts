@@ -1,5 +1,3 @@
-// src/api/endpoints.ts
-
 /**
  * A centralized object for all API endpoints.
  * This provides a single source of truth for all relative API paths

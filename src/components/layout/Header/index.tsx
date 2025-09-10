@@ -1,11 +1,11 @@
 import { useEffect } from "react";
+import { useAuth } from "../../../hooks/useAuth";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { FaUserCircle } from "react-icons/fa";
-import holidazeLogo from "../../assets/holidaze_logo.png";
 import Button from "../../ui/Button";
 import Modal from "../../ui/Modal";
-import LoginForm from "../../ui/LoginFormModal";
-import { useAuth } from "../../../hooks/useAuth";
+import LoginForm from "./components/LoginForm";
+import holidazeLogo from "../../assets/holidaze_logo.png";
+import { FaUserCircle } from "react-icons/fa";
 
 /**
  * The main application header. It's responsible for displaying the main navigation,

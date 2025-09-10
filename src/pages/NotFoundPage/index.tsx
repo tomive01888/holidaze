@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import Button from "../components/ui/Button";
+import Button from "../../components/ui/Button";
 
 /**
  * A user-friendly 404 "Not Found" page.
