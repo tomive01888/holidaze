@@ -6,6 +6,7 @@ import type { AuthResponse, RegisterPayload } from "../../types";
 import { apiClient, ApiError } from "../../api/apiClient";
 import Button from "../../components/ui/Button";
 import { endpoints } from "../../constants/endpoints";
+import { FaCheck } from "react-icons/fa";
 
 type RegisterRole = "customer" | "manager";
 
@@ -184,7 +185,9 @@ const RegisterPage = () => {
           {/* --- Venue Manager Specific UI --- */}
           {role === "manager" && (
             <div className="flex items-start gap-3 bg-blue-50 p-3 rounded-md border border-blue-200">
-              <input type="checkbox" checked readOnly className="mt-1" />
+              <span className="text-blue-500 mt-1">
+                <FaCheck size={20} />
+              </span>{" "}
               <div>
                 <p className="font-bold text-blue-800">Registering as a Venue Manager</p>
                 <p className="text-md text-blue-700">This will allow you to list and manage your own venues.</p>
