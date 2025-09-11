@@ -115,13 +115,9 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSuccess }) => {
           </Button>
         </div>
 
-        <p className="text-center text-md text-neutral-600">
+        <p className="text-center text-lg text-neutral-600">
           Don't have an account?{" "}
-          <Link
-            to="/register"
-            onClick={onSuccess}
-            className="font-medium text-primary-600 hover:text-primary-500 hover:underline"
-          >
+          <Link to="/register" onClick={onSuccess} className="font-bold text-neutral-600 underline hover:text-blue-600">
             Register here
           </Link>
         </p>

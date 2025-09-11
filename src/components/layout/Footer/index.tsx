@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import holidazeLogo from "../../assets/holidaze_logo.png";
+import holidazeLogo from "../../../assets/holidaze_logo.png";
 
 /**
  * The main footer component for the application.
@@ -14,8 +14,8 @@ const Footer = () => {
         <Link to="/" aria-label="Holidaze Homepage">
           <img
             src={holidazeLogo}
-            alt="Holidaze logo with a globe next to it indicating travel around the glove"
-            className="w-full max-w-[150px] mx-auto opacity-30 mb-4"
+            alt="Holidaze logo with a globe next to it indicating travel around the globe"
+            className="w-full max-w-[150px] mx-auto opacity-30 mb-4 focus:rounded-lg focus:outline-dashed focus:outline-offset-4 focus:outline-3 focus:outline-orange-400"
           />
         </Link>
 
@@ -24,14 +24,14 @@ const Footer = () => {
         <p className="text-xs text-neutral-400">Powered by the Noroff API.</p>
 
         {/* Disclaimer Section */}
-        <section className="mt-6 border-t border-neutral-700 pt-6 max-w-md mx-auto">
-          <h3 className="font-semibold text-neutral-300">Disclaimer</h3>
+        <div className="mt-6 border-t border-neutral-500 pt-6 max-w-md mx-auto">
+          <p className="font-semibold text-neutral-300">Disclaimer</p>
           <p className="text-xs text-neutral-300 mt-2">
             This website is a fictional project created for educational purposes as part of the Noroff School of
             Technology and Digital Media curriculum. All content, including venues and bookings, is for demonstration
             only and does not represent real services.
           </p>
-        </section>
+        </div>
       </div>
     </footer>
   );

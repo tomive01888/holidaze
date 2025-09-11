@@ -4,7 +4,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import Button from "../../ui/Button";
 import Modal from "../../ui/Modal";
 import LoginForm from "./components/LoginForm";
-import holidazeLogo from "../../assets/holidaze_logo.png";
+import holidazeLogo from "../../../assets/holidaze_logo.png";
 import { FaUserCircle } from "react-icons/fa";
 
 /**
@@ -17,9 +17,10 @@ const Header = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (location.state?.openLoginModal) {
-      const { openLoginModal, ...restState } = location.state;
-      navigate(location.pathname, { state: restState, replace: true });
+    if (location.state?.triggerLogin) {
+      const newState = { ...location.state };
+      delete newState.triggerLogin;
+      navigate(location.pathname, { state: newState, replace: true });
 
       if (!user) {
         openLoginModal();
@@ -73,10 +74,13 @@ const Header = () => {
                 <Button variant="secondary" onClick={openLoginModal} className="cursor-pointer">
                   Login
                 </Button>
-                <Link to="/register">
-                  <Button variant="primary" className="cursor-pointer">
-                    Register
-                  </Button>
+                <Link
+                  to="/register"
+                  className="inline-flex items-center justify-center rounded-md px-4 py-2 
+             text-white font-semibold hover:bg-teal-900/80 focus-visible:outline-dashed 
+             focus-visible:outline-offset-4 focus-visible:outline-3 focus-visible:outline-orange-400"
+                >
+                  Register
                 </Link>
               </>
             )}
