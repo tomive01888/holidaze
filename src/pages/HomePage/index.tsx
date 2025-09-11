@@ -84,10 +84,18 @@ const HomePage = () => {
     fetchData(1, debouncedSearchTerm);
   }, [debouncedSearchTerm, fetchData]);
 
-  const handleLoadMore = () => {
+  const handleLoadMore = async () => {
     const nextPage = page + 1;
+    const currentVenueCount = venues.length;
     setPage(nextPage);
-    fetchData(nextPage, "");
+    await fetchData(nextPage, "");
+
+    setTimeout(() => {
+      const firstNewVenue = document.querySelector(`[data-venue-index="${currentVenueCount}"]`);
+      if (firstNewVenue) {
+        (firstNewVenue as HTMLElement).focus();
+      }
+    }, 200);
   };
 
   const renderContent = () => {
@@ -95,21 +103,32 @@ const HomePage = () => {
       return <Spinner text="Finding venues..." />;
     }
     if (error) {
-      return <p className="text-center text-error font-semibold bg-error/10 p-4 rounded-md">{error}</p>;
+      return (
+        <div role="alert" className="text-center bg-red-50 border border-red-200 p-6 rounded-lg">
+          <h3 className="text-lg font-bold text-red-800 mb-2">Unable to Load Venues</h3>
+          <p className="text-red-700">{error}</p>
+          <button
+            onClick={() => fetchData(1, debouncedSearchTerm)}
+            className="mt-4 px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500"
+          >
+            Try Again
+          </button>
+        </div>
+      );
     }
     return (
       <ErrorBoundary>
         {venues.length > 0 ? (
           <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {venues.map((venue) => (
+            {venues.map((venue, index) => (
               <li key={venue.id}>
-                <VenueCard venue={venue} />
+                <VenueCard venue={venue} data-venue-index={index} />
               </li>
             ))}
           </ul>
         ) : (
           <div className="text-center py-16 px-4 bg-neutral-200 rounded-lg">
-            <h2 className="text-2xl font-bold text-neutral-700">No Venues Found</h2>
+            <h3 className="text-2xl font-bold text-neutral-700">No Venues Found</h3>
             <p className="text-neutral-500 mt-2">
               {searchTerm
                 ? `We couldn't find any venues matching "${searchTerm}".`
@@ -119,9 +138,18 @@ const HomePage = () => {
         )}
         <div className="text-center mt-10">
           {hasMore && (
-            <Button onClick={handleLoadMore} disabled={isFetchingMore} variant="secondary" size="lg">
-              {isFetchingMore ? "Loading..." : "Load More Venues"}
-            </Button>
+            <div className="text-center mt-10">
+              <Button
+                aria-live="polite"
+                onClick={handleLoadMore}
+                disabled={isFetchingMore}
+                variant="secondary"
+                size="lg"
+                aria-describedby={isFetchingMore ? "loading-more-status" : undefined}
+              >
+                {isFetchingMore ? "Loading..." : "Load More Venues"}
+              </Button>
+            </div>
           )}
         </div>
       </ErrorBoundary>
@@ -129,23 +157,34 @@ const HomePage = () => {
   };
 
   return (
-    <div className="py-16">
-      <section aria-labelledby="page-heading" className="text-center mb-12 bg-black/0">
+    <div className="py-16 bg-black/0">
+      <section aria-labelledby="page-heading" className="text-center mb-12 ">
         <h1 id="page-heading" className="text-5xl font-bold mb-4 py-6 px-2 text-white ">
           Find your perfect stay
         </h1>
         <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
       </section>
 
-      <div role="status" aria-live="polite" className="sr-only bg-black/0">
-        {resultsCount !== null && `${resultsCount} venues found.`}
+      <div role="status" aria-live="polite" className="sr-only">
+        {isLoading && !isFetchingMore && "Searching for venues..."}
+        {isFetchingMore && "Loading more venues..."}
+        {resultsCount !== null && !isLoading && !isFetchingMore && `${resultsCount} venues found.`}
+        {searchTerm && resultsCount !== null && !isLoading && `Found ${resultsCount} venues matching "${searchTerm}".`}
       </div>
 
-      <section aria-labelledby="venue-results-heading">
-        {/* This h2 is visually hidden but provides a crucial landmark for screen reader users */}
-        <h2 id="venue-results-heading" className="sr-only bg-black/0">
-          Venue Results
+      <section
+        aria-labelledby="venue-results-heading"
+        aria-describedby="results-summary"
+        aria-busy={isLoading || isFetchingMore}
+      >
+        <h2 id="venue-results-heading" className="sr-only">
+          {searchTerm ? `Search Results for "${searchTerm}"` : "All Available Venues"}
         </h2>
+        {resultsCount !== null && (
+          <p id="results-summary" className="sr-only">
+            {isLoading ? "Loading venues..." : `Showing ${venues.length} of ${resultsCount} venues`}
+          </p>
+        )}
         {renderContent()}
       </section>
     </div>
