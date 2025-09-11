@@ -58,7 +58,7 @@ const Modal: FC<ModalProps> = ({ children, onClose, className = "" }) => {
       >
         <button
           onClick={onClose}
-          className="absolute top-3 right-3 p-1 text-neutral-500 hover:text-neutral-800 transition-colors rounded-full focus:outline-none focus:ring-2 focus:ring-primary-500"
+          className="absolute top-3 right-3 p-1 text-neutral-500 hover:text-neutral-800 transition-colors rounded-full"
           aria-label="Close modal"
         >
           <MdClose size={24} />
