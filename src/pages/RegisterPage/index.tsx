@@ -20,7 +20,9 @@ const RegisterPage = () => {
     email: "",
     password: "",
   });
-  const [error, setError] = useState<string | null>(null);
+  const [fieldErrors, setFieldErrors] = useState<{ name?: string; email?: string; password?: string }>({});
+  const [formError, setFormError] = useState<string | null>(null);
+
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -30,18 +32,19 @@ const RegisterPage = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setError(null);
+    setFieldErrors({ name: "", email: "", password: "" });
+    setFormError(null);
 
     if (!isValidUsername(formData.name)) {
-      setError("Username can only contain letters, numbers, and underscores (_).");
+      setFieldErrors({ name: "Username can only contain letters, numbers, and underscores (_)." });
       return;
     }
     if (!isValidNoroffEmail(formData.email)) {
-      setError("Email must be a valid @stud.noroff.no address.");
+      setFieldErrors({ email: "Email must be a valid @stud.noroff.no address." });
       return;
     }
     if (!isPasswordStrongEnough(formData.password)) {
-      setError("Password must be at least 8 characters long.");
+      setFieldErrors({ password: "Password must be at least 8 characters long." });
       return;
     }
 
@@ -58,9 +61,9 @@ const RegisterPage = () => {
       navigate("/", { state: { openLoginModal: true } });
     } catch (err) {
       if (err instanceof ApiError) {
-        setError(err.message);
+        setFormError(err.message);
       } else {
-        setError("An unknown error occurred. Please try again.");
+        setFormError("An unknown error occurred. Please try again.");
       }
     } finally {
       setIsLoading(false);
@@ -113,9 +116,6 @@ const RegisterPage = () => {
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
-          <div aria-live="assertive" className="sr-only">
-            {error && `Error: ${error}`}
-          </div>
           {/* --- Form Fields --- */}
           <div className="flex flex-col">
             <label htmlFor="name">Username</label>
@@ -127,9 +127,15 @@ const RegisterPage = () => {
               onChange={handleInputChange}
               value={formData.name}
               onFocus={handleInputFocus}
-              aria-invalid={!!error}
+              aria-invalid={!!fieldErrors.name}
+              aria-describedby={fieldErrors.name ? "name-error" : undefined}
               className={inputClasses}
             />
+            {fieldErrors.name && (
+              <p id="name-error" className="text-red-600">
+                {fieldErrors.name}
+              </p>
+            )}
           </div>
           <div className="flex flex-col">
             <label htmlFor="email">Email (@stud.noroff.no)</label>
@@ -141,12 +147,18 @@ const RegisterPage = () => {
               onChange={handleInputChange}
               value={formData.email}
               onFocus={handleInputFocus}
-              aria-invalid={!!error}
+              aria-invalid={!!fieldErrors.email}
+              aria-describedby={fieldErrors.email ? "email-error" : undefined}
               className={inputClasses}
             />
+            {fieldErrors.email && (
+              <p id="name-error" className="text-red-600">
+                {fieldErrors.email}
+              </p>
+            )}
           </div>
           <div className="flex flex-col">
-            <label htmlFor="password">Password (min. 8 characters)</label>
+            <label htmlFor="password">Password</label>
             <input
               id="password"
               name="password"
@@ -155,9 +167,18 @@ const RegisterPage = () => {
               onChange={handleInputChange}
               value={formData.password}
               onFocus={handleInputFocus}
-              aria-invalid={!!error}
+              aria-invalid={!!fieldErrors.password}
+              aria-describedby={fieldErrors.password ? "password-error" : undefined}
               className={inputClasses}
             />
+            <p id="password-hint" className="text-neutral-500">
+              Must be at least 8 characters long.
+            </p>
+            {fieldErrors.password && (
+              <p id="name-error" className="text-red-600">
+                {fieldErrors.password}
+              </p>
+            )}
           </div>
 
           {/* --- Venue Manager Specific UI --- */}
@@ -171,15 +192,23 @@ const RegisterPage = () => {
             </div>
           )}
 
-          {error && <p className="text-center text-error text-red-600 outline-1 outline-red-600 rounded">{error}</p>}
+          {formError && (
+            <p className="text-center text-error text-red-600 outline-1 outline-red-600 rounded bg-red-50">
+              {formError}
+            </p>
+          )}
 
           <Button variant="primary" type="submit" disabled={isLoading} className="w-full text-xl">
             {isLoading ? "Creating Account..." : "Register"}
           </Button>
 
-          <p className="text-center">
+          <p className="text-center text-lg self-center">
             Already have an account?{" "}
-            <Link to="/" state={{ openLoginModal: true }} className="font-bold text-primary-600 hover:underline">
+            <Link
+              to="/"
+              state={{ triggerLogin: true }}
+              className="font-bold underline text-neutral-600 hover:text-blue-600"
+            >
               Login here
             </Link>
           </p>
