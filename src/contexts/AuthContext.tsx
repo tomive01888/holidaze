@@ -7,6 +7,7 @@ import type { AuthenticatedUser, AuthResponse } from "../types";
 export interface AuthContextType {
   user: AuthenticatedUser | null;
   token: string | null;
+  isLoggingOut: boolean;
   login: (authData: AuthResponse["data"]) => void;
   logout: () => void;
   updateUser: (updatedUserData: AuthenticatedUser) => void;

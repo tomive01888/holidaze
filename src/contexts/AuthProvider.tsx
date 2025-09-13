@@ -12,6 +12,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<AuthenticatedUser | null>(() => loadFromStorage<AuthenticatedUser>("user"));
   const [token, setToken] = useState<string | null>(() => localStorage.getItem("accessToken"));
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
   const navigate = useNavigate();
 
   const openLoginModal = useCallback(() => setIsLoginModalOpen(true), []);
@@ -26,11 +27,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const logout = useCallback(() => {
+    setIsLoggingOut(true);
     setUser(null);
     setToken(null);
     removeFromStorage("user");
     localStorage.removeItem("accessToken");
     navigate("/", { replace: true, state: {} });
+    setTimeout(() => setIsLoggingOut(false), 500);
   }, [navigate]);
 
   const updateUser = useCallback((updatedUserData: AuthenticatedUser) => {
@@ -47,6 +50,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const value: AuthContextType = {
     user,
     token,
+    isLoggingOut,
     login,
     logout,
     updateUser,
