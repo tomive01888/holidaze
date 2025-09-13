@@ -5,6 +5,8 @@ import Layout from "./components/layout/Layout";
 import NotFoundPage from "./pages/NotFoundPage";
 import RegisterPage from "./pages/RegisterPage";
 import HomePage from "./pages/HomePage/";
+import ProtectedRoute from "./components/auth/ProtectedRoute";
+import DashboardPage from "./pages/DashboardPage";
 
 /**
  * The main application component that defines and renders all routes.
@@ -19,13 +21,13 @@ function App() {
         // { path: "venue/:id", element: <VenueDetailPage /> },
         { path: "register", element: <RegisterPage /> },
 
-        // {
-        //   element: <ProtectedRoute />,
-        //   children: [
-        //     { path: "dashboard", element: <DashboardPage /> },
-        //     { path: "profile", element: <DashboardPage /> },
-        //   ],
-        // },
+        {
+          element: <ProtectedRoute />,
+          children: [
+            { path: "dashboard", element: <DashboardPage /> },
+            { path: "profile", element: <DashboardPage /> },
+          ],
+        },
 
         // {
         //   element: <VenueManagerRoute />,

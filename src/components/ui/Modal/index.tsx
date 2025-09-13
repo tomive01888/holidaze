@@ -51,7 +51,7 @@ const Modal: FC<ModalProps> = ({ children, onClose, className = "" }) => {
       <div
         ref={modalRef}
         tabIndex={-1}
-        className={`bg-white p-6 rounded-lg shadow-2xl w-full max-w-xl relative mx-4 text-black ${className}`}
+        className={`bg-white p-6 rounded-lg shadow-2xl w-full max-w-4xl relative mx-4 text-black ${className}`}
         role="dialog"
         aria-modal="true"
         aria-labelledby={titleId}
