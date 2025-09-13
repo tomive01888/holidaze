@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { useAuth } from "../../../../../hooks/useAuth";
-import type { AuthResponse, LoginPayload } from "../../../../../types";
-import { endpoints } from "../../../../../constants/endpoints";
-import { apiClient, ApiError } from "../../../../../api/apiClient";
-import Button from "../../../../ui/Button";
+import { useAuth } from "../../../../hooks/useAuth";
+import type { AuthResponse, LoginPayload } from "../../../../types";
+import { endpoints } from "../../../../constants/endpoints";
+import { apiClient, ApiError } from "../../../../api/apiClient";
+import Button from "../../../ui/Button";
 
 export interface LoginFormProps {
   /**
@@ -117,7 +117,11 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSuccess }) => {
 
         <p className="text-center text-lg text-neutral-600">
           Don't have an account?{" "}
-          <Link to="/register" onClick={onSuccess} className="font-bold text-neutral-600 underline hover:text-blue-600">
+          <Link
+            to="/register"
+            onClick={onSuccess}
+            className="font-bold text-neutral-600 underline hover:text-blue-600 focus:text-blue-500"
+          >
             Register here
           </Link>
         </p>

@@ -3,7 +3,7 @@ import { useAuth } from "../../../hooks/useAuth";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import Button from "../../ui/Button";
 import Modal from "../../ui/Modal";
-import LoginForm from "./components/LoginForm";
+import LoginForm from "./components/LoginForm.tsx";
 import holidazeLogo from "../../../assets/holidaze_logo.png";
 import { FaUserCircle } from "react-icons/fa";
 

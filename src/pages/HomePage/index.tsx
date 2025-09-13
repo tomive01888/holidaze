@@ -104,7 +104,7 @@ const HomePage = () => {
     }
     if (error) {
       return (
-        <div role="alert" className="text-center bg-red-50 border border-red-200 p-6 rounded-lg">
+        <div role="alert" aria-live="assertive" className="text-center bg-red-50 border border-red-200 p-6 rounded-lg">
           <h3 className="text-lg font-bold text-red-800 mb-2">Unable to Load Venues</h3>
           <p className="text-red-700">{error}</p>
           <button
@@ -141,6 +141,7 @@ const HomePage = () => {
             <div className="text-center mt-10">
               <Button
                 aria-live="polite"
+                aria-label={isFetchingMore ? "Loading more venues" : "Load more venues"}
                 onClick={handleLoadMore}
                 disabled={isFetchingMore}
                 variant="secondary"
@@ -165,7 +166,7 @@ const HomePage = () => {
         <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
       </section>
 
-      <div role="status" aria-live="polite" className="sr-only">
+      <div role="status" aria-live="polite" aria-atomic="true" className="sr-only">
         {isLoading && !isFetchingMore && "Searching for venues..."}
         {isFetchingMore && "Loading more venues..."}
         {resultsCount !== null && !isLoading && !isFetchingMore && `${resultsCount} venues found.`}
@@ -173,6 +174,7 @@ const HomePage = () => {
       </div>
 
       <section
+        role="main"
         aria-labelledby="venue-results-heading"
         aria-describedby="results-summary"
         aria-busy={isLoading || isFetchingMore}

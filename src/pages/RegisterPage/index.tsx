@@ -172,7 +172,7 @@ const RegisterPage = () => {
               aria-describedby={fieldErrors.password ? "password-error" : undefined}
               className={inputClasses}
             />
-            <p id="password-hint" className="text-neutral-500">
+            <p id="password-hint" className="text-neutral-500 mt-1.5">
               Must be at least 8 characters long.
             </p>
             {fieldErrors.password && (
@@ -196,7 +196,7 @@ const RegisterPage = () => {
           )}
 
           {formError && (
-            <p className="text-center text-error text-red-600 outline-1 outline-red-600 rounded bg-red-50">
+            <p className="text-center text-error text-red-600 outline-1 outline-red-600 bg-red-50 rounded text-lg font-semibold">
               {formError}
             </p>
           )}
@@ -210,7 +210,7 @@ const RegisterPage = () => {
             <Link
               to="/"
               state={{ triggerLogin: true }}
-              className="font-bold underline text-neutral-600 hover:text-blue-600"
+              className="font-bold underline text-neutral-600 hover:text-blue-600 focus:text-blue-500"
             >
               Login here
             </Link>
