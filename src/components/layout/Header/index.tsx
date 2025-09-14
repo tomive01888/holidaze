@@ -78,7 +78,7 @@ const Header = () => {
                   to="/register"
                   className="inline-flex items-center justify-center rounded-md px-4 py-2 
              text-white font-semibold hover:bg-teal-900/80 focus-visible:outline-dashed 
-             focus-visible:outline-offset-4 focus-visible:outline-3 focus-visible:outline-orange-400"
+             focus-visible:outline-offset-2 focus-visible:outline-3 focus-visible:outline-pink-400"
                 >
                   Register
                 </Link>

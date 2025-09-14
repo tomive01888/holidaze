@@ -70,7 +70,10 @@ async function request<T>(endpoint: string, options: RequestInit = {}): Promise<
 
     return response.json() as Promise<T>;
   } catch (error) {
-    if (typeof error === "object" && error !== null && "name" in error && error.name === "AbortError") {
+    if (
+      (error instanceof DOMException && error.name === "AbortError") ||
+      (typeof error === "object" && error !== null && "name" in error && error.name === "AbortError")
+    ) {
       throw error;
     }
 

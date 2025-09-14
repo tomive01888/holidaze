@@ -1,0 +1,161 @@
+import { useState } from "react";
+import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
+import Button from "../../../components/ui/Button";
+
+interface HomePaginationProps {
+  currentPage: number;
+  pageCount: number;
+  itemsPerPage: number;
+  onPageChange: (page: number) => void;
+  onItemsPerPageChange: (value: number) => void;
+  uniqueId?: string;
+}
+
+const HomePagination = ({
+  currentPage,
+  pageCount,
+  itemsPerPage,
+  onPageChange,
+  onItemsPerPageChange,
+  uniqueId = "",
+}: HomePaginationProps) => {
+  const [inputValue, setInputValue] = useState<string>("");
+
+  const goToPage = (page: number) => {
+    if (page >= 1 && page <= pageCount) {
+      onPageChange(page);
+    }
+  };
+
+  const handleInputSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const pageNum = Number(inputValue);
+    if (!isNaN(pageNum)) {
+      goToPage(pageNum);
+      setInputValue("");
+    }
+  };
+
+  const pages = [];
+  const maxPagesToShow = 3;
+  let startPage = Math.max(1, currentPage - 1);
+  const endPage = Math.min(pageCount, startPage + maxPagesToShow - 1);
+  if (endPage - startPage < maxPagesToShow - 1) {
+    startPage = Math.max(1, endPage - maxPagesToShow + 1);
+  }
+  for (let i = startPage; i <= endPage; i++) {
+    pages.push(
+      <li key={`${uniqueId}-${i}`}>
+        <button
+          onClick={() => goToPage(i)}
+          className={`px-3 py-2 rounded-lg text-sm md:text-base ${
+            i === currentPage ? "bg-neutral-400 text-white font-bold" : "text-white bg-blue-500 hover:bg-blue-600"
+          }`}
+          aria-label={`Go to page ${i}`}
+          aria-current={i === currentPage ? "page" : undefined}
+        >
+          {i}
+        </button>
+      </li>
+    );
+  }
+
+  return (
+    <nav aria-label="Pagination" className="flex flex-wrap items-center justify-center gap-2 mt-6 text-black my-4">
+      {/* Prev button */}
+      <button
+        onClick={() => goToPage(currentPage - 1)}
+        aria-label="Go to previous page"
+        disabled={currentPage === 1}
+        className="p-2 rounded-lg bg-gray-200 hover:bg-gray-300 disabled:opacity-50"
+      >
+        <FiChevronLeft size={24} aria-hidden="true" />
+      </button>
+
+      {/* Desktop page numbers */}
+      <ul className="hidden md:flex gap-2 md:min-w-32 list-none p-0 m-0">
+        {startPage > 1 && (
+          <li>
+            <span key={`${uniqueId}-ellipsis-left`} aria-hidden="true">
+              ...
+            </span>
+          </li>
+        )}
+        {pages}
+        {endPage < pageCount && (
+          <li>
+            <span key={`${uniqueId}-ellipsis-right`} aria-hidden="true">
+              ...
+            </span>
+          </li>
+        )}
+      </ul>
+
+      {/* Mobile compact page indicator */}
+      <div
+        className="md:hidden px-3 py-2 border rounded-lg bg-gray-200 w-22 flex justify-center gap-1"
+        aria-label={`Page ${currentPage} of ${pageCount}`}
+      >
+        <span className="font-bold">{currentPage}</span> / <span>{pageCount}</span>
+      </div>
+
+      {/** Max page indicator */}
+      {currentPage <= pageCount - 2 && (
+        <div className="hidden md:block px-3 py-2 text-white rounded-lg bg-blue-500 ml-2 select-none">
+          <p>{pageCount}</p>
+        </div>
+      )}
+
+      {/* Next button */}
+      <button
+        onClick={() => goToPage(currentPage + 1)}
+        aria-label="Go to next page"
+        disabled={currentPage === pageCount}
+        className="p-2 rounded-lg bg-gray-200 hover:bg-gray-300 disabled:opacity-50"
+      >
+        <FiChevronRight size={24} aria-hidden="true" /> 
+      </button>
+
+      {/* Page jump input */}
+      <form onSubmit={handleInputSubmit} className="flex items-center gap-2 ">
+        <label htmlFor={`${uniqueId}-page-jump-input`} className="sr-only">
+          Go to page
+        </label>
+        <input
+          id={`${uniqueId}-page-jump-input`}
+          type="number"
+          min={1}
+          max={pageCount}
+          value={inputValue}
+          onChange={(e) => setInputValue(e.target.value)}
+          className="w-14 p-2 border rounded-lg text-center text-white"
+          placeholder="Pg"
+          aria-label="Enter page number to jump to"
+        />
+        <Button variant="primary" type="submit">
+          Go
+        </Button>
+      </form>
+
+      {/* Items-per-page selector */}
+      <label htmlFor={`${uniqueId}-items-per-page-select`} className="sr-only">
+        Items per page
+      </label>
+      <select
+        id={`${uniqueId}-items-per-page-select`}
+        value={itemsPerPage}
+        onChange={(e) => onItemsPerPageChange(Number(e.target.value))}
+        className="border rounded-lg p-3 bg-white md:text-base"
+        aria-label="Select items per page"
+      >
+        {[12, 18, 24].map((size) => (
+          <option key={`${uniqueId}-ipp-${size}`} value={size}>
+            {size} / page
+          </option>
+        ))}
+      </select>
+    </nav>
+  );
+};
+
+export default HomePagination;

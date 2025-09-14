@@ -43,7 +43,7 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
   public render() {
     if (this.state.hasError) {
       return (
-        <div className="flex flex-col items-center justify-center h-screen text-white text-center p-4">
+        <div className="flex flex-col items-center justify-top h-screen text-white text-center p-4">
           <h1 className="text-3xl font-bold text-error">Oops! Something went wrong.</h1>
           <p className="mt-2 text-neutral-300 max-w-md">
             We're sorry for the inconvenience. An unexpected error occurred. Please try refreshing the page.

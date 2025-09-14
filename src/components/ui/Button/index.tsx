@@ -37,18 +37,18 @@ const Button: React.FC<ButtonProps> = ({
   disabled = false,
   ...props
 }) => {
-  const baseClasses = "font-bold rounded-md cursor-pointer transition-colors focus:outline-3 focus:outline-offset-4";
+  const baseClasses = "font-bold rounded-md cursor-pointer transition-colors focus:outline-3 focus:outline-offset-2";
 
   const variantClasses: Record<ButtonVariant, string> = {
     primary: "bg-blue-600 text-white hover:bg-blue-700 focus:outline-blue-400",
-    secondary: "bg-neutral-200 text-neutral-800 hover:bg-neutral-300 focus:outline-orange-400",
+    secondary: "bg-neutral-200 text-neutral-800 hover:bg-neutral-300 focus:outline-pink-400",
     destructive: "bg-neutral-800/20 text-white hover:text-white hover:bg-red-700 focus:outline-red-400",
   };
 
   const sizeClasses: Record<ButtonSize, string> = {
-    sm: "py-1 px-3 text-md",
-    md: "py-2 px-4 text-base",
-    lg: "py-3 px-6 text-lg",
+    sm: "py-1 px-3 ",
+    md: "py-2 px-4 text-lg",
+    lg: "py-3 px-6 text-xl",
   };
 
   const disabledClasses = "disabled:bg-neutral-200 disabled:text-neutral-400 disabled:cursor-not-allowed";

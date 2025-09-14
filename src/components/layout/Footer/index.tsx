@@ -15,7 +15,7 @@ const Footer = () => {
           <img
             src={holidazeLogo}
             alt="Holidaze logo with a globe next to it indicating travel around the globe"
-            className="w-full max-w-[150px] mx-auto opacity-30 mb-4 focus:rounded-lg focus:outline-dashed focus:outline-offset-4 focus:outline-3 focus:outline-orange-400"
+            className="w-full max-w-[150px] mx-auto opacity-30 mb-4 focus:rounded-lg focus:outline-dashed focus:outline-offset-2 focus:outline-3 focus:outline-pink-400"
           />
         </Link>
 

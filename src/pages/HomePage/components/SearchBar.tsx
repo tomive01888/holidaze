@@ -46,7 +46,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
             py-3 pl-10 pr-10
             text-xl font-semibold text-white
             border-2 border-neutral-300 rounded-full 
-            focus:outline-dashed focus:outline-offset-4 focus:ring-orange-400
+            focus:outline-dashed focus:outline-offset-2 focus:ring-orange-400
             transition-colors
           "
         />

@@ -78,7 +78,7 @@ const RegisterPage = () => {
   };
 
   const inputClasses =
-    "mt-1 block w-full px-3 py-2 border border-neutral-300 rounded-md shadow-sm focus:rounded-lg focus:outline-dashed focus:outline-offset-4 focus:outline-3 focus:outline-orange-400";
+    "mt-1 block w-full px-3 py-2 border border-neutral-300 rounded-md shadow-sm focus:rounded-lg focus:outline-dashed focus:outline-offset-2 focus:outline-3 focus:outline-pink-400";
 
   return (
     <div className="container mx-auto max-w-2xl mt-10 text-black">

@@ -1,194 +1,174 @@
 import { useState, useEffect, useCallback, useRef } from "react";
+import { useSearchParams } from "react-router-dom";
 import type { Venue, VenuesApiResponse } from "../../types";
 import { apiClient, ApiError } from "../../api/apiClient";
 import { useDebounce } from "../../hooks/useDebounce";
-import { endpoints } from "../../constants/endpoints";
 import ErrorBoundary from "../../components/ui/ErrorBoundary";
-import Spinner from "../../components/ui/Spinner";
-import Button from "../../components/ui/Button";
-import VenueCard from "./components/VenueCard";
 import SearchBar from "./components/SearchBar";
+import VenueCard from "./components/VenueCard";
+import VenueCardSkeleton from "./components/VenueCardSkeleton";
+import HomePagination from "./components/HomePagination";
 import { toast } from "react-toastify";
+import { endpoints } from "../../constants/endpoints";
+import Button from "../../components/ui/Button";
 
-const VENUES_PER_PAGE = 12;
+const DEFAULT_ITEMS_PER_PAGE = 12;
 
 const HomePage = () => {
   const [venues, setVenues] = useState<Venue[]>([]);
-  const [searchTerm, setSearchTerm] = useState("");
   const [page, setPage] = useState(1);
-  const debouncedSearchTerm = useDebounce(searchTerm, 500);
-  const [hasMore, setHasMore] = useState(true);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isFetchingMore, setIsFetchingMore] = useState(false);
+  const [itemsPerPage, setItemsPerPage] = useState(DEFAULT_ITEMS_PER_PAGE);
+  const [pageCount, setPageCount] = useState(1);
+  const [searchTerm, setSearchTerm] = useState("");
   const [error, setError] = useState<string | null>(null);
-  const [resultsCount, setResultsCount] = useState<number | null>(null);
+  const debouncedSearchTerm = useDebounce(searchTerm, 500);
   const abortControllerRef = useRef<AbortController | null>(null);
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const mainContentRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    if (venues) {
-      document.title = `Holidaze | Homepage`;
+    const urlPage = Number(searchParams.get("page")) || 1;
+    const urlItems = Number(searchParams.get("itemsPerPage")) || DEFAULT_ITEMS_PER_PAGE;
+    setPage(urlPage);
+    setItemsPerPage(urlItems);
+  }, [searchParams]);
+
+  useEffect(() => {
+    setSearchParams({ page: String(page), itemsPerPage: String(itemsPerPage) });
+  }, [page, itemsPerPage, setSearchParams]);
+
+  const fetchData = useCallback(async (pageNum: number, perPage: number, query: string) => {
+    if (abortControllerRef.current) abortControllerRef.current.abort();
+    abortControllerRef.current = new AbortController();
+    const signal = abortControllerRef.current.signal;
+
+    setError(null);
+
+    try {
+      const endpointUrl = query
+        ? `${endpoints.venues.search(query)}&limit=${perPage}&page=${pageNum}`
+        : `${endpoints.venues.all}?sort=created&sortOrder=desc&limit=${perPage}&page=${pageNum}`;
+
+      const response = await apiClient.get<VenuesApiResponse>(endpointUrl, { signal });
+
+      if (!Array.isArray(response.data)) throw new Error("Invalid data from server");
+
+      setVenues(response.data);
+      setPageCount(response.meta.pageCount);
+    } catch (err) {
+      if (err instanceof Error && err.name === "AbortError") return;
+
+      const message = err instanceof ApiError || err instanceof Error ? err.message : "Unknown error";
+      setError(message);
+      toast.error(message);
     }
-  }, [venues]);
+  }, []);
 
-  const fetchData = useCallback(
-    async (pageNum: number, query: string) => {
-      if (abortControllerRef.current) {
-        abortControllerRef.current.abort();
+  useEffect(() => {
+    fetchData(page, itemsPerPage, debouncedSearchTerm).then(() => {
+      const mainContent = mainContentRef.current;
+      if (mainContent) {
+        mainContent.focus();
+        mainContent.scrollIntoView({ behavior: "smooth", block: "start" });
       }
-      abortControllerRef.current = new AbortController();
-      const signal = abortControllerRef.current.signal;
-
-      const isNewLoad = pageNum === 1;
-      if (isNewLoad) setIsLoading(true);
-      else setIsFetchingMore(true);
-      setError(null);
-
-      try {
-        const endpointUrl = query
-          ? endpoints.venues.search(query)
-          : `${endpoints.venues.all}?sort=created&sortOrder=desc&limit=${VENUES_PER_PAGE}&page=${pageNum}`;
-
-        const response = await apiClient.get<VenuesApiResponse>(endpointUrl, { signal });
-        if (signal.aborted) return;
-        if (!Array.isArray(response.data)) throw new Error("Received invalid data from server.");
-
-        const newVenues = response.data;
-        setVenues((prev) => (isNewLoad ? newVenues : [...prev, ...newVenues]));
-        setHasMore(!response.meta.isLastPage && !query);
-        if (isNewLoad) setResultsCount(response.meta.totalCount);
-      } catch (err) {
-        if (typeof err === "object" && err !== null && "name" in err && err.name === "AbortError") {
-          return;
-        }
-
-        let errorMessage = "An unexpected error occurred.";
-        if (err instanceof ApiError || err instanceof Error) {
-          errorMessage = err.message;
-        }
-
-        if (pageNum > 1) {
-          toast.error(errorMessage || "Could not load more venues.");
-        } else {
-          setError(errorMessage);
-        }
-      } finally {
-        setIsLoading(false);
-        setIsFetchingMore(false);
-      }
-    },
-    [setIsLoading, setIsFetchingMore, setError, setVenues, setHasMore, setResultsCount]
-  );
+    });
+  }, [page, itemsPerPage, debouncedSearchTerm, fetchData]);
 
   useEffect(() => {
     setPage(1);
-    fetchData(1, debouncedSearchTerm);
-  }, [debouncedSearchTerm, fetchData]);
+    fetchData(1, itemsPerPage, debouncedSearchTerm);
+  }, [debouncedSearchTerm, itemsPerPage, fetchData]);
 
-  const handleLoadMore = async () => {
-    const nextPage = page + 1;
-    const currentVenueCount = venues.length;
-    setPage(nextPage);
-    await fetchData(nextPage, "");
+  useEffect(() => {
+    fetchData(page, itemsPerPage, debouncedSearchTerm);
+  }, [page, itemsPerPage, debouncedSearchTerm, fetchData]);
 
-    setTimeout(() => {
-      const firstNewVenue = document.querySelector(`[data-venue-index="${currentVenueCount}"]`);
-      if (firstNewVenue) {
-        (firstNewVenue as HTMLElement).focus();
-      }
-    }, 200);
-  };
-
-  const renderContent = () => {
-    if (isLoading) {
-      return <Spinner text="Finding venues..." />;
-    }
-    if (error) {
-      return (
-        <div role="alert" aria-live="assertive" className="text-center bg-red-50 border border-red-200 p-6 rounded-lg">
-          <h3 className="text-lg font-bold text-red-800 mb-2">Unable to Load Venues</h3>
-          <p className="text-red-700">{error}</p>
-          <button
-            onClick={() => fetchData(1, debouncedSearchTerm)}
-            className="mt-4 px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500"
-          >
-            Try Again
-          </button>
-        </div>
-      );
-    }
-    return (
-      <ErrorBoundary>
-        {venues.length > 0 ? (
-          <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {venues.map((venue, index) => (
-              <li key={venue.id}>
-                <VenueCard venue={venue} data-venue-index={index} />
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <div className="text-center py-16 px-4 bg-neutral-200 rounded-lg">
-            <h3 className="text-2xl font-bold text-neutral-700">No Venues Found</h3>
-            <p className="text-neutral-500 mt-2">
-              {searchTerm
-                ? `We couldn't find any venues matching "${searchTerm}".`
-                : "No venues are available right now."}
-            </p>
-          </div>
-        )}
-        <div className="text-center mt-10">
-          {hasMore && (
-            <div className="text-center mt-10">
-              <Button
-                aria-live="polite"
-                aria-label={isFetchingMore ? "Loading more venues" : "Load more venues"}
-                onClick={handleLoadMore}
-                disabled={isFetchingMore}
-                variant="secondary"
-                size="lg"
-                aria-describedby={isFetchingMore ? "loading-more-status" : undefined}
-              >
-                {isFetchingMore ? "Loading..." : "Load More Venues"}
-              </Button>
-            </div>
-          )}
-        </div>
-      </ErrorBoundary>
-    );
+  const handlePageChange = (newPage: number) => setPage(newPage);
+  const handleItemsPerPageChange = (newItems: number) => {
+    setItemsPerPage(newItems);
+    setPage(1);
   };
 
   return (
-    <div className="py-16 bg-black/0">
-      <section aria-labelledby="page-heading" className="text-center mb-12 ">
-        <h1 id="page-heading" className="text-5xl font-bold mb-4 py-6 px-2 text-white ">
-          Find your perfect stay
-        </h1>
-        <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
-      </section>
+    <div className="py-8">
+      <ErrorBoundary>
+        <section tabIndex={-1} aria-labelledby="page-heading" className="text-center mb-8">
+          <h1 id="page-heading" className="text-5xl font-bold mb-4 py-6 px-2 text-white">
+            Find your perfect stay
+          </h1>
+          <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+        </section>
 
-      <div role="status" aria-live="polite" aria-atomic="true" className="sr-only">
-        {isLoading && !isFetchingMore && "Searching for venues..."}
-        {isFetchingMore && "Loading more venues..."}
-        {resultsCount !== null && !isLoading && !isFetchingMore && `${resultsCount} venues found.`}
-        {searchTerm && resultsCount !== null && !isLoading && `Found ${resultsCount} venues matching "${searchTerm}".`}
-      </div>
-
-      <section
-        role="main"
-        aria-labelledby="venue-results-heading"
-        aria-describedby="results-summary"
-        aria-busy={isLoading || isFetchingMore}
-      >
-        <h2 id="venue-results-heading" className="sr-only">
-          {searchTerm ? `Search Results for "${searchTerm}"` : "All Available Venues"}
-        </h2>
-        {resultsCount !== null && (
-          <p id="results-summary" className="sr-only">
-            {isLoading ? "Loading venues..." : `Showing ${venues.length} of ${resultsCount} venues`}
-          </p>
+        {/* Top pagination */}
+        {!error && venues.length > 0 && (
+          <HomePagination
+            uniqueId="top"
+            currentPage={page}
+            pageCount={pageCount}
+            itemsPerPage={itemsPerPage}
+            onPageChange={handlePageChange}
+            onItemsPerPageChange={handleItemsPerPageChange}
+          />
         )}
-        {renderContent()}
-      </section>
+
+        <>
+          {/* Venue grid */}
+          <section aria-labelledby="venue-results-heading" className="my-6">
+            <h2 id="venue-results-heading" className="sr-only">
+              {searchTerm ? `Search results for "${searchTerm}"` : "All venues"}
+            </h2>
+
+            {error ? (
+              <div role="alert" className="text-center bg-red-50 border border-red-200 p-6 rounded-lg">
+                <h3 className="text-lg font-bold text-red-800 mb-2">Unable to load venues</h3>
+                <p className="text-red-700">{error}</p>
+              </div>
+            ) : venues.length !== 0 ? (
+              <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 min-h-[24rem]">
+                {Array.from({ length: venues.length || itemsPerPage }).map((_, index) => {
+                  const venue = venues[index];
+                  return (
+                    <li key={venue ? venue.id : `skeleton-${index}`}>
+                      {venue ? <VenueCard venue={venue} /> : <VenueCardSkeleton />}
+                    </li>
+                  );
+                })}
+              </ul>
+            ) : (
+              <div
+                role="status"
+                aria-live="polite"
+                className="w-full mx-auto bg-black/50 text-neutral-100 p-6 rounded-lg shadow-md"
+              >
+                <h3 className="text-2xl font-bold mb-2">No Venues Found</h3>
+                <p className="text-neutral-200 text-lg">We couldn't find any venues matching "{searchTerm}".</p>
+                <Button
+                  aria-label="Reset search"
+                  variant="primary"
+                  type="button"
+                  className="place-self-center my-4"
+                  onClick={() => setSearchTerm("")}
+                >
+                  Reset search
+                </Button>
+              </div>
+            )}
+          </section>
+        </>
+
+        {/* Bottom pagination */}
+        {!error && venues.length > 0 && (
+          <HomePagination
+            uniqueId="bottom"
+            currentPage={page}
+            pageCount={pageCount}
+            itemsPerPage={itemsPerPage}
+            onPageChange={handlePageChange}
+            onItemsPerPageChange={handleItemsPerPageChange}
+          />
+        )}
+      </ErrorBoundary>
     </div>
   );
 };

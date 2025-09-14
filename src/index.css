@@ -38,6 +38,6 @@
 
 @layer base {
   :focus-visible {
-    @apply rounded-lg outline-dashed outline-3 outline-offset-4 outline-orange-400;
+    @apply rounded-lg outline-dashed outline-3 outline-offset-2 outline-pink-400;
   }
 }

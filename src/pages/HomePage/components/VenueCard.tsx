@@ -27,7 +27,7 @@ const VenueCard: React.FC<VenueCardProps> = ({ venue, ...props }) => {
     <Link
       to={`/venue/${venue.id}`}
       onFocus={(e) => e.currentTarget.scrollIntoView({ behavior: "smooth", block: "center" })}
-      className="block group h-full focus:rounded-lg focus:outline-dashed focus:outline-offset-4 focus:outline-3 focus:outline-orange-400 focus:scale-103"
+      className="block group h-full focus:rounded-lg focus:outline-dashed focus:outline-offset-2 focus:outline-3 focus:outline-pink-400 focus:scale-103"
       {...props}
       tabIndex={0}
     >
