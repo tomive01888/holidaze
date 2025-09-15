@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import type { Venue } from "../../../types";
 import Button from "../../../components/ui/Button";
+import VenueManagementCard from "./VenueManagerCard";
 
 
 interface MyVenuesProps {

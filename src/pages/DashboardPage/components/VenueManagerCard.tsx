@@ -1,13 +1,13 @@
 import React, { useState } from "react";
-
 import { Link } from "react-router-dom";
-import { toast } from "react-toastify";
-import { FaTrashAlt } from "react-icons/fa";
 import { apiClient } from "../../../api/apiClient";
 import { endpoints } from "../../../constants/endpoints";
 import type { Venue } from "../../../types";
+import ViewBookingsModal from "./ViewBookingsModal";
 import Button from "../../../components/ui/Button";
 import Modal from "../../../components/ui/Modal";
+import { toast } from "react-toastify";
+import { FaTrashAlt } from "react-icons/fa";
 
 interface VenueManagementCardProps {
   venue: Venue;
@@ -98,9 +98,9 @@ const VenueManagementCard: React.FC<VenueManagementCardProps> = ({ venue }) => {
         </Modal>
       )}
 
-      {/* {isBookingsModalOpen && (
+      {isBookingsModalOpen && (
         <ViewBookingsModal venueId={venue.id} venueName={venue.name} onClose={() => setIsBookingsModalOpen(false)} />
-      )} */}
+      )}
     </>
   );
 };
