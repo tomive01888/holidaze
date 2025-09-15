@@ -90,7 +90,7 @@ const HomePagination = ({
 
       {/* Mobile compact page indicator */}
       <div
-        className="md:hidden px-3 py-2 border rounded-lg bg-gray-200 w-22 flex justify-center gap-1"
+        className="md:hidden px-3 py-2 border rounded-lg bg-gray-200 text-black w-22 flex justify-center gap-1"
         aria-label={`Page ${currentPage} of ${pageCount}`}
       >
         <span className="font-bold">{currentPage}</span> / <span>{pageCount}</span>
