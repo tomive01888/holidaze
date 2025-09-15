@@ -3,7 +3,7 @@ import { useAuth } from "../../../hooks/useAuth";
 import type { FullUserProfile } from "../../../types";
 import Button from "../../../components/ui/Button";
 import EditProfileModal from "./EditProfileModal";
-import { FaPencilAlt } from "react-icons/fa";
+import { FaUserEdit } from "react-icons/fa";
 
 interface ProfileHeaderProps {
   profile: FullUserProfile;
@@ -48,8 +48,9 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({ profile, onProfileUpdate 
               size="sm"
               onClick={() => setIsModalOpen(true)}
             >
-              <FaPencilAlt size={16} className="mb-1" />
-              Edit Profile
+              <FaUserEdit className="mb-1 text-2xl md:text-lg" />
+              <span className="hidden md:block">Edit Profile</span>
+              <span className="sr-only md:hidden">Edit Profile</span>{" "}
             </Button>
           </div>
         )}
