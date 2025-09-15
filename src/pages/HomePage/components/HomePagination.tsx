@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import Button from "../../../components/ui/Button";
+import { BsThreeDots } from "react-icons/bs";
 
 interface HomePaginationProps {
   currentPage: number;
@@ -61,13 +62,13 @@ const HomePagination = ({
   }
 
   return (
-    <nav aria-label="Pagination" className="flex flex-wrap items-center justify-center gap-2 mt-6 text-black my-4">
+    <nav aria-label="Pagination" className="flex flex-wrap items-center justify-center gap-2 mt-6 text-white my-4">
       {/* Prev button */}
       <button
         onClick={() => goToPage(currentPage - 1)}
         aria-label="Go to previous page"
         disabled={currentPage === 1}
-        className="p-2 rounded-lg bg-gray-200 hover:bg-gray-300 disabled:opacity-50"
+        className="p-2 rounded-lg bg-blue-500 hover:bg-blue-600 disabled:bg-neutral-300 disabled:opacity-50"
       >
         <FiChevronLeft size={24} aria-hidden="true" />
       </button>
@@ -75,18 +76,14 @@ const HomePagination = ({
       {/* Desktop page numbers */}
       <ul className="hidden md:flex gap-2 md:min-w-32 list-none p-0 m-0">
         {startPage > 1 && (
-          <li>
-            <span key={`${uniqueId}-ellipsis-left`} aria-hidden="true">
-              ...
-            </span>
+          <li className="flex">
+            <BsThreeDots key={`${uniqueId}-ellipsis-left`} aria-hidden="true" className="place-self-center " />
           </li>
         )}
         {pages}
         {endPage < pageCount && (
-          <li>
-            <span key={`${uniqueId}-ellipsis-right`} aria-hidden="true">
-              ...
-            </span>
+          <li className="flex">
+            <BsThreeDots key={`${uniqueId}-ellipsis-left`} aria-hidden="true" className="place-self-center " />
           </li>
         )}
       </ul>
@@ -101,9 +98,12 @@ const HomePagination = ({
 
       {/** Max page indicator */}
       {currentPage <= pageCount - 2 && (
-        <div className="hidden md:block px-3 py-2 text-white rounded-lg bg-blue-500 ml-2 select-none">
+        <button
+          onClick={() => goToPage(pageCount)}
+          className="hidden md:block px-3 py-2 text-white rounded-lg bg-blue-500 hover:bg-blue-600 ml-2"
+        >
           <p>{pageCount}</p>
-        </div>
+        </button>
       )}
 
       {/* Next button */}
@@ -111,9 +111,9 @@ const HomePagination = ({
         onClick={() => goToPage(currentPage + 1)}
         aria-label="Go to next page"
         disabled={currentPage === pageCount}
-        className="p-2 rounded-lg bg-gray-200 hover:bg-gray-300 disabled:opacity-50"
+        className="p-2 rounded-lg bg-blue-500 hover:bg-blue-600 disabled:opacity-50"
       >
-        <FiChevronRight size={24} aria-hidden="true" /> 
+        <FiChevronRight size={24} aria-hidden="true" />
       </button>
 
       {/* Page jump input */}
@@ -145,7 +145,7 @@ const HomePagination = ({
         id={`${uniqueId}-items-per-page-select`}
         value={itemsPerPage}
         onChange={(e) => onItemsPerPageChange(Number(e.target.value))}
-        className="border rounded-lg p-3 bg-white md:text-base"
+        className="border rounded-lg p-3 bg-neutral-200 text-black"
         aria-label="Select items per page"
       >
         {[12, 18, 24].map((size) => (
