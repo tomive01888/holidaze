@@ -7,6 +7,7 @@ import Spinner from "../../components/ui/Spinner";
 import ProfileHeader from "./components/ProfileHeader";
 import MyBookings from "./components/MyBookings";
 import BecomeManagerPrompt from "./components/BecomeManagerPrompt";
+import MyVenues from "./components/MyVenues";
 
 type DashboardTab = "venues" | "bookings";
 
@@ -111,7 +112,7 @@ const DashboardPage = () => {
         <div>
           {profileData.venueManager ? (
             <>
-              {activeTab === "venues" && "my venues component here"}
+              {activeTab === "venues" && <MyVenues venues={profileData.venues || []} />}
               {activeTab === "bookings" && <MyBookings bookings={profileData.bookings || []} />}
             </>
           ) : (
