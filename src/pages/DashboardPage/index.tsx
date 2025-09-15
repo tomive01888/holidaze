@@ -5,6 +5,7 @@ import { endpoints } from "../../constants/endpoints";
 import { apiClient, ApiError } from "../../api/apiClient";
 import Spinner from "../../components/ui/Spinner";
 import ProfileHeader from "./components/ProfileHeader";
+import MyBookings from "./components/MyBookings";
 import BecomeManagerPrompt from "./components/BecomeManagerPrompt";
 
 type DashboardTab = "venues" | "bookings";
@@ -111,13 +112,13 @@ const DashboardPage = () => {
           {profileData.venueManager ? (
             <>
               {activeTab === "venues" && "my venues component here"}
-              {activeTab === "bookings" && "my bookings component here"}
+              {activeTab === "bookings" && <MyBookings bookings={profileData.bookings || []} />}
             </>
           ) : (
             <>
               <section className="bg-black/0">
                 <h2 className="text-3xl font-bold border-b pb-3 mb-6">My Bookings</h2>
-                <p>My Bookings Area</p>
+                <MyBookings bookings={profileData.bookings || []} />
               </section>
               <section className="mt-12">
                 <BecomeManagerPrompt onUpgradeSuccess={handleProfileUpdate} />
