@@ -24,10 +24,12 @@ const HomePage = () => {
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
   const abortControllerRef = useRef<AbortController | null>(null);
   const [searchParams, setSearchParams] = useSearchParams();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const mainContentRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
+    setIsLoading(true);
     const urlPage = Number(searchParams.get("page")) || 1;
     const urlItems = Number(searchParams.get("itemsPerPage")) || DEFAULT_ITEMS_PER_PAGE;
     setPage(urlPage);
@@ -53,7 +55,7 @@ const HomePage = () => {
       const response = await apiClient.get<VenuesApiResponse>(endpointUrl, { signal });
 
       if (!Array.isArray(response.data)) throw new Error("Invalid data from server");
-
+      setIsLoading(false);
       setVenues(response.data);
       setPageCount(response.meta.pageCount);
     } catch (err) {
@@ -62,6 +64,8 @@ const HomePage = () => {
       const message = err instanceof ApiError || err instanceof Error ? err.message : "Unknown error";
       setError(message);
       toast.error(message);
+    } finally {
+      setIsLoading(false);
     }
   }, []);
 
@@ -90,6 +94,15 @@ const HomePage = () => {
     setPage(1);
   };
 
+  if (error) {
+    return (
+      <div role="alert" className="text-center bg-red-50 border border-red-200 p-6 rounded-lg">
+        <h3 className="text-lg font-bold text-red-800 mb-2">Unable to load venues</h3>
+        <p className="text-red-700">{error}</p>
+      </div>
+    );
+  }
+
   return (
     <div className="py-8">
       <ErrorBoundary>
@@ -101,31 +114,44 @@ const HomePage = () => {
         </section>
 
         {/* Top pagination */}
-        {!error && venues.length > 0 && (
-          <HomePagination
-            uniqueId="top"
-            currentPage={page}
-            pageCount={pageCount}
-            itemsPerPage={itemsPerPage}
-            onPageChange={handlePageChange}
-            onItemsPerPageChange={handleItemsPerPageChange}
-          />
-        )}
+        <HomePagination
+          uniqueId="top"
+          isLoading={isLoading}
+          hasItems={!error && venues.length > 0}
+          currentPage={page}
+          pageCount={pageCount}
+          itemsPerPage={itemsPerPage}
+          onPageChange={handlePageChange}
+          onItemsPerPageChange={handleItemsPerPageChange}
+        />
 
-        <>
-          {/* Venue grid */}
-          <section aria-labelledby="venue-results-heading" className="my-6">
-            <h2 id="venue-results-heading" className="sr-only">
-              {searchTerm ? `Search results for "${searchTerm}"` : "All venues"}
-            </h2>
+        {searchTerm && venues.length === 0 ? (
+          <div
+            role="status"
+            aria-live="polite"
+            className="w-full mx-auto bg-black/50 text-neutral-100 p-6 rounded-lg shadow-md"
+          >
+            <h3 className="text-2xl font-bold mb-2">No Venues Found</h3>
+            <p className="text-neutral-200 text-lg">We couldn't find any venues matching "{searchTerm}".</p>
+            <Button
+              aria-label="Reset search"
+              variant="primary"
+              type="button"
+              className="place-self-center my-4"
+              onClick={() => setSearchTerm("")}
+            >
+              Reset search
+            </Button>
+          </div>
+        ) : (
+          <>
+            {/* Venue grid */}
+            <section aria-labelledby="venue-results-heading" className="my-6 min-h-1/2">
+              <h2 id="venue-results-heading" className="sr-only">
+                {searchTerm ? `Search results for "${searchTerm}"` : "All venues"}
+              </h2>
 
-            {error ? (
-              <div role="alert" className="text-center bg-red-50 border border-red-200 p-6 rounded-lg">
-                <h3 className="text-lg font-bold text-red-800 mb-2">Unable to load venues</h3>
-                <p className="text-red-700">{error}</p>
-              </div>
-            ) : venues.length !== 0 ? (
-              <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 min-h-[24rem]">
+              <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {Array.from({ length: venues.length || itemsPerPage }).map((_, index) => {
                   const venue = venues[index];
                   return (
@@ -135,39 +161,20 @@ const HomePage = () => {
                   );
                 })}
               </ul>
-            ) : (
-              <div
-                role="status"
-                aria-live="polite"
-                className="w-full mx-auto bg-black/50 text-neutral-100 p-6 rounded-lg shadow-md"
-              >
-                <h3 className="text-2xl font-bold mb-2">No Venues Found</h3>
-                <p className="text-neutral-200 text-lg">We couldn't find any venues matching "{searchTerm}".</p>
-                <Button
-                  aria-label="Reset search"
-                  variant="primary"
-                  type="button"
-                  className="place-self-center my-4"
-                  onClick={() => setSearchTerm("")}
-                >
-                  Reset search
-                </Button>
-              </div>
-            )}
-          </section>
-        </>
-
-        {/* Bottom pagination */}
-        {!error && venues.length > 0 && (
-          <HomePagination
-            uniqueId="bottom"
-            currentPage={page}
-            pageCount={pageCount}
-            itemsPerPage={itemsPerPage}
-            onPageChange={handlePageChange}
-            onItemsPerPageChange={handleItemsPerPageChange}
-          />
+            </section>
+          </>
         )}
+
+        <HomePagination
+          uniqueId="bottom"
+          isLoading={isLoading}
+          hasItems={!error && venues.length > 0}
+          currentPage={page}
+          pageCount={pageCount}
+          itemsPerPage={itemsPerPage}
+          onPageChange={handlePageChange}
+          onItemsPerPageChange={handleItemsPerPageChange}
+        />
       </ErrorBoundary>
     </div>
   );

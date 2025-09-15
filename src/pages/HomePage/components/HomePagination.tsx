@@ -4,6 +4,8 @@ import Button from "../../../components/ui/Button";
 import { BsThreeDots } from "react-icons/bs";
 
 interface HomePaginationProps {
+  isLoading: boolean;
+  hasItems: boolean;
   currentPage: number;
   pageCount: number;
   itemsPerPage: number;
@@ -13,6 +15,8 @@ interface HomePaginationProps {
 }
 
 const HomePagination = ({
+  isLoading,
+  hasItems,
   currentPage,
   pageCount,
   itemsPerPage,
@@ -21,6 +25,7 @@ const HomePagination = ({
   uniqueId = "",
 }: HomePaginationProps) => {
   const [inputValue, setInputValue] = useState<string>("");
+  const showPagination = !isLoading && hasItems;
 
   const goToPage = (page: number) => {
     if (page >= 1 && page <= pageCount) {
@@ -49,7 +54,7 @@ const HomePagination = ({
       <li key={`${uniqueId}-${i}`}>
         <button
           onClick={() => goToPage(i)}
-          className={`px-3 py-2 rounded-lg text-sm md:text-base ${
+          className={`w-10 aspect-square rounded-lg text-sm md:text-base ${
             i === currentPage ? "bg-neutral-400 text-white font-bold" : "text-white bg-blue-500 hover:bg-blue-600"
           }`}
           aria-label={`Go to page ${i}`}
@@ -62,7 +67,12 @@ const HomePagination = ({
   }
 
   return (
-    <nav aria-label="Pagination" className="flex flex-wrap items-center justify-center gap-2 mt-6 text-white my-4">
+    <nav
+      aria-label="Pagination"
+      className={`flex flex-wrap items-center justify-center gap-1 md:gap-2 text-white my-6 ${
+        showPagination ? "opacity-100" : "opacity-0"
+      }`}
+    >
       {/* Prev button */}
       <button
         onClick={() => goToPage(currentPage - 1)}
@@ -90,7 +100,7 @@ const HomePagination = ({
 
       {/* Mobile compact page indicator */}
       <div
-        className="md:hidden px-3 py-2 border rounded-lg bg-gray-200 text-black w-22 flex justify-center gap-1"
+        className="md:hidden px-3 py-2 border rounded-lg bg-gray-200 text-black w-18 flex justify-center gap-1"
         aria-label={`Page ${currentPage} of ${pageCount}`}
       >
         <span className="font-bold">{currentPage}</span> / <span>{pageCount}</span>
@@ -100,7 +110,7 @@ const HomePagination = ({
       {currentPage <= pageCount - 2 && (
         <button
           onClick={() => goToPage(pageCount)}
-          className="hidden md:block px-3 py-2 text-white rounded-lg bg-blue-500 hover:bg-blue-600 ml-2"
+          className="hidden md:block w-10 aspect-square text-white rounded-lg bg-blue-500 hover:bg-blue-600 ml-2"
         >
           <p>{pageCount}</p>
         </button>
@@ -128,12 +138,12 @@ const HomePagination = ({
           max={pageCount}
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
-          className="w-14 p-2 border rounded-lg text-center text-white"
+          className="h-10 aspect-square px-2 border rounded-lg text-center text-white"
           placeholder="Pg"
           aria-label="Enter page number to jump to"
         />
-        <Button variant="primary" type="submit">
-          Go
+        <Button variant="primary" type="submit" className="w-10 aspect-square !p-0">
+          GO
         </Button>
       </form>
 
@@ -145,7 +155,7 @@ const HomePagination = ({
         id={`${uniqueId}-items-per-page-select`}
         value={itemsPerPage}
         onChange={(e) => onItemsPerPageChange(Number(e.target.value))}
-        className="border rounded-lg p-3 bg-neutral-200 text-black"
+        className="border rounded-lg h-10 px-3 bg-neutral-200 text-black"
         aria-label="Select items per page"
       >
         {[12, 18, 24].map((size) => (
