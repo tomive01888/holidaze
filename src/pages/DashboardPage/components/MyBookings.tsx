@@ -4,10 +4,54 @@ import BookingCard from "./BookingsCard";
 import { sortBookingsByDate } from "../../../utils/dateUtils";
 import type { ProfileBooking } from "../../../types";
 
+/**
+ * Props for the {@link MyBookings} component.
+ *
+ * @typedef {Object} MyBookingsProps
+ * @property {ProfileBooking[]} bookings - A list of bookings associated with the current user.
+ */
 interface MyBookingsProps {
   bookings: ProfileBooking[];
 }
 
+/**
+ * Displays a user's bookings, separated into **upcoming trips** and **past trips**.
+ *
+ * @component
+ *
+ * @param {MyBookingsProps} props - The props for the component.
+ * @returns {JSX.Element} A UI section that displays upcoming and past bookings in a grid layout.
+ *
+ * @description
+ * This component:
+ * - Divides bookings into **upcoming** and **past** based on the `dateTo` property.
+ * - Sorts upcoming bookings in ascending order (soonest first).
+ * - Sorts past bookings in descending order (most recent first).
+ * - Shows an empty state message if there are no bookings at all.
+ * - Encourages the user to plan a trip if no upcoming bookings exist.
+ *
+ * @example
+ * ```tsx
+ * import MyBookings from "./MyBookings";
+ *
+ * const userBookings: ProfileBooking[] = [
+ *   {
+ *     id: "b1",
+ *     dateFrom: "2025-09-15",
+ *     dateTo: "2025-09-20",
+ *     venue: { id: "v1", name: "Mountain Lodge", ... },
+ *   },
+ *   {
+ *     id: "b2",
+ *     dateFrom: "2024-08-10",
+ *     dateTo: "2024-08-15",
+ *     venue: { id: "v2", name: "Seaside Cabin", ... },
+ *   },
+ * ];
+ *
+ * <MyBookings bookings={userBookings} />
+ * ```
+ */
 const MyBookings: React.FC<MyBookingsProps> = ({ bookings }) => {
   const { upcomingBookings, pastBookings } = useMemo(() => {
     const now = new Date();
@@ -64,7 +108,7 @@ const MyBookings: React.FC<MyBookingsProps> = ({ bookings }) => {
       <section>
         <h3 className="text-2xl font-bold mb-4">Past Trips</h3>
         {pastBookings.length > 0 ? (
-          <div className="grid grid-cols-1 lg:grid-cols-2  gap-4">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             {pastBookings.map((booking) => (
               <BookingCard key={booking.id} booking={booking} />
             ))}

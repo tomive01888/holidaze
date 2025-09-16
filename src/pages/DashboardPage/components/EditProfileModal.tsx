@@ -6,12 +6,22 @@ import Modal from "../../../components/ui/Modal";
 import Button from "../../../components/ui/Button";
 import { toast } from "react-toastify";
 
+/**
+ * Props for the {@link EditProfileModal} component.
+ * @property {FullUserProfile} profile - The user's current profile data.
+ * @property {() => void} onClose - Callback fired when modal is dismissed.
+ * @property {(updatedProfile: FullUserProfile) => void} onSaveSuccess - Callback fired after successful profile update.
+ */
 interface EditProfileModalProps {
   profile: FullUserProfile;
   onClose: () => void;
   onSaveSuccess: (updatedProfile: FullUserProfile) => void;
 }
 
+/**
+ * Modal that allows the user to edit their profile avatar and banner images.
+ * Handles form state, API update requests, error display, and a live preview.
+ */
 const EditProfileModal: React.FC<EditProfileModalProps> = ({ profile, onClose, onSaveSuccess }) => {
   const [formData, setFormData] = useState({
     avatarUrl: profile.avatar?.url || "",
@@ -20,10 +30,15 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({ profile, onClose, o
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  /** Handles text input changes and updates form state. */
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  /**
+   * Submits the updated avatar/banner URLs to the API.
+   * Shows a toast on success or error, and triggers onSaveSuccess callback.
+   */
   const handleSave = async () => {
     setIsLoading(true);
     setError(null);
