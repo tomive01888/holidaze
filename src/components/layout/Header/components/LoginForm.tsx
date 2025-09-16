@@ -6,17 +6,37 @@ import { endpoints } from "../../../../constants/endpoints";
 import { apiClient, ApiError } from "../../../../api/apiClient";
 import Button from "../../../ui/Button";
 
+/**
+ * Props for the {@link LoginForm} component.
+ *
+ * @typedef {Object} LoginFormProps
+ * @property {() => void} onSuccess - A callback function executed after a successful login.
+ * Typically used to close a modal or redirect the user.
+ */
 export interface LoginFormProps {
-  /**
-   * A callback function to be executed upon successful login.
-   * Typically used to close the login modal.
-   */
   onSuccess: () => void;
 }
 
 /**
- * A form component for user authentication. It handles user input,
- * API communication, error display, and updates the global auth state.
+ * A form component for user authentication.
+ *
+ * @component
+ *
+ * @param {LoginFormProps} props - The props for the component.
+ * @returns {JSX.Element} A login form with email/password fields, error handling, and submit logic.
+ *
+ * @description
+ * This component:
+ * - Collects email and password from the user.
+ * - Calls the login API endpoint.
+ * - Updates global auth state via `useAuth`.
+ * - Displays real-time errors (both visually and via ARIA live region for screen readers).
+ * - Provides loading feedback while the request is in progress.
+ *
+ * @example
+ * ```tsx
+ * <LoginForm onSuccess={() => setLoginModalOpen(false)} />
+ * ```
  */
 const LoginForm: React.FC<LoginFormProps> = ({ onSuccess }) => {
   const { login } = useAuth();
@@ -25,6 +45,20 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSuccess }) => {
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
+  /**
+   * Handles form submission.
+   *
+   * @async
+   * @param {React.FormEvent<HTMLFormElement>} event - The form submission event.
+   * @returns {Promise<void>}
+   *
+   * @remarks
+   * - Prevents the default form behavior.
+   * - Sends a login request to the API.
+   * - Updates global auth state with the returned token and user data.
+   * - Calls `onSuccess` on successful login.
+   * - Displays an error message if the request fails.
+   */
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsLoading(true);
@@ -56,15 +90,15 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSuccess }) => {
       <h2 className="text-3xl font-bold text-center mb-6">Login</h2>
 
       {/* 
-        This is an ARIA Live Region. It is visually hidden but its content
-        will be announced by screen readers whenever the `error` state changes.
-        This is crucial for announcing form submission errors.
+        ARIA Live Region — ensures screen readers announce errors
+        when they appear after form submission.
       */}
       <div aria-live="assertive" className="sr-only">
         {error && `Error: ${error}`}
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-6">
+        {/* Email Field */}
         <div>
           <label htmlFor="email" className="block text-md font-medium text-neutral-700">
             Email address
@@ -82,6 +116,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSuccess }) => {
           />
         </div>
 
+        {/* Password Field */}
         <div>
           <label htmlFor="password" className="block text-md font-medium text-neutral-700">
             Password
@@ -99,7 +134,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSuccess }) => {
           />
         </div>
 
-        {/* This VISIBLE error message remains for sighted users. */}
+        {/* Visible Error Message (for sighted users) */}
         {error && (
           <p
             id="form-error-message"
@@ -109,12 +144,14 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSuccess }) => {
           </p>
         )}
 
+        {/* Submit Button */}
         <div>
           <Button type="submit" disabled={isLoading} className="w-full flex justify-center" variant="primary">
             {isLoading ? "Logging in..." : "Login"}
           </Button>
         </div>
 
+        {/* Link to Registration */}
         <p className="text-center text-lg text-neutral-600">
           Don't have an account?{" "}
           <Link
