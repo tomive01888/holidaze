@@ -6,7 +6,7 @@ import type { FullUserProfile } from "../../../types";
 import Button from "../../../components/ui/Button";
 import Modal from "../../../components/ui/Modal";
 import { toast } from "react-toastify";
-import { GoAlertFill } from "react-icons/go";
+import { TriangleAlert } from "lucide-react";
 
 /**
  * Props for the `BecomeManagerPrompt` component.
@@ -76,7 +76,7 @@ const BecomeManagerPrompt: React.FC<BecomeManagerPromptProps> = ({ onUpgradeSucc
             dashboard.
           </p>
           <p className="font-bold text-error bg-error/10 p-3 rounded-md flex gap-2 text-red-600">
-            <GoAlertFill size={24} /> Please note: This action is permanent and cannot be undone.
+            <TriangleAlert size={24} /> Please note: This action is permanent and cannot be undone.
           </p>
           <div className="flex justify-end gap-4 mt-8">
             <Button variant="secondary" onClick={() => setIsModalOpen(false)}>

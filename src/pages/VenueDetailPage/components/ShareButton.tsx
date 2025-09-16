@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { toast } from "react-toastify";
-import { FaCheck, FaShare } from "react-icons/fa";
+import { Check, Share } from "lucide-react";
 import Button from "../../../components/ui/Button";
 
 const ShareButton = () => {
@@ -13,7 +13,7 @@ const ShareButton = () => {
       .then(() => {
         setCopied(true);
         toast.success("Link copied to clipboard!");
-        setTimeout(() => setCopied(false), 2000); // Revert after 2 seconds
+        setTimeout(() => setCopied(false), 2000);
       })
       .catch(() => {
         toast.error("Failed to copy link.");
@@ -22,7 +22,7 @@ const ShareButton = () => {
 
   return (
     <Button onClick={handleShare} variant="secondary" className="flex items-center gap-2 self-end md:self-auto">
-      {copied ? <FaCheck size={20} className="text-success" /> : <FaShare size={20} />}
+      {copied ? <Check size={20} className="text-success" /> : <Share size={20} />}
       <span>{copied ? "Copied!" : "Share"}</span>
     </Button>
   );

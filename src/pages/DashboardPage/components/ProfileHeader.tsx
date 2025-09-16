@@ -3,7 +3,7 @@ import { useAuth } from "../../../hooks/useAuth";
 import type { FullUserProfile } from "../../../types";
 import Button from "../../../components/ui/Button";
 import EditProfileModal from "./EditProfileModal";
-import { FaUserEdit } from "react-icons/fa";
+import { UserRoundPen } from "lucide-react";
 
 /**
  * Props for the {@link ProfileHeader} component.
@@ -86,7 +86,7 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({ profile, onProfileUpdate 
               size="sm"
               onClick={() => setIsModalOpen(true)}
             >
-              <FaUserEdit className="mb-1 text-2xl md:text-lg" />
+              <UserRoundPen className="mb-1 text-2xl md:text-lg" />
               <span className="hidden md:block">Edit Profile</span>
               <span className="sr-only md:hidden">Edit Profile</span>
             </Button>

@@ -1,7 +1,7 @@
 import React from "react";
 import { formatDate } from "../../../utils/dateUtils";
 import type { VenueBooking } from "../../../types";
-import { FaCalendar, FaHashtag, FaUser } from "react-icons/fa";
+import { Calendar, Hash, User } from "lucide-react";
 
 /**
  * Props for the `BookingListItem` component.
@@ -30,17 +30,17 @@ const BookingListItem: React.FC<BookingListItemProps> = ({ booking }) => {
           <p className="text-md text-neutral-500">{booking.customer.email}</p>
           <div className="mt-2 text-md text-neutral-700 space-y-1">
             <p className="flex items-center gap-2">
-              <FaCalendar size={14} />
+              <Calendar size={14} />
               <span>
                 {formatDate(booking.dateFrom)} to {formatDate(booking.dateTo)}
               </span>
             </p>
             <p className="flex items-center gap-2">
-              <FaUser size={14} />
+              <User size={14} />
               <span>{booking.guests} Guest(s)</span>
             </p>
             <p className="flex items-center gap-2 font-mono text-xs">
-              <FaHashtag size={14} />
+              <Hash size={14} />
               <span>{booking.id}</span>
             </p>
           </div>

@@ -5,7 +5,7 @@ import Button from "../../ui/Button";
 import Modal from "../../ui/Modal";
 import LoginForm from "./components/LoginForm.tsx";
 import holidazeLogo from "../../../assets/holidaze_logo.png";
-import { FaUserCircle } from "react-icons/fa";
+import { CircleUserRound } from "lucide-react";
 
 /**
  * The main application header. It's responsible for displaying the main navigation,
@@ -61,7 +61,7 @@ const Header = () => {
                       className="w-10 aspect-square rounded-full object-cover border-2 border-white/50"
                     />
                   ) : (
-                    <FaUserCircle size={24} />
+                    <CircleUserRound size={24} />
                   )}
                   <span className="hidden sm:inline">{user.name}</span>
                 </Link>

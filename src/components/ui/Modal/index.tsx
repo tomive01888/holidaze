@@ -1,6 +1,6 @@
 import { useEffect, useId, useRef, type ReactNode, type FC } from "react";
 import { createPortal } from "react-dom";
-import { MdClose } from "react-icons/md";
+import { X } from "lucide-react";
 
 export interface ModalProps {
   /**
@@ -124,7 +124,7 @@ const Modal: FC<ModalProps> = ({ children, onClose, className = "", description 
           className="absolute top-3 right-3 p-1 text-neutral-500 hover:text-neutral-800 transition-colors rounded-full"
           aria-label="Close modal"
         >
-          <MdClose size={24} />
+          <X size={24} />
         </button>
 
         {description && (

@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { FaStar, FaUserFriends } from "react-icons/fa";
+import { Star, UsersRound } from "lucide-react";
 import type { Venue } from "../../../types";
 import { formatCurrency } from "../../../utils/currencyUtils";
 
@@ -41,14 +41,14 @@ const VenueCard: React.FC<VenueCardProps> = ({ venue, ...props }) => {
                 className="flex items-center gap-1"
                 aria-label={`Rating: ${venue.rating > 0 ? `${venue.rating.toFixed(1)} out of 5 stars` : "Not rated"}`}
               >
-                <FaStar className="text-yellow-400 mb-1" aria-hidden="true" />
+                <Star className="text-yellow-400 mb-1" aria-hidden="true" />
                 <span>{venue.rating > 0 ? venue.rating.toFixed(1) : "N/A"}</span>
               </div>
 
               <span aria-hidden="true">·</span>
 
               <div className="flex items-center gap-1" aria-label={`Maximum ${venue.maxGuests} guests`}>
-                <FaUserFriends aria-hidden="true" className="mb-1" />
+                <UsersRound aria-hidden="true" className="mb-1" />
                 <span>{venue.maxGuests}</span>
               </div>
             </div>

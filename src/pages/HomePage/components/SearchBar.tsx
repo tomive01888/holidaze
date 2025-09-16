@@ -1,5 +1,5 @@
 import React from "react";
-import { MdSearch, MdClose } from "react-icons/md";
+import { ScanSearch, X } from "lucide-react";
 
 /**
  * Props for the {@link SearchBar} component.
@@ -72,7 +72,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
       <div className="relative">
         {/* Search icon on left */}
         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-          <MdSearch className="h-5 w-5 text-neutral-300" />
+          <ScanSearch className="h-5 w-5 text-neutral-300" />
         </div>
 
         {/* Input */}
@@ -100,7 +100,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
             className="absolute inset-y-0 right-0 pr-3 flex items-center justify-center"
             aria-label="Clear search"
           >
-            <MdClose className="h-8 w-8 text-2xl text-neutral-400 hover:text-white" />
+            <X className="h-8 w-8 text-2xl text-neutral-400 hover:text-white" />
           </button>
         )}
       </div>

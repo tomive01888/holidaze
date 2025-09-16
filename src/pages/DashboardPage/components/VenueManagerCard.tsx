@@ -7,7 +7,7 @@ import ViewBookingsModal from "./ViewBookingsModal";
 import Button from "../../../components/ui/Button";
 import Modal from "../../../components/ui/Modal";
 import { toast } from "react-toastify";
-import { FaTrashAlt } from "react-icons/fa";
+import { Trash2 } from "lucide-react";
 
 /**
  * Props for the {@link VenueManagementCard} component.
@@ -101,7 +101,7 @@ const VenueManagementCard: React.FC<VenueManagementCardProps> = ({ venue }) => {
                        lg:opacity-0 lg:group-hover:opacity-100"
             aria-label={`Delete venue ${venue.name}`}
           >
-            <FaTrashAlt size={18} />
+            <Trash2 size={18} />
           </button>
         </div>
 

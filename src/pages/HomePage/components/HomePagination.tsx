@@ -6,9 +6,8 @@
  */
 
 import React, { useState } from "react";
-import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
+import { ChevronLeft, ChevronRight, Ellipsis } from "lucide-react";
 import Button from "../../../components/ui/Button";
-import { BsThreeDots } from "react-icons/bs";
 
 /**
  * @interface HomePaginationProps
@@ -125,7 +124,7 @@ const HomePagination = ({
         disabled={currentPage === 1}
         className="p-2 rounded-lg bg-blue-500 hover:bg-blue-600 disabled:bg-neutral-300 disabled:opacity-50"
       >
-        <FiChevronLeft size={24} aria-hidden="true" />
+        <ChevronLeft size={24} aria-hidden="true" />
       </button>
 
       {/* Desktop page numbers */}
@@ -133,14 +132,14 @@ const HomePagination = ({
         {/* Render ellipsis if there are pages before the visible range */}
         {startPage > 1 && (
           <li className="flex">
-            <BsThreeDots key={`${uniqueId}-ellipsis-left`} aria-hidden="true" className="place-self-center " />
+            <Ellipsis key={`${uniqueId}-ellipsis-left`} aria-hidden="true" className="place-self-center " />
           </li>
         )}
         {pages}
         {/* Render ellipsis if there are pages after the visible range */}
         {endPage < pageCount && (
           <li className="flex">
-            <BsThreeDots key={`${uniqueId}-ellipsis-left`} aria-hidden="true" className="place-self-center " />
+            <Ellipsis key={`${uniqueId}-ellipsis-left`} aria-hidden="true" className="place-self-center " />
           </li>
         )}
       </ul>
@@ -170,7 +169,7 @@ const HomePagination = ({
         disabled={currentPage === pageCount}
         className="p-2 rounded-lg bg-blue-500 hover:bg-blue-600 disabled:opacity-50"
       >
-        <FiChevronRight size={24} aria-hidden="true" />
+        <ChevronRight size={24} aria-hidden="true" />
       </button>
 
       {/* Page jump input */}

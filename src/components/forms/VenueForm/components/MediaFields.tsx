@@ -1,6 +1,6 @@
-import { FaStar, FaTrashAlt } from "react-icons/fa";
 import { useVenueForm } from "../VenueFormContext";
 import Button from "../../../ui/Button";
+import { Star, Trash2 } from "lucide-react";
 
 export const MediaFields = () => {
   const {
@@ -83,7 +83,7 @@ export const MediaFields = () => {
                       className="text-white hover:text-yellow-400"
                       title="Make cover image"
                     >
-                      <FaStar size={24} />
+                      <Star size={24} />
                     </button>
                   )}
                   <button
@@ -92,7 +92,7 @@ export const MediaFields = () => {
                     className="text-white hover:text-red-500"
                     title="Delete image"
                   >
-                    <FaTrashAlt size={22} />
+                    <Trash2 size={22} />
                   </button>
                 </div>
                 {index === 0 && (
