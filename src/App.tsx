@@ -10,6 +10,7 @@ import ProtectedRoute from "./components/auth/ProtectedRoute";
 import DashboardPage from "./pages/DashboardPage";
 import VenueManagerRoute from "./components/auth/VenueManagerRoute";
 import EditVenuePage from "./pages/EditVenuePage";
+import CreateVenuePage from "./pages/CreateVenuePage";
 
 /**
  * The main application component that defines and renders all routes.
@@ -35,7 +36,7 @@ function App() {
         {
           element: <VenueManagerRoute />,
           children: [
-            // { path: "venue/create", element: <CreateVenuePage /> },
+            { path: "venue/create", element: <CreateVenuePage /> },
             { path: "venue/edit/:id", element: <EditVenuePage /> },
           ],
         },
