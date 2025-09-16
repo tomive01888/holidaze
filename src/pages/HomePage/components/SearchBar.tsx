@@ -1,6 +1,16 @@
 import React from "react";
 import { MdSearch, MdClose } from "react-icons/md";
 
+/**
+ * Props for the {@link SearchBar} component.
+ *
+ * @typedef {Object} SearchBarProps
+ * @property {string} searchTerm - Current value of the search input.
+ * @property {(term: string) => void} setSearchTerm - Function to update the search term state.
+ * @property {string} [placeholder] - Optional placeholder text for the search input.
+ *   Defaults to `"Search by name or description..."`.
+ * @property {string} [className] - Optional additional CSS classes to style the container.
+ */
 export interface SearchBarProps {
   searchTerm: string;
   setSearchTerm: (term: string) => void;
@@ -8,16 +18,47 @@ export interface SearchBarProps {
   className?: string;
 }
 
+/**
+ * A reusable search bar component with a left-aligned search icon and
+ * a clear button that appears when text is entered.
+ *
+ * @component
+ *
+ * @param {SearchBarProps} props - The props for the component.
+ * @returns {JSX.Element} A styled search bar input with search and clear functionality.
+ *
+ * @example
+ * ```tsx
+ * const [searchTerm, setSearchTerm] = useState("");
+ *
+ * return (
+ *   <SearchBar
+ *     searchTerm={searchTerm}
+ *     setSearchTerm={setSearchTerm}
+ *     placeholder="Search venues..."
+ *     className="mb-4"
+ *   />
+ * );
+ * ```
+ */
 const SearchBar: React.FC<SearchBarProps> = ({
   searchTerm,
   setSearchTerm,
   placeholder = "Search by name or description...",
   className = "",
 }) => {
+  /**
+   * Handles typing in the input and updates the search term state.
+   *
+   * @param {React.ChangeEvent<HTMLInputElement>} event - Input change event.
+   */
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
   };
 
+  /**
+   * Clears the search input and resets the search term.
+   */
   const handleClear = () => {
     setSearchTerm("");
   };
