@@ -9,15 +9,60 @@ import Modal from "../../../components/ui/Modal";
 import { toast } from "react-toastify";
 import { FaTrashAlt } from "react-icons/fa";
 
+/**
+ * Props for the {@link VenueManagementCard} component.
+ *
+ * @typedef {Object} VenueManagementCardProps
+ * @property {Venue} venue - The venue data to display and manage.
+ */
 interface VenueManagementCardProps {
   venue: Venue;
 }
 
+/**
+ * A card component for displaying and managing a single venue.
+ *
+ * @component
+ * @param {VenueManagementCardProps} props - The props for the component.
+ * @returns {JSX.Element} A venue card with edit, delete, and view bookings actions.
+ *
+ * @description
+ * This card shows:
+ * - The venue image and name (clickable, links to venue details).
+ * - A delete button (hover-revealed on desktop, always visible on mobile).
+ * - Buttons to edit the venue or view its bookings.
+ *
+ * It also manages:
+ * - Delete confirmation via modal.
+ * - View Bookings modal opening/closing.
+ * - API call for deleting a venue with success/error toast notifications.
+ *
+ * @example
+ * ```tsx
+ * <VenueManagementCard venue={venue} />
+ * ```
+ */
 const VenueManagementCard: React.FC<VenueManagementCardProps> = ({ venue }) => {
+  /** Whether the delete confirmation modal is open. */
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+
+  /** Whether the view bookings modal is open. */
   const [isBookingsModalOpen, setIsBookingsModalOpen] = useState(false);
+
+  /** Whether the venue is currently being deleted (disables button + shows loading state). */
   const [isDeleting, setIsDeleting] = useState(false);
 
+  /**
+   * Handles deleting the venue.
+   *
+   * @async
+   * @returns {Promise<void>}
+   *
+   * @remarks
+   * - Calls the API to delete the venue.
+   * - Shows a toast notification on success or failure.
+   * - Reloads the page after successful deletion.
+   */
   const handleDelete = async () => {
     setIsDeleting(true);
     try {
@@ -39,7 +84,7 @@ const VenueManagementCard: React.FC<VenueManagementCardProps> = ({ venue }) => {
   return (
     <>
       <div className="rounded-lg overflow-hidden shadow-lg h-full flex flex-col text-lg">
-        {/* --- Image and Title Section (The visual part) --- */}
+        {/* --- Image and Title Section --- */}
         <div className="relative group">
           <Link to={`/venue/${venue.id}`} className="block">
             <img
@@ -53,19 +98,19 @@ const VenueManagementCard: React.FC<VenueManagementCardProps> = ({ venue }) => {
             </h3>
           </Link>
 
-          {/* --- Delete Icon (Always visible on mobile, hover on desktop) --- */}
+          {/* --- Delete Icon --- */}
           <button
             onClick={() => setIsDeleteModalOpen(true)}
             className="absolute top-3 right-3 bg-red-600/80 text-white p-2 rounded-full 
                        transition-opacity duration-300 hover:bg-red-700 hover:scale-110 
-                       lg:opacity-0 lg:group-hover:opacity-100" // The magic!
+                       lg:opacity-0 lg:group-hover:opacity-100"
             aria-label={`Delete venue ${venue.name}`}
           >
             <FaTrashAlt size={18} />
           </button>
         </div>
 
-        {/* --- ACTIONS SECTION (Always visible on mobile, replaces hover on desktop) --- */}
+        {/* --- Actions Section --- */}
         <div className="p-4 bg-white flex-grow flex flex-col justify-end">
           <div className="flex flex-col gap-3">
             <Link to={`/venue/edit/${venue.id}`}>
@@ -98,6 +143,7 @@ const VenueManagementCard: React.FC<VenueManagementCardProps> = ({ venue }) => {
         </Modal>
       )}
 
+      {/* --- View Bookings Modal --- */}
       {isBookingsModalOpen && (
         <ViewBookingsModal venueId={venue.id} venueName={venue.name} onClose={() => setIsBookingsModalOpen(false)} />
       )}
