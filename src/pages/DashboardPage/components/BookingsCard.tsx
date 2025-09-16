@@ -4,10 +4,19 @@ import { truncateText } from "../../../utils/stringUtils";
 import { formatDate } from "../../../utils/dateUtils";
 import type { ProfileBooking } from "../../../types";
 
+/**
+ * Props for the `BookingCard` component.
+ * @typedef {Object} BookingCardProps
+ * @property {ProfileBooking} booking - The booking object containing venue details, dates, and guest count.
+ */
 interface BookingCardProps {
   booking: ProfileBooking;
 }
 
+/**
+ * Displays a single booking in a card layout with venue image, location, description,
+ * and check-in/check-out details. Each card links to the venue's details page.
+ */
 const BookingCard: React.FC<BookingCardProps> = ({ booking }) => {
   return (
     <div className="flex flex-col md:flex-row gap-4 p-4 bg-white border rounded-lg shadow-sm">
