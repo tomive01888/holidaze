@@ -8,6 +8,11 @@ import Modal from "../../../components/ui/Modal";
 import { toast } from "react-toastify";
 import { GoAlertFill } from "react-icons/go";
 
+/**
+ * Props for the `BecomeManagerPrompt` component.
+ * @typedef {Object} BecomeManagerPromptProps
+ * @property {(updatedProfile: FullUserProfile) => void} onUpgradeSuccess - Callback triggered after a successful account upgrade, usually to re-fetch user data.
+ */
 interface BecomeManagerPromptProps {
   /**
    * A callback function to execute after a successful role upgrade.
@@ -16,6 +21,11 @@ interface BecomeManagerPromptProps {
   onUpgradeSuccess: (updatedProfile: FullUserProfile) => void;
 }
 
+/**
+ * Displays a call-to-action card prompting the user to become a Venue Manager.
+ * Opens a confirmation modal on click and upgrades the user's profile via API.
+ * Shows success and error toasts and disables the confirm button while processing.
+ */
 const BecomeManagerPrompt: React.FC<BecomeManagerPromptProps> = ({ onUpgradeSuccess }) => {
   const { user } = useAuth();
   const [isModalOpen, setIsModalOpen] = useState(false);
