@@ -15,39 +15,101 @@ export interface ModalProps {
    * Optional custom CSS classes for the modal content container.
    */
   className?: string;
+  /**
+   * Optional description text for screen readers, describing the modal.
+   * This will be connected via aria-describedby.
+   */
+  description?: string;
 }
 
 /**
- * A reusable and highly accessible modal component that renders its children in a portal.
- * It includes robust focus management and keyboard accessibility (Escape key).
- * The modal is closed via the dedicated close button or the Escape key.
+ * @component Modal
+ * @description
+ * A reusable, accessible modal component with:
+ * - Focus trap (keyboard users cannot tab outside)
+ * - Escape key to close
+ * - ARIA roles and labels for screen readers
+ * - Restores focus to previously focused element on close
+ *
+ * @param {ModalProps} props - Props for the modal component.
+ * @returns {React.ReactPortal} A portal rendering the modal content.
  */
-const Modal: FC<ModalProps> = ({ children, onClose, className = "" }) => {
+const Modal: FC<ModalProps> = ({ children, onClose, className = "", description }) => {
   const titleId = useId();
+  const descId = useId();
   const modalRef = useRef<HTMLDivElement>(null);
 
+  /**
+   * Effect: Handle Escape key to close modal.
+   */
   useEffect(() => {
     const handleEsc = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        onClose();
-      }
+      if (event.key === "Escape") onClose();
     };
     window.addEventListener("keydown", handleEsc);
-    return () => {
-      window.removeEventListener("keydown", handleEsc);
-    };
+    return () => window.removeEventListener("keydown", handleEsc);
   }, [onClose]);
 
+  /**
+   * Effect: Focus trap within modal and restore focus on unmount.
+   */
   useEffect(() => {
+    const modal = modalRef.current;
+    if (!modal) return;
+
+    const previouslyFocusedElement = document.activeElement as HTMLElement;
+    const focusableSelectors = ["a[href]", "button", "textarea", "input", "select", "[tabindex]:not([tabindex='-1'])"];
+    const focusableEls = Array.from(modal.querySelectorAll<HTMLElement>(focusableSelectors.join(",")));
+    focusableEls[0]?.focus();
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Tab" && focusableEls.length > 0) {
+        if (e.shiftKey && document.activeElement === focusableEls[0]) {
+          e.preventDefault();
+          focusableEls[focusableEls.length - 1].focus();
+        } else if (!e.shiftKey && document.activeElement === focusableEls[focusableEls.length - 1]) {
+          e.preventDefault();
+          focusableEls[0].focus();
+        }
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      previouslyFocusedElement?.focus();
+    };
+  }, []);
+
+  useEffect(() => {
+    const originalOverflow = document.body.style.overflow;
+    const appRoot = document.getElementById("root");
+    const previousAriaHidden = appRoot?.getAttribute("aria-hidden");
+
+    document.body.style.overflow = "hidden";
+    if (appRoot) appRoot.setAttribute("aria-hidden", "true");
+
     const previouslyFocusedElement = document.activeElement as HTMLElement;
     modalRef.current?.focus();
+
     return () => {
+      document.body.style.overflow = originalOverflow;
+      if (appRoot) {
+        if (previousAriaHidden) {
+          appRoot.setAttribute("aria-hidden", previousAriaHidden);
+        } else {
+          appRoot.removeAttribute("aria-hidden");
+        }
+      }
       previouslyFocusedElement?.focus();
     };
   }, []);
 
   return createPortal(
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm min-h-[110vh] -top-[5vh]">
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm min-h-[110vh] -top-[5vh]"
+      role="presentation"
+    >
       <div
         ref={modalRef}
         tabIndex={-1}
@@ -55,6 +117,7 @@ const Modal: FC<ModalProps> = ({ children, onClose, className = "" }) => {
         role="dialog"
         aria-modal="true"
         aria-labelledby={titleId}
+        aria-describedby={description ? descId : undefined}
       >
         <button
           onClick={onClose}
@@ -63,7 +126,16 @@ const Modal: FC<ModalProps> = ({ children, onClose, className = "" }) => {
         >
           <MdClose size={24} />
         </button>
-        <div className="modal-body">{children}</div>
+
+        {description && (
+          <p id={descId} className="sr-only">
+            {description}
+          </p>
+        )}
+
+        <div className="modal-body" id={titleId}>
+          {children}
+        </div>
       </div>
     </div>,
     document.body

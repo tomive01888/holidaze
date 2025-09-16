@@ -53,7 +53,7 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({ profile, onProfileUpdate 
   return (
     <>
       {/* --- Banner & Profile Info --- */}
-      <div className="relative h-64 md:h-80 w-full bg-neutral-200">
+      <div className="relative h-64 md:h-96 w-full bg-neutral-200">
         {/* Banner image as background */}
         <div
           className="absolute inset-0"

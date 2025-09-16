@@ -81,13 +81,17 @@ const ViewBookingsModal: React.FC<ViewBookingsModalProps> = ({ venueId, venueNam
   const renderContent = () => {
     if (isLoading) {
       return (
-        <div className="flex justify-center py-10">
+        <div className="flex justify-center py-10" aria-busy="true" role="status">
           <Spinner text="Loading bookings..." />
         </div>
       );
     }
     if (error) {
-      return <p className="text-center text-error">{error}</p>;
+      return (
+        <p className="text-center text-error" role="alert">
+          {error}
+        </p>
+      );
     }
     if (upcomingBookings.length === 0) {
       return (
@@ -104,8 +108,10 @@ const ViewBookingsModal: React.FC<ViewBookingsModalProps> = ({ venueId, venueNam
   };
 
   return (
-    <Modal onClose={onClose}>
-      <h2 className="text-3xl font-bold mb-1">Bookings for</h2>
+    <Modal onClose={onClose} aria-labelledby="bookingsModalTitle">
+      <h2 id="bookingsModalTitle" className="text-3xl font-bold mb-1">
+        Bookings for
+      </h2>
       <h3 className="text-2xl text-neutral-700 font-bold mb-6">{venueName}</h3>
       {renderContent()}
     </Modal>
