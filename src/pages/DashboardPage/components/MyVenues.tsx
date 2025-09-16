@@ -4,14 +4,46 @@ import type { Venue } from "../../../types";
 import Button from "../../../components/ui/Button";
 import VenueManagementCard from "./VenueManagerCard";
 
-
+/**
+ * Props for the {@link MyVenues} component.
+ *
+ * @typedef {Object} MyVenuesProps
+ * @property {Venue[]} venues - An array of venues owned by the logged-in user.
+ */
 interface MyVenuesProps {
   venues: Venue[];
 }
 
+/**
+ * A component that displays all venues owned by the current user.
+ *
+ * @component
+ *
+ * @param {MyVenuesProps} props - The props for the component.
+ * @returns {JSX.Element} A section displaying the user's venues or an empty state message.
+ *
+ * @description
+ * This component:
+ * - Displays a **"Create New Venue"** button that links to the venue creation page.
+ * - If venues are available, it renders a responsive grid of `VenueManagementCard` components.
+ * - If no venues exist, it displays a friendly empty state encouraging the user to create one.
+ *
+ * @example
+ * ```tsx
+ * import MyVenues from "./MyVenues";
+ *
+ * const userVenues: Venue[] = [
+ *   { id: "1", name: "City Hall", description: "Downtown venue", ... },
+ *   { id: "2", name: "Open Air Theater", description: "Outdoor stage", ... }
+ * ];
+ *
+ * <MyVenues venues={userVenues} />
+ * ```
+ */
 const MyVenues: React.FC<MyVenuesProps> = ({ venues }) => {
   return (
     <div className="bg-black/0">
+      {/* Create New Venue Button */}
       <div className="flex justify-end mb-6">
         <Link to="/venue/create">
           <Button variant="primary" size="lg">
@@ -20,15 +52,12 @@ const MyVenues: React.FC<MyVenuesProps> = ({ venues }) => {
         </Link>
       </div>
 
+      {/* Display list of venues or empty state */}
       {venues.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          <h2
-            className="text-3xl font-bold text-neutral-100 col-span-3
-          "
-          >
-            Venues you own
-          </h2>
+          <h2 className="text-3xl font-bold text-neutral-100 col-span-3">Venues you own</h2>
 
+          {/* Render a card for each venue */}
           {venues.map((venue) => (
             <VenueManagementCard key={venue.id} venue={venue} />
           ))}
