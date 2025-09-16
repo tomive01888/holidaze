@@ -52,19 +52,7 @@ const HomePagination = ({
   onItemsPerPageChange,
   uniqueId = "",
 }: HomePaginationProps) => {
-  /**
-   * @state
-   * @type {string}
-   * @description Manages the value of the page jump input field.
-   */
   const [inputValue, setInputValue] = useState<string>("");
-
-  /**
-   * @constant
-   * @type {boolean}
-   * @description A boolean flag to control the visibility of the pagination component.
-   * It is only visible when not in a loading state and when there are items to paginate.
-   */
   const showPagination = !isLoading && hasItems;
 
   /**

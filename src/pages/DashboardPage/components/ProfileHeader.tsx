@@ -5,11 +5,46 @@ import Button from "../../../components/ui/Button";
 import EditProfileModal from "./EditProfileModal";
 import { FaUserEdit } from "react-icons/fa";
 
+/**
+ * Props for the {@link ProfileHeader} component.
+ *
+ * @typedef {Object} ProfileHeaderProps
+ * @property {FullUserProfile} profile - The full user profile data to display.
+ * @property {(updatedProfile: FullUserProfile) => void} onProfileUpdate -
+ *   Callback triggered when the profile is successfully updated,
+ *   typically used to refresh the displayed data.
+ */
 interface ProfileHeaderProps {
   profile: FullUserProfile;
   onProfileUpdate: (updatedProfile: FullUserProfile) => void;
 }
 
+/**
+ * Displays a user's profile header, including banner, avatar, name, and email.
+ *
+ * @component
+ *
+ * @param {ProfileHeaderProps} props - The props for the component.
+ * @returns {JSX.Element} A profile header with optional edit functionality.
+ *
+ * @description
+ * - Shows the user's banner image (if available).
+ * - Displays the avatar, name, and email centered on top of the banner.
+ * - If the logged-in user is viewing their own profile, an "Edit Profile" button is shown.
+ * - Clicking "Edit Profile" opens a modal allowing profile updates.
+ *
+ * @example
+ * ```tsx
+ * const [profile, setProfile] = useState<FullUserProfile>(userProfile);
+ *
+ * return (
+ *   <ProfileHeader
+ *     profile={profile}
+ *     onProfileUpdate={(updated) => setProfile(updated)}
+ *   />
+ * );
+ * ```
+ */
 const ProfileHeader: React.FC<ProfileHeaderProps> = ({ profile, onProfileUpdate }) => {
   const { user } = useAuth();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -17,7 +52,9 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({ profile, onProfileUpdate 
 
   return (
     <>
+      {/* --- Banner & Profile Info --- */}
       <div className="relative h-64 md:h-80 w-full bg-neutral-200">
+        {/* Banner image as background */}
         <div
           className="absolute inset-0"
           style={{
@@ -40,8 +77,9 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({ profile, onProfileUpdate 
           </div>
         </section>
 
+        {/* --- Edit Button (Only if this is the user's own profile) --- */}
         {isOwnProfile && (
-          <div className="absolute top-4 right-4 ">
+          <div className="absolute top-4 right-4">
             <Button
               variant="secondary"
               className="flex items-center justify-center gap-2"
@@ -50,12 +88,13 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({ profile, onProfileUpdate 
             >
               <FaUserEdit className="mb-1 text-2xl md:text-lg" />
               <span className="hidden md:block">Edit Profile</span>
-              <span className="sr-only md:hidden">Edit Profile</span>{" "}
+              <span className="sr-only md:hidden">Edit Profile</span>
             </Button>
           </div>
         )}
       </div>
 
+      {/* --- Edit Profile Modal --- */}
       {isModalOpen && (
         <EditProfileModal
           profile={profile}

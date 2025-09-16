@@ -35,23 +35,8 @@ interface ViewBookingsModalProps {
  * @returns {React.ReactElement} The rendered modal component.
  */
 const ViewBookingsModal: React.FC<ViewBookingsModalProps> = ({ venueId, venueName, onClose }) => {
-  /**
-   * @state
-   * @type {VenueBooking[]}
-   * @description Stores the list of venue bookings fetched from the API.
-   */
   const [bookings, setBookings] = useState<VenueBooking[]>([]);
-  /**
-   * @state
-   * @type {boolean}
-   * @description Manages the loading state of the booking data fetch operation.
-   */
   const [isLoading, setIsLoading] = useState(true);
-  /**
-   * @state
-   * @type {string | null}
-   * @description Stores any error message that occurs during the API call.
-   */
   const [error, setError] = useState<string | null>(null);
 
   /**

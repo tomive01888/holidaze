@@ -43,13 +43,8 @@ interface VenueManagementCardProps {
  * ```
  */
 const VenueManagementCard: React.FC<VenueManagementCardProps> = ({ venue }) => {
-  /** Whether the delete confirmation modal is open. */
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-
-  /** Whether the view bookings modal is open. */
   const [isBookingsModalOpen, setIsBookingsModalOpen] = useState(false);
-
-  /** Whether the venue is currently being deleted (disables button + shows loading state). */
   const [isDeleting, setIsDeleting] = useState(false);
 
   /**
