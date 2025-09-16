@@ -3,10 +3,19 @@ import { formatDate } from "../../../utils/dateUtils";
 import type { VenueBooking } from "../../../types";
 import { FaCalendar, FaHashtag, FaUser } from "react-icons/fa";
 
+/**
+ * Props for the `BookingListItem` component.
+ * @typedef {Object} BookingListItemProps
+ * @property {VenueBooking} booking - A single venue booking containing customer details, dates, and guest count.
+ */
 interface BookingListItemProps {
   booking: VenueBooking;
 }
 
+/**
+ * Renders a list item displaying a venue booking with customer avatar, name, email,
+ * booking date range, number of guests, and booking ID.
+ */
 const BookingListItem: React.FC<BookingListItemProps> = ({ booking }) => {
   return (
     <li className="p-4 border rounded-lg bg-neutral-50">
