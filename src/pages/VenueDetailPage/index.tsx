@@ -20,6 +20,10 @@ const VenueDetailPage = () => {
     }
   }, [venue]);
 
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [id]);
+
   const fetchVenue = useCallback(async () => {
     if (!id) return;
     setIsLoading(true);

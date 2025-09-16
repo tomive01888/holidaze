@@ -16,7 +16,6 @@ const Layout = () => {
         Skip to main content
       </a>
       <Header />
-
       <main
         id="main-content"
         tabIndex={-1}
@@ -24,7 +23,6 @@ const Layout = () => {
       >
         <Outlet />
       </main>
-
       <Footer />
     </div>
   );
