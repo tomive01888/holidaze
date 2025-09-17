@@ -19,18 +19,19 @@ interface BookingCardProps {
  */
 const BookingCard: React.FC<BookingCardProps> = ({ booking }) => {
   return (
-    <div className="flex flex-col md:flex-row gap-4 p-4 bg-white border rounded-lg shadow-sm">
-      <Link to={`/venue/${booking.venue.id}`} className="md:w-1/3 flex-shrink-0">
-        <img
-          src={booking.venue.media[0]?.url || "https://via.placeholder.com/400x300"}
-          alt={`view of ${booking.venue.name}`}
-          className="w-full h-48 aspect-square md:h-full object-cover rounded-md"
-        />
-      </Link>
+    <div className="flex flex-col md:flex-row  items-center gap-4 p-4 bg-white border rounded-lg shadow-sm">
+      <img
+        src={booking.venue.media[0]?.url || "https://via.placeholder.com/400x300"}
+        alt={`view of ${booking.venue.name}`}
+        className="h-48 aspect-square object-cover rounded-md"
+      />
       <div className="flex-grow flex flex-col text-black">
         <div>
-          <h3 className="text-2xl font-bold">
-            <Link to={`/venue/${booking.venue.id}`} className="hover:underline">
+          <h3 className="text-xl font-bold">
+            <Link
+              to={`/venue/${booking.venue.id}`}
+              className="hover:underline hover:text-blue-500 focus:text-blue-500 focus:underline"
+            >
               {booking.venue.name}
             </Link>
           </h3>

@@ -65,7 +65,7 @@ const VenueManagementCard: React.FC<VenueManagementCardProps> = ({ venue }) => {
       toast.success(`Venue "${venue.name}" deleted successfully.`);
       window.location.reload();
     } catch (error) {
-      let errorMessage = "Booking failed. Please try again.";
+      let errorMessage = "Failed to delete venue. Please try again.";
       if (error instanceof Error) {
         errorMessage = error.message;
       }
@@ -81,9 +81,9 @@ const VenueManagementCard: React.FC<VenueManagementCardProps> = ({ venue }) => {
       <div className="rounded-lg overflow-hidden shadow-lg h-full flex flex-col text-lg">
         {/* --- Image and Title Section --- */}
         <div className="relative group">
-          <Link to={`/venue/${venue.id}`} className="block">
+          <div>
             <img
-              src={venue.media[0]?.url || "https://via.placeholder.com/400x300"}
+              src={venue.media[0]?.url || "https://placehold.co/600x400/e2e8f0/475569?text=No+Image"}
               alt={`view of ${venue.name}`}
               className="w-full h-56 object-cover transition-transform duration-300"
             />
@@ -91,24 +91,24 @@ const VenueManagementCard: React.FC<VenueManagementCardProps> = ({ venue }) => {
             <h3 className="absolute bottom-4 left-4 text-xl font-bold text-white truncate max-w-full pr-4">
               {venue.name}
             </h3>
-          </Link>
+          </div>
 
           {/* --- Delete Icon --- */}
-          <button
+          <Button
+            variant="destructive"
             onClick={() => setIsDeleteModalOpen(true)}
-            className="absolute top-3 right-3 bg-red-600/80 text-white p-2 rounded-full 
-                       transition-opacity duration-300 hover:bg-red-700 hover:scale-110 
-                       lg:opacity-0 lg:group-hover:opacity-100"
+            className="absolute top-3 right-3 !p-2 !aspect-square !rounded-full hover:scale-110 
+                       lg:opacity-0 lg:group-hover:opacity-100 focus:opacity-100 focus:!bg-red-500"
             aria-label={`Delete venue ${venue.name}`}
           >
-            <Trash2 size={18} />
-          </button>
+            <Trash2 size={28} />
+          </Button>
         </div>
 
         {/* --- Actions Section --- */}
         <div className="p-4 bg-white flex-grow flex flex-col justify-end">
           <div className="flex flex-col gap-3">
-            <Link to={`/venue/edit/${venue.id}`}>
+            <Link to={`/venue/edit/${venue.id}`} aria-label={`View details for venue ${venue.name}`} tabIndex={-1}>
               <Button variant="primary" className="w-full">
                 Edit Venue
               </Button>

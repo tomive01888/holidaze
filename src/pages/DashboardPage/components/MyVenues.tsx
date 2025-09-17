@@ -45,7 +45,7 @@ const MyVenues: React.FC<MyVenuesProps> = ({ venues }) => {
     <div className="bg-black/0">
       {/* Create New Venue Button */}
       <div className="flex justify-end mb-6">
-        <Link to="/venue/create">
+        <Link to="/venue/create" tabIndex={-1}>
           <Button variant="primary" size="lg">
             + Create New Venue
           </Button>
