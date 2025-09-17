@@ -4,7 +4,7 @@ import "react-toastify/dist/ReactToastify.css";
 import Layout from "./components/layout/Layout";
 import NotFoundPage from "./pages/NotFoundPage";
 import RegisterPage from "./pages/RegisterPage";
-import HomePage from "./pages/HomePage/";
+import HomePage from "./pages/HomePage";
 import VenueDetailPage from "./pages/VenueDetailPage";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 import DashboardPage from "./pages/DashboardPage";
