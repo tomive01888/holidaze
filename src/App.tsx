@@ -11,6 +11,7 @@ import DashboardPage from "./pages/DashboardPage";
 import VenueManagerRoute from "./components/auth/VenueManagerRoute";
 import EditVenuePage from "./pages/EditVenuePage";
 import CreateVenuePage from "./pages/CreateVenuePage";
+import AutoScrollToTop from "./components/ui/AutoScrollToTop";
 
 /**
  * The main application component that defines and renders all routes.
@@ -47,6 +48,7 @@ function App() {
 
   return (
     <>
+      <AutoScrollToTop />
       {routes}
       <ToastContainer position="top-right" style={{ top: "90px" }} autoClose={3500} theme="light" closeOnClick />
     </>

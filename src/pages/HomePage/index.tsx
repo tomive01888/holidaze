@@ -27,6 +27,7 @@ const HomePage = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const mainContentRef = useRef<HTMLElement>(null);
+  const firstVenueRef = useRef<HTMLLIElement | null>(null);
 
   useEffect(() => {
     setIsLoading(true);
@@ -76,6 +77,9 @@ const HomePage = () => {
         mainContent.focus();
         mainContent.scrollIntoView({ behavior: "smooth", block: "start" });
       }
+      if (firstVenueRef.current) {
+        firstVenueRef.current.focus();
+      }
     });
   }, [page, itemsPerPage, debouncedSearchTerm, fetchData]);
 
@@ -123,6 +127,7 @@ const HomePage = () => {
           itemsPerPage={itemsPerPage}
           onPageChange={handlePageChange}
           onItemsPerPageChange={handleItemsPerPageChange}
+          anchor="all-venues"
         />
 
         {searchTerm && venues.length === 0 ? (
@@ -146,7 +151,7 @@ const HomePage = () => {
         ) : (
           <>
             {/* Venue grid */}
-            <section aria-labelledby="venue-results-heading" className="my-6 min-h-1/2">
+            <section aria-labelledby="venue-results-heading" id="all-venues" className="my-6 min-h-1/2 scroll-m-52">
               <h2 id="venue-results-heading" className="sr-only">
                 {searchTerm ? `Search results for "${searchTerm}"` : "All venues"}
               </h2>
@@ -155,7 +160,11 @@ const HomePage = () => {
                 {Array.from({ length: venues.length || itemsPerPage }).map((_, index) => {
                   const venue = venues[index];
                   return (
-                    <li key={venue ? venue.id : `skeleton-${index}`}>
+                    <li
+                      key={venue ? venue.id : `skeleton-${index}`}
+                      ref={index === 0 ? firstVenueRef : null}
+                      tabIndex={-1}
+                    >
                       {venue ? <VenueCard venue={venue} /> : <VenueCardSkeleton />}
                     </li>
                   );
@@ -174,6 +183,7 @@ const HomePage = () => {
           itemsPerPage={itemsPerPage}
           onPageChange={handlePageChange}
           onItemsPerPageChange={handleItemsPerPageChange}
+          anchor="all-venues"
         />
       </ErrorBoundary>
     </div>

@@ -29,6 +29,7 @@ interface HomePaginationProps {
   itemsPerPage: number;
   onPageChange: (page: number) => void;
   onItemsPerPageChange: (value: number) => void;
+  anchor: string;
   uniqueId?: string;
 }
 
@@ -50,6 +51,7 @@ const HomePagination = ({
   onPageChange,
   onItemsPerPageChange,
   uniqueId = "",
+  anchor = "",
 }: HomePaginationProps) => {
   const [inputValue, setInputValue] = useState<string>("");
   const showPagination = !isLoading && hasItems;
@@ -119,7 +121,13 @@ const HomePagination = ({
     >
       {/* Prev button */}
       <button
-        onClick={() => goToPage(currentPage - 1)}
+        onClick={() => {
+          goToPage(currentPage - 1);
+          const anchorTag = document.getElementById(anchor);
+          if (anchorTag) {
+            anchorTag.scrollIntoView({ behavior: "smooth" });
+          }
+        }}
         aria-label="Go to previous page"
         disabled={currentPage === 1}
         className="p-2 rounded-lg bg-blue-500 hover:bg-blue-600 disabled:bg-neutral-300 disabled:opacity-50"
@@ -164,7 +172,13 @@ const HomePagination = ({
 
       {/* Next button */}
       <button
-        onClick={() => goToPage(currentPage + 1)}
+        onClick={() => {
+          goToPage(currentPage + 1);
+          const anchorTag = document.getElementById(anchor);
+          if (anchorTag) {
+            anchorTag.scrollIntoView({ behavior: "smooth" });
+          }
+        }}
         aria-label="Go to next page"
         disabled={currentPage === pageCount}
         className="p-2 rounded-lg bg-blue-500 hover:bg-blue-600 disabled:opacity-50"
