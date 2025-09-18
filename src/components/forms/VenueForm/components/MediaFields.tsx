@@ -18,9 +18,9 @@ export const MediaFields = () => {
 
   return (
     <fieldset className="p-4 border rounded-md">
-      <legend className="font-black px-2 text-lg">Images (up to 8)</legend>
+      <legend className="font-bold px-2 text-lg">Images (up to 8)</legend>
 
-      <p className="italic text-neutral-600">
+      <p className="italic text-neutral-600 border-dashed border-1 border-neutral-400 rounded p-2 bg-neutral-100">
         <strong>Tip:</strong> Adding images helps attract customers, just make sure they are valid!
       </p>
 
@@ -28,7 +28,11 @@ export const MediaFields = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
         <div>
           <label htmlFor="newImageUrl" className="block text-sm font-medium text-neutral-700">
-            Image URL*
+            Image URL
+            <span className="text-red-500" aria-hidden="true">
+              *
+            </span>
+            <span className="sr-only">(required)</span>
           </label>
           <input
             id="newImageUrl"

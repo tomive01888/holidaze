@@ -16,7 +16,7 @@ export const LocationFields = () => {
     <fieldset className="space-y-4 p-4 border rounded-md">
       <legend className="text-xl font-bold px-2 !m-0">Location</legend>
 
-      <p>
+      <p className="italic text-neutral-600 border-dashed border-1 border-neutral-400 rounded p-2 bg-neutral-100">
         <strong>Tip:</strong> Adding country and city helps others find your location.
       </p>
 

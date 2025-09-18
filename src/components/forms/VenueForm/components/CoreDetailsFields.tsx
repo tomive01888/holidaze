@@ -9,7 +9,7 @@ export const CoreDetailsFields = () => {
 
   return (
     <fieldset className="space-y-4 p-4 border rounded-md">
-      <legend className="font-black px-2 text-lg">Core Information</legend>
+      <legend className="font-bold px-2 text-lg">Core Information</legend>
       <div>
         <label htmlFor="name" className={labelClasses}>
           Venue Name
@@ -60,7 +60,11 @@ export const CoreDetailsFields = () => {
         </div>
         <div>
           <label htmlFor="maxGuests" className={labelClasses}>
-            Max Guests*
+            Max Guests{" "}
+            <span className="text-red-500" aria-hidden="true">
+              *
+            </span>
+            <span className="sr-only">(required)</span>
           </label>
           <input
             id="maxGuests"

@@ -9,8 +9,8 @@ const Layout = () => {
         href="#main-content"
         className="
           sr-only 
-          focus:not-sr-only focus:absolute focus:z-50 focus:top-4 focus:left-4 
-          focus:bg-white focus:text-black focus:px-4 focus:py-2 focus:rounded-md focus:shadow-lg
+          focus:not-sr-only focus:absolute focus:z-50 focus:top-4 focus:left-4 bg-white text-black
+           focus:px-4 focus:py-2 focus:rounded-md focus:shadow-lg
         "
       >
         Skip to main content

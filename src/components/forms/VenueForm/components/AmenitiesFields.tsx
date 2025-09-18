@@ -10,16 +10,16 @@ export const AmenitiesFields = () => {
   const { formData, handleCheckboxChange } = useVenueForm();
 
   const amenities = [
-    { key: "wifi", label: "WiFi" },
-    { key: "parking", label: "Parking" },
-    { key: "breakfast", label: "Breakfast" },
-    { key: "pets", label: "Pets Allowed" },
+    { key: "wifi", label: "Free WiFi Included" },
+    { key: "parking", label: "Free Parking" },
+    { key: "breakfast", label: "Breakfast Included" },
+    { key: "pets", label: "Pets Welcome" },
   ];
 
   return (
     <fieldset className="p-4 border rounded-md">
-      <legend className="font-black px-2 text-lg">Amenities</legend>
-      <p>
+      <legend className="font-bold px-2 text-lg">Amenities</legend>
+      <p className="italic text-neutral-600 border-dashed border-1 border-neutral-400 rounded p-2 bg-neutral-100">
         <strong>Tip:</strong> Checked boxes help let customers know what your venue has available!
       </p>
       <div className="space-y-3 mt-4">

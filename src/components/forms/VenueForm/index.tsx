@@ -161,7 +161,7 @@ const VenueForm: React.FC<VenueFormProps> = ({
       */}
       <VenueFormContext.Provider value={contextValue}>
         <form onSubmit={handleSubmit} className="space-y-8 text-black">
-          <h1 className="text-3xl font-bold text-center">{formTitle}</h1>
+          <h1 className="text-4xl font-bold text-center">{formTitle}</h1>
           <p className="w-full text-end mb-0">
             All marked with (
             <span className="text-red-500" aria-hidden="true">
