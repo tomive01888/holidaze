@@ -12,13 +12,21 @@ export const CoreDetailsFields = () => {
       <legend>Core Information</legend>
       <div>
         <label htmlFor="name" className={labelClasses}>
-          Venue Name*
+          Venue Name
+          <span className="text-red-500" aria-hidden="true">
+            *
+          </span>
+          <span className="sr-only">(required)</span>
         </label>
         <input id="name" name="name" value={formData.name} onChange={handleChange} required className={inputClasses} />
       </div>
       <div>
         <label htmlFor="description" className={labelClasses}>
-          Description*
+          Description
+          <span className="text-red-500" aria-hidden="true">
+            *
+          </span>
+          <span className="sr-only">(required)</span>
         </label>
         <textarea
           id="description"
@@ -29,16 +37,20 @@ export const CoreDetailsFields = () => {
           className={`min-h-[240px] ${inputClasses}`}
         />
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div>
           <label htmlFor="price" className={labelClasses}>
-            Price per night (USD)*
+            Price per night (USD)
+            <span className="text-red-500" aria-hidden="true">
+              *
+            </span>
+            <span className="sr-only">(required)</span>
           </label>
           <input
             id="price"
             name="price"
             type="number"
-            min="0"
+            min="1"
             max="10000"
             value={formData.price}
             onChange={handleChange}
@@ -59,6 +71,22 @@ export const CoreDetailsFields = () => {
             value={formData.maxGuests}
             onChange={handleChange}
             required
+            className={inputClasses}
+          />
+        </div>
+        <div>
+          <label htmlFor="rating" className={labelClasses}>
+            Rating
+          </label>
+          <input
+            id="rating"
+            name="rating"
+            type="number"
+            step="0.1"
+            min="0"
+            max="5"
+            value={formData.rating}
+            onChange={handleChange}
             className={inputClasses}
           />
         </div>

@@ -7,6 +7,7 @@ import { AmenitiesFields } from "./components/AmenitiesFields";
 import { LocationFields } from "./components/LocationFields";
 import Button from "../../ui/Button";
 import { toast } from "react-toastify";
+import DOMPurify from "dompurify";
 
 interface VenueFormProps {
   initialData?: VenueFormData;
@@ -33,7 +34,7 @@ const VenueForm: React.FC<VenueFormProps> = ({
       name: "",
       description: "",
       media: [],
-      price: 0,
+      price: 1,
       maxGuests: 1,
       rating: 0,
       meta: { wifi: false, parking: false, breakfast: false, pets: false },
@@ -97,9 +98,13 @@ const VenueForm: React.FC<VenueFormProps> = ({
   };
 
   const handleSubmit = (e: React.FormEvent) => {
+    const sanitizedName = DOMPurify.sanitize(formData.name);
+    const sanitizedDescription = DOMPurify.sanitize(formData.description);
     e.preventDefault();
     const payload: VenueFormData = {
       ...formData,
+      name: sanitizedName,
+      description: sanitizedDescription,
       media: formData.media.filter((item) => item.url.trim() !== ""),
       price: Number(formData.price),
       maxGuests: Number(formData.maxGuests),
@@ -135,6 +140,13 @@ const VenueForm: React.FC<VenueFormProps> = ({
       <VenueFormContext.Provider value={contextValue}>
         <form onSubmit={handleSubmit} className="space-y-8 text-black">
           <h2 className="text-3xl font-bold text-center">{formTitle}</h2>
+          <p className="w-full text-end mb-0">
+            All marked with (
+            <span className="text-red-500" aria-hidden="true">
+              *
+            </span>
+            ) is required
+          </p>
 
           <CoreDetailsFields />
           <MediaFields />
