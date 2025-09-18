@@ -69,7 +69,7 @@ const BecomeManagerPrompt: React.FC<BecomeManagerPromptProps> = ({ onUpgradeSucc
       </div>
 
       {isModalOpen && (
-        <Modal onClose={() => setIsModalOpen(false)}>
+        <Modal onClose={() => setIsModalOpen(false)} modalTitle="Holidaze | Become a venue manager">
           <h2 className="text-3xl font-bold">Confirm Your Account Upgrade</h2>
           <p className="my-4 text-neutral-800">
             You are about to upgrade your account to a Venue Manager. This will grant you access to the venue management

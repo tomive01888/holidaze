@@ -62,7 +62,7 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({ profile, onClose, o
   };
 
   return (
-    <Modal onClose={onClose}>
+    <Modal onClose={onClose} modalTitle={`Holidaze | Editing ${profile.name} avatar and banner`}>
       <h2 className="text-3xl font-bold mb-6">Edit Your Profile</h2>
       <div className="grid grid-cols-1 gap-8">
         {/* --- Top Side: Form Inputs --- */}
