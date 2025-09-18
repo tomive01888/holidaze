@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useAuth } from "../../../hooks/useAuth";
 import type { FullUserProfile } from "../../../types";
 import Button from "../../../components/ui/Button";
@@ -48,7 +48,18 @@ interface ProfileHeaderProps {
 const ProfileHeader: React.FC<ProfileHeaderProps> = ({ profile, onProfileUpdate }) => {
   const { user } = useAuth();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [renderOpacity, setRenderOpacity] = useState(false);
   const isOwnProfile = user?.name === profile.name;
+
+  useEffect(() => {
+    setRenderOpacity(true);
+
+    const timer = setTimeout(() => {
+      setRenderOpacity(false);
+    }, 50);
+
+    return () => clearTimeout(timer);
+  }, [profile.banner?.url, profile.avatar?.url]);
 
   return (
     <>
@@ -56,7 +67,9 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({ profile, onProfileUpdate 
       <div className="relative h-64 md:h-96 w-full bg-neutral-200">
         {/* Banner image as background */}
         <div
-          className="absolute inset-0"
+          className={`absolute inset-0 bg-neutral-800 transition-opacity duration-2000 ${
+            renderOpacity ? "opacity-0 animate-pulse" : "opacity-100"
+          }`}
           style={{
             backgroundImage: `url(${profile.banner?.url || ""})`,
             backgroundSize: "cover",
@@ -70,7 +83,9 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({ profile, onProfileUpdate 
             <img
               src={profile.avatar?.url}
               alt={`${profile.name}'s avatar`}
-              className="w-32 h-32 rounded-full object-cover border-4 border-white shadow-lg"
+              className={`w-32 h-32 rounded-full object-cover border-4 border-white shadow-lg bg-neutral-600 transition-opacity duration-1000 ${
+                renderOpacity ? "opacity-0 animate-pulse" : "opacity-100"
+              }`}
             />
             <h1 className="text-4xl font-bold mt-4 drop-shadow-md">{profile.name}</h1>
             <p className="text-lg drop-shadow-md">{profile.email}</p>
