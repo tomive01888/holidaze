@@ -122,7 +122,7 @@ const VenueManagementCard: React.FC<VenueManagementCardProps> = ({ venue }) => {
 
       {/* --- Delete Confirmation Modal --- */}
       {isDeleteModalOpen && (
-        <Modal onClose={() => setIsDeleteModalOpen(false)}>
+        <Modal onClose={() => setIsDeleteModalOpen(false)} modalTitle={`Holidaze | Confirm deletion of ${venue.name}`}>
           <h2 className="text-2xl font-bold">Delete "{venue.name}"?</h2>
           <p className="my-4">
             Are you sure you want to delete this venue? This action is permanent and cannot be undone.
