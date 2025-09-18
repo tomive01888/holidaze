@@ -115,7 +115,17 @@ const VenueForm: React.FC<VenueFormProps> = ({
         lng: Number(formData.location.lng || 0),
       },
     };
-    onSubmit(payload);
+    const sanitizedMedia = formData.media.map((item) => ({
+      ...item,
+      alt: DOMPurify.sanitize(item.alt),
+    }));
+
+    const finalPayload = {
+      ...payload,
+      media: sanitizedMedia,
+    };
+
+    onSubmit(finalPayload);
   };
 
   const contextValue: VenueFormContextType = {
