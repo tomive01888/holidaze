@@ -8,13 +8,17 @@ import { useVenueForm } from "../VenueFormContext";
 export const LocationFields = () => {
   const { formData, handleChange } = useVenueForm();
 
-  const labelClasses = "block text-sm font-medium text-neutral-700";
+  const labelClasses = "block font-medium text-neutral-700";
   const inputClasses =
     "mt-1 block w-full px-3 py-2 border border-neutral-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500";
 
   return (
     <fieldset className="space-y-4 p-4 border rounded-md">
-      <legend className="text-xl font-bold px-2">Location</legend>
+      <legend className="text-xl font-bold px-2 !m-0">Location</legend>
+
+      <p>
+        <strong>Tip:</strong> Adding country and city helps others find your location.
+      </p>
 
       <div>
         <label htmlFor="location.address" className={labelClasses}>

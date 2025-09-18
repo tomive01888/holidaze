@@ -2,7 +2,9 @@
 @import "tailwindcss";
 
 @layer base {
-  body {
+
+  body,
+  legend className="font-black px-2 text-lg" className="font-black px-2 text-lg" {
     font-family: "Josefin Slab", serif;
     font-style: normal;
   }

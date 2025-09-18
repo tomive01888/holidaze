@@ -98,8 +98,15 @@ const VenueForm: React.FC<VenueFormProps> = ({
   };
 
   const handleSubmit = (e: React.FormEvent) => {
-    const sanitizedName = DOMPurify.sanitize(formData.name);
-    const sanitizedDescription = DOMPurify.sanitize(formData.description);
+    /** Sanitize string inputs */
+    const sanitizedName = DOMPurify.sanitize(formData.name ?? "");
+    const sanitizedDescription = DOMPurify.sanitize(formData.description ?? "");
+    const sanitizedLocationAddress = DOMPurify.sanitize(formData.location.address ?? "");
+    const sanitizedLocationCity = DOMPurify.sanitize(formData.location.city ?? "");
+    const sanitizedLocationZip = DOMPurify.sanitize(formData.location.zip ?? "");
+    const sanitizedLocationCountry = DOMPurify.sanitize(formData.location.country ?? "");
+    const sanitizedLocationContinent = DOMPurify.sanitize(formData.location.continent ?? "");
+
     e.preventDefault();
     const payload: VenueFormData = {
       ...formData,
@@ -111,6 +118,11 @@ const VenueForm: React.FC<VenueFormProps> = ({
       rating: Number(formData.rating || 0),
       location: {
         ...formData.location,
+        address: sanitizedLocationAddress,
+        city: sanitizedLocationCity,
+        zip: sanitizedLocationZip,
+        country: sanitizedLocationCountry,
+        continent: sanitizedLocationContinent,
         lat: Number(formData.location.lat || 0),
         lng: Number(formData.location.lng || 0),
       },
@@ -149,7 +161,7 @@ const VenueForm: React.FC<VenueFormProps> = ({
       */}
       <VenueFormContext.Provider value={contextValue}>
         <form onSubmit={handleSubmit} className="space-y-8 text-black">
-          <h2 className="text-3xl font-bold text-center">{formTitle}</h2>
+          <h1 className="text-3xl font-bold text-center">{formTitle}</h1>
           <p className="w-full text-end mb-0">
             All marked with (
             <span className="text-red-500" aria-hidden="true">

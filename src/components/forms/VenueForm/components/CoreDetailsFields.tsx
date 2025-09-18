@@ -3,13 +3,13 @@ import { useVenueForm } from "../VenueFormContext";
 export const CoreDetailsFields = () => {
   const { formData, handleChange } = useVenueForm();
 
-  const labelClasses = "block text-sm font-medium text-neutral-700";
+  const labelClasses = "block font-medium text-neutral-700";
   const inputClasses =
     "mt-1 block w-full px-3 py-2 border border-neutral-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500";
 
   return (
     <fieldset className="space-y-4 p-4 border rounded-md">
-      <legend>Core Information</legend>
+      <legend className="font-black px-2 text-lg">Core Information</legend>
       <div>
         <label htmlFor="name" className={labelClasses}>
           Venue Name

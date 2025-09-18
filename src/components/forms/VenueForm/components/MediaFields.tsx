@@ -18,7 +18,11 @@ export const MediaFields = () => {
 
   return (
     <fieldset className="p-4 border rounded-md">
-      <legend className="text-xl font-bold px-2">Images (up to 8)</legend>
+      <legend className="font-black px-2 text-lg">Images (up to 8)</legend>
+
+      <p className="italic text-neutral-600">
+        <strong>Tip:</strong> Adding images helps attract customers, just make sure they are valid!
+      </p>
 
       {/* Input fields and upload button container */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
