@@ -55,7 +55,7 @@ const MyVenues: React.FC<MyVenuesProps> = ({ venues }) => {
       {/* Display list of venues or empty state */}
       {venues.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          <h2 className="text-3xl font-bold text-neutral-100 col-span-3">Venues you own</h2>
+          <h2 className="text-3xl font-bold text-neutral-100 col-span-full">Venues you own</h2>
 
           {/* Render a card for each venue */}
           {venues.map((venue) => (
