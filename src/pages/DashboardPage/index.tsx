@@ -11,6 +11,21 @@ import MyVenues from "./components/MyVenues";
 
 type DashboardTab = "venues" | "bookings";
 
+/**
+ * DashboardPage component
+ *
+ * Displays the user's dashboard including their profile, bookings, and (if they are a venue manager)
+ * their venues. Handles fetching profile data from the API, switching between "Bookings" and "Venues"
+ * tabs, and refreshing data after profile updates.
+ *
+ * Features:
+ * - Dynamically sets the page title with the user's name.
+ * - Fetches profile data (bookings, venues if applicable).
+ * - Shows loading spinner while fetching data.
+ * - Handles and displays API errors.
+ * - Allows the user to toggle between "Bookings" and "Venues" tabs if they are a venue manager.
+ * - Displays "Become a Manager" prompt for non-venue managers.
+ */
 const DashboardPage = () => {
   const { user, updateUser } = useAuth();
   const [profileData, setProfileData] = useState<FullUserProfile | null>(null);
@@ -19,12 +34,19 @@ const DashboardPage = () => {
   const [refetchTrigger, setRefetchTrigger] = useState(0);
   const [activeTab, setActiveTab] = useState<DashboardTab>("bookings");
 
+  /**
+   * Side effect: Updates document title whenever the user changes.
+   */
   useEffect(() => {
     if (user) {
       document.title = `Holidaze | Dashboard for ${user.name}`;
     }
   }, [user]);
 
+  /**
+   * Fetches the user's profile data including bookings (and venues if user is a manager).
+   * Uses `apiClient` to call the API and handles loading & error states.
+   */
   const fetchProfile = useCallback(async () => {
     if (!user?.name) {
       setIsLoading(false);
@@ -46,10 +68,20 @@ const DashboardPage = () => {
     }
   }, [user]);
 
+  /**
+   * Effect: Runs `fetchProfile` whenever the component mounts,
+   * the logged-in user changes, or `refetchTrigger` increments.
+   */
   useEffect(() => {
     fetchProfile();
   }, [fetchProfile, refetchTrigger]);
 
+  /**
+   * Handles profile updates (e.g., avatar changes or role upgrades).
+   * Updates the user context and triggers a re-fetch of profile data.
+   *
+   * @param updatedProfile - The updated profile object returned from the API.
+   */
   const handleProfileUpdate = (updatedProfile: FullUserProfile) => {
     if (user) {
       updateUser({ ...user, avatar: updatedProfile.avatar });
@@ -72,11 +104,12 @@ const DashboardPage = () => {
   if (!profileData) {
     return <div className="text-center py-20">Could not load your profile. Please try logging in again.</div>;
   }
+
   return (
     <>
       <ProfileHeader profile={profileData} onProfileUpdate={handleProfileUpdate} />
       <div className="container mx-auto p-4 md:p-8">
-        {/* --- THE TAB NAVIGATION (Only for Venue Managers) --- */}
+        {/* --- TAB NAVIGATION (Only for Venue Managers) --- */}
         {profileData.venueManager && (
           <div className="border-b border-neutral-200 mb-8">
             <nav className="flex space-x-6">
@@ -108,7 +141,7 @@ const DashboardPage = () => {
           </div>
         )}
 
-        {/* --- THE TAB CONTENT --- */}
+        {/* --- TAB CONTENT --- */}
         <div>
           {profileData.venueManager ? (
             <>
