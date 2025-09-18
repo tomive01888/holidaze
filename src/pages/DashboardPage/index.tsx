@@ -8,6 +8,7 @@ import ProfileHeader from "./components/ProfileHeader";
 import MyBookings from "./components/MyBookings";
 import BecomeManagerPrompt from "./components/BecomeManagerPrompt";
 import MyVenues from "./components/MyVenues";
+import { PageTitle } from "../../components/ui/PageTitle";
 
 type DashboardTab = "venues" | "bookings";
 
@@ -33,15 +34,6 @@ const DashboardPage = () => {
   const [error, setError] = useState<string | null>(null);
   const [refetchTrigger, setRefetchTrigger] = useState(0);
   const [activeTab, setActiveTab] = useState<DashboardTab>("bookings");
-
-  /**
-   * Side effect: Updates document title whenever the user changes.
-   */
-  useEffect(() => {
-    if (user) {
-      document.title = `Holidaze | Dashboard for ${user.name}`;
-    }
-  }, [user]);
 
   /**
    * Fetches the user's profile data including bookings (and venues if user is a manager).
@@ -107,6 +99,8 @@ const DashboardPage = () => {
 
   return (
     <>
+      <PageTitle title={`Holidaze | ${user?.venueManager ? "VenueManager" : "Customer"} ${user?.name} `} />
+
       <ProfileHeader profile={profileData} onProfileUpdate={handleProfileUpdate} />
       <div className="container mx-auto p-4 md:p-8">
         {/* --- TAB NAVIGATION (Only for Venue Managers) --- */}

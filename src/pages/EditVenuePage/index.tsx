@@ -8,6 +8,7 @@ import Spinner from "../../components/ui/Spinner";
 import Button from "../../components/ui/Button";
 import { toast } from "react-toastify";
 import VenueForm from "../../components/forms/VenueForm";
+import { PageTitle } from "../../components/ui/PageTitle";
 
 const EditVenuePage = () => {
   const { id } = useParams<{ id: string }>();
@@ -77,6 +78,8 @@ const EditVenuePage = () => {
 
   return (
     <div className="max-w-4xl mx-auto py-16">
+      <PageTitle title={`Holidaze | Editing ${initialData?.name}`} />
+
       <VenueForm
         initialData={initialData!}
         onSubmit={handleUpdate}

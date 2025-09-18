@@ -7,6 +7,7 @@ import { apiClient, ApiError } from "../../api/apiClient";
 import Button from "../../components/ui/Button";
 import { endpoints } from "../../constants/endpoints";
 import { Check } from "lucide-react";
+import { PageTitle } from "../../components/ui/PageTitle";
 
 type RegisterRole = "customer" | "manager";
 
@@ -82,6 +83,7 @@ const RegisterPage = () => {
 
   return (
     <div className="container mx-auto max-w-2xl mt-10 text-black">
+      <PageTitle title="Holidaze | Register page" />
       <div className="bg-white p-8 rounded-lg shadow-md">
         <h1 className="text-3xl font-bold text-center mb-4">Create Your Account</h1>
 

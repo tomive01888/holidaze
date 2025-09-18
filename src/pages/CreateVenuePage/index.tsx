@@ -5,6 +5,7 @@ import { endpoints } from "../../constants/endpoints";
 import type { Venue, VenueFormData } from "../../types";
 import VenueForm from "../../components/forms/VenueForm";
 import { toast } from "react-toastify";
+import { PageTitle } from "../../components/ui/PageTitle";
 
 const CreateVenuePage = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -33,6 +34,8 @@ const CreateVenuePage = () => {
 
   return (
     <div className="max-w-4xl mx-auto py-16">
+      <PageTitle title={`Holidaze | Creating new venue`} />
+
       <VenueForm
         onSubmit={handleCreate}
         isLoading={isLoading}

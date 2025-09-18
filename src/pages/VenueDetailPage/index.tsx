@@ -7,18 +7,13 @@ import NotFoundPage from "../NotFoundPage";
 import Button from "../../components/ui/Button";
 import ShareButton from "./components/ShareButton";
 import Spinner from "../../components/ui/Spinner";
+import { PageTitle } from "../../components/ui/PageTitle";
 
 const VenueDetailPage = () => {
   const { id } = useParams<{ id: string }>();
   const [venue, setVenue] = useState<FullVenue | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<ApiError | Error | null>(null);
-
-  useEffect(() => {
-    if (venue) {
-      document.title = `Holidaze | ${venue.name}`;
-    }
-  }, [venue]);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -71,6 +66,8 @@ const VenueDetailPage = () => {
 
   return (
     <div className="py-16">
+      <PageTitle title={`Holidaze | ${venue.name}`} />
+
       <div className="flex flex-col md:flex-row gap-6 justify-between items-start mb-6 text-white">
         <div>
           <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-neutral-100">
