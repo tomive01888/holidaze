@@ -90,7 +90,7 @@ const Header = () => {
 
       {/* --- Login Modal --- */}
       {isLoginModalOpen && (
-        <Modal onClose={closeLoginModal}>
+        <Modal onClose={closeLoginModal} modalTitle="Holidaze | Login form">
           <LoginForm onSuccess={handleLoginSuccess} />
         </Modal>
       )}

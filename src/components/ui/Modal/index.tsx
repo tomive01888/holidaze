@@ -20,6 +20,11 @@ export interface ModalProps {
    * This will be connected via aria-describedby.
    */
   description?: string;
+  /**
+   * Optional document title to set while the modal is open.
+   * When the modal closes, the original title will be restored.
+   */
+  modalTitle?: string;
 }
 
 /**
@@ -29,19 +34,30 @@ export interface ModalProps {
  * - Focus trap (keyboard users cannot tab outside)
  * - Escape key to close
  * - ARIA roles and labels for screen readers
+ * - Optional temporary document title while open
  * - Restores focus to previously focused element on close
  *
  * @param {ModalProps} props - Props for the modal component.
  * @returns {React.ReactPortal} A portal rendering the modal content.
  */
-const Modal: FC<ModalProps> = ({ children, onClose, className = "", description }) => {
+const Modal: FC<ModalProps> = ({ children, onClose, className = "", description, modalTitle }) => {
   const titleId = useId();
   const descId = useId();
   const modalRef = useRef<HTMLDivElement>(null);
 
-  /**
-   * Effect: Handle Escape key to close modal.
-   */
+  // --- Dynamic Document Title ---
+  useEffect(() => {
+    if (!modalTitle) return;
+
+    const originalTitle = document.title;
+    document.title = modalTitle;
+
+    return () => {
+      document.title = originalTitle;
+    };
+  }, [modalTitle]);
+
+  // --- Escape Key to Close ---
   useEffect(() => {
     const handleEsc = (event: KeyboardEvent) => {
       if (event.key === "Escape") onClose();
@@ -50,9 +66,7 @@ const Modal: FC<ModalProps> = ({ children, onClose, className = "", description 
     return () => window.removeEventListener("keydown", handleEsc);
   }, [onClose]);
 
-  /**
-   * Effect: Focus trap within modal and restore focus on unmount.
-   */
+  // --- Focus Trap & Restore Focus ---
   useEffect(() => {
     const modal = modalRef.current;
     if (!modal) return;
@@ -81,6 +95,7 @@ const Modal: FC<ModalProps> = ({ children, onClose, className = "", description 
     };
   }, []);
 
+  // --- Lock Scroll & ARIA Hidden ---
   useEffect(() => {
     const originalOverflow = document.body.style.overflow;
     const appRoot = document.getElementById("root");
