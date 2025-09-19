@@ -6,7 +6,6 @@ import { useVenueForm } from "../VenueFormContext";
  * handler function for checkbox changes.
  */
 export const AmenitiesFields = () => {
-  // Get the necessary state and function from our custom context hook.
   const { formData, handleCheckboxChange } = useVenueForm();
 
   const amenities = [

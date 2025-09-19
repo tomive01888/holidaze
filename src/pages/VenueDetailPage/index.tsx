@@ -68,7 +68,7 @@ const VenueDetailPage = () => {
   }
 
   return (
-    <div className="py-16">
+    <div className="py-16 bg-black/0">
       <PageTitle title={`Holidaze | ${venue.name}`} />
       <div className="flex flex-col md:flex-row gap-6 justify-between items-start mb-6 text-white">
         <div>

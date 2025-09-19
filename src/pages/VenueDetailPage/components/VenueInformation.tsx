@@ -4,12 +4,41 @@ import { formatCurrency } from "../../../utils/currencyUtils";
 import { Star, User } from "lucide-react";
 
 interface VenueInformationProps {
+  /**
+   * The full venue object containing details such as price, rating, and guest capacity.
+   */
   venue: FullVenue;
 }
 
 /**
- * A component that displays key summary information about a venue,
- * such as price, rating, and guest capacity, in an accessible format.
+ * Displays key details about a venue, including:
+ * - **Price per night** (formatted as a localized currency string)
+ * - **Average rating** (with a star icon if available)
+ * - **Maximum guest capacity** (with a guest icon)
+ *
+ * This component is designed with semantic HTML and ARIA attributes to improve accessibility.
+ *
+ * @component
+ * @example
+ * ```tsx
+ * import type { FullVenue } from "../../../types";
+ *
+ * const mockVenue: FullVenue = {
+ *   id: "123",
+ *   name: "Cozy Mountain Cabin",
+ *   price: 120,
+ *   rating: 4.5,
+ *   maxGuests: 6,
+ *   // ...other FullVenue fields
+ * };
+ *
+ * <VenueInformation venue={mockVenue} />
+ * ```
+ *
+ * @param {VenueInformationProps} props - Props for the VenueInformation component.
+ * @param {FullVenue} props.venue - The venue data object containing price, rating, and guest capacity.
+ *
+ * @returns {JSX.Element} A styled section containing venue details, formatted for readability and accessibility.
  */
 const VenueInformation: React.FC<VenueInformationProps> = ({ venue }) => {
   return (
@@ -17,9 +46,11 @@ const VenueInformation: React.FC<VenueInformationProps> = ({ venue }) => {
       className="p-6 border rounded-lg bg-white shadow-md text-black"
       aria-labelledby="venue-information-heading"
     >
-      <h3 id="venue-information-heading" className="text-2xl font-bold mb-4">
+      <h2 id="venue-information-heading" className="text-2xl font-bold mb-4">
         Venue Details
-      </h3>
+      </h2>
+
+      {/* Definition list for semantic grouping of venue details */}
       <dl className="grid grid-cols-3 gap-4 text-center">
         {/* --- Price --- */}
         <div className="flex flex-col items-center">
