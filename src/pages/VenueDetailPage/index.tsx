@@ -9,6 +9,8 @@ import ShareButton from "./components/ShareButton";
 import Spinner from "../../components/ui/Spinner";
 import { PageTitle } from "../../components/ui/PageTitle";
 import VenueFooter from "./components/VenueFooter";
+import VenueInformation from "./components/VenueInformation";
+// import Amenities from "./components/Amenities";
 
 const VenueDetailPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -68,7 +70,6 @@ const VenueDetailPage = () => {
   return (
     <div className="py-16">
       <PageTitle title={`Holidaze | ${venue.name}`} />
-
       <div className="flex flex-col md:flex-row gap-6 justify-between items-start mb-6 text-white">
         <div>
           <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-neutral-100">
@@ -82,10 +83,32 @@ const VenueDetailPage = () => {
         </div>
         <ShareButton />
       </div>
+      <div className="mt-6 grid grid-cols-1 lg:grid-cols-5 gap-y-8 lg:gap-x-8">
+        <div className="lg:col-span-3 space-y-12">
+          Image gallery coming soon!
+          <div className="min-h-[50vh] bg-black/30 animate-pulse rounded-2xl border-2 border-black" />
+        </div>
 
-      <div>
-        Venue information, booking, description and host cooming soon!
-        <VenueFooter venue={venue} />
+        <div className="lg:col-start-4 lg:col-span-2 lg:row-start-1 row-span-2 top-24">
+          {" "}
+          booking coming soon!{" "}
+          <div className="min-h-[50vh] bg-black/30 animate-pulse rounded-2xl border-2 border-black sticky top-24" />
+        </div>
+
+        <div className="lg:row-start-2 lg:col-span-3 space-y-12">
+          <VenueInformation venue={venue} />
+          <section className="bg-none bg-transparent">
+            <h2 className="text-3xl font-bold border-b pb-3 mb-6 bg-transparent">Amenities</h2>
+            {/* <Amenities meta={venue.meta} /> */}
+          </section>
+          <section>
+            <h2 className="text-3xl font-bold border-b pb-3 mb-4">About this venue</h2>
+            <div className="text-lg max-w-none text-neutral-100 break-words">
+              <p>{venue.description ? venue.description : "This venue has no description."}</p>
+            </div>
+          </section>
+          <VenueFooter venue={venue} />
+        </div>
       </div>
     </div>
   );
