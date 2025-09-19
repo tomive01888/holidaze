@@ -8,6 +8,7 @@ import Button from "../../components/ui/Button";
 import ShareButton from "./components/ShareButton";
 import Spinner from "../../components/ui/Spinner";
 import { PageTitle } from "../../components/ui/PageTitle";
+import VenueFooter from "./components/VenueFooter";
 
 const VenueDetailPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -82,7 +83,10 @@ const VenueDetailPage = () => {
         <ShareButton />
       </div>
 
-      <div>Venue information, booking, description and host cooming soon!</div>
+      <div>
+        Venue information, booking, description and host cooming soon!
+        <VenueFooter venue={venue} />
+      </div>
     </div>
   );
 };
