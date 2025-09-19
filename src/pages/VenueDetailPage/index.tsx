@@ -10,7 +10,7 @@ import Spinner from "../../components/ui/Spinner";
 import { PageTitle } from "../../components/ui/PageTitle";
 import VenueFooter from "./components/VenueFooter";
 import VenueInformation from "./components/VenueInformation";
-// import Amenities from "./components/Amenities";
+import Amenities from "./components/Amenities";
 
 const VenueDetailPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -99,7 +99,7 @@ const VenueDetailPage = () => {
           <VenueInformation venue={venue} />
           <section className="bg-none bg-transparent">
             <h2 className="text-3xl font-bold border-b pb-3 mb-6 bg-transparent">Amenities</h2>
-            {/* <Amenities meta={venue.meta} /> */}
+            <Amenities meta={venue.meta} />
           </section>
           <section>
             <h2 className="text-3xl font-bold border-b pb-3 mb-4">About this venue</h2>
