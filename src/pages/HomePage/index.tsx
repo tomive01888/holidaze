@@ -11,6 +11,7 @@ import HomePagination from "./components/HomePagination";
 import { endpoints } from "../../constants/endpoints";
 import Button from "../../components/ui/Button";
 import { PageTitle } from "../../components/ui/PageTitle";
+import CrashingComponent from "../../components/ui/CrashComponent";
 
 const DEFAULT_ITEMS_PER_PAGE = 12;
 
@@ -175,13 +176,13 @@ const HomePage = () => {
       <PageTitle title={"Holidaze | Homepage"} />
 
       <ErrorBoundary>
+        <CrashingComponent />
         <section aria-labelledby="page-heading" className="text-center mb-8">
           <h1 id="page-heading" className="text-5xl ...">
             Find your perfect stay
           </h1>
           <SearchBar searchTerm={searchTerm} setSearchTerm={handleSearchChange} />
         </section>
-
         <section ref={mainContentRef} id="all-venues" className="my-6 scroll-mt-24">
           <h2 id="venue-results-heading" className="sr-only">
             Venues
