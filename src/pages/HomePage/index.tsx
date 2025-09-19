@@ -64,7 +64,7 @@ const HomePage = () => {
 
       const response = await apiClient.get<VenuesApiResponse>(endpointUrl, { signal });
 
-      if (signal.aborted) return; 
+      if (signal.aborted) return;
       if (!Array.isArray(response.data)) throw new Error("Invalid data from server");
 
       setVenues(response.data);
@@ -171,7 +171,7 @@ const HomePage = () => {
   };
 
   return (
-    <div className="py-8">
+    <div className="py-8 bg-black/0">
       <PageTitle title={"Holidaze | Homepage"} />
 
       <ErrorBoundary>

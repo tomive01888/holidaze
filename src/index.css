@@ -2,9 +2,8 @@
 @import "tailwindcss";
 
 @layer base {
-
   body,
-  legend className="font-black px-2 text-lg" className="font-black px-2 text-lg" {
+  legend {
     font-family: "Josefin Slab", serif;
     font-style: normal;
   }
@@ -17,6 +16,7 @@
     width: 105vw;
     height: 120vh;
     z-index: -1;
+    background-color: black;
     background: #2a7b9b;
     background: linear-gradient(45deg, #0f766e 12%, #1f2d2e 44%, #000000 70%);
     background-size: cover;
