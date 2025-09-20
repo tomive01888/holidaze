@@ -4,7 +4,6 @@ import BookingCard from "./BookingsCard";
 import { sortBookingsByDate } from "../../../utils/dateUtils";
 import type { ProfileBooking } from "../../../types";
 import { motion } from "motion/react";
-import { li } from "motion/react-client";
 
 /**
  * Props for the {@link MyBookings} component.
