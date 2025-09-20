@@ -31,6 +31,8 @@ const VenueDetailPage = () => {
     try {
       const endpoint = `${endpoints.venues.byId(id)}?_owner=true&_bookings=true`;
       const response = await apiClient.get<SingleVenueApiResponse>(endpoint);
+      console.log(response.data);
+
       setVenue(response.data);
     } catch (err) {
       setError(err as ApiError | Error);

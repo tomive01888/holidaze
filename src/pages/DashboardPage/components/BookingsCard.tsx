@@ -1,6 +1,5 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { truncateText } from "../../../utils/stringUtils";
 import { formatDate } from "../../../utils/dateUtils";
 import type { ProfileBooking } from "../../../types";
 
@@ -19,39 +18,41 @@ interface BookingCardProps {
  */
 const BookingCard: React.FC<BookingCardProps> = ({ booking }) => {
   return (
-    <div className="flex flex-col md:flex-row  items-center gap-4 p-4 bg-white border rounded-lg shadow-sm">
+    <div className="flex flex-col md:flex-row items-start justify-start gap-4 p-4 bg-white border rounded-lg shadow-sm min-h-60">
       <img
+        loading="lazy"
         src={booking.venue.media[0]?.url || "https://via.placeholder.com/400x300"}
         alt={`view of ${booking.venue.name}`}
-        className="h-48 aspect-square object-cover rounded-md"
+        className="h-48 aspect-square object-cover rounded-md bg-black/80"
       />
-      <div className="flex-grow flex flex-col text-black">
-        <div>
-          <h3 className="text-xl font-bold">
-            <Link
-              to={`/venue/${booking.venue.id}`}
-              className="hover:underline hover:text-blue-500 focus:text-blue-500 focus:underline"
-            >
-              {booking.venue.name}
-            </Link>
-          </h3>
-          <p className="text-neutral-500 text-md mt-1">
-            {booking.venue.location.city}, {booking.venue.location.country}
-          </p>
-        </div>
-        <div className="mt-4 pt-4 border-t flex-grow flex flex-col justify-end">
-          <div className="space-y-1 text-md">
-            <p>
-              <strong>Check-in:</strong> {formatDate(booking.dateFrom)}
-            </p>
-            <p>
-              <strong>Check-out:</strong> {formatDate(booking.dateTo)}
-            </p>
-            <p>
-              <strong>Guests:</strong> {booking.guests}
-            </p>
-          </div>
-        </div>
+      <div className="flex-grow flex flex-col gap-1 text-black">
+        <h3 className="text-2xl font-bold text-pretty">
+          <Link
+            to={`/venue/${booking.venue.id}`}
+            className="hover:underline hover:text-blue-500 focus:text-blue-500 focus:underline"
+          >
+            {booking.venue.name}
+          </Link>
+        </h3>
+        <p className="text-neutral-500 text-md mt-1">
+          {booking.venue.location?.city !== null ? (
+            <span>
+              {booking.venue.location.city}, {booking.venue.location.country}
+            </span>
+          ) : (
+            "Not stated"
+          )}
+        </p>
+        <div className="h-0.5 w-full border-t-1 border-t-black mt-2 pb-2" />
+        <p>
+          <strong>Check-in:</strong> {formatDate(booking.dateFrom)}
+        </p>
+        <p>
+          <strong>Check-out:</strong> {formatDate(booking.dateTo)}
+        </p>
+        <p>
+          <strong>Guests:</strong> {booking.guests}
+        </p>
       </div>
     </div>
   );

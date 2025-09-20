@@ -83,9 +83,10 @@ const VenueManagementCard: React.FC<VenueManagementCardProps> = ({ venue }) => {
         <div className="relative group">
           <div>
             <img
+              loading="lazy"
               src={venue.media[0]?.url || "https://placehold.co/600x400/e2e8f0/475569?text=No+Image"}
               alt={`view of ${venue.name}`}
-              className="w-full h-56 object-cover transition-transform duration-300"
+              className="w-full h-56 object-cover transition-transform duration-300 bg-black/80"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
             <h3 className="absolute bottom-4 left-4 text-xl font-bold text-white truncate max-w-full pr-4">

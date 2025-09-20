@@ -191,8 +191,8 @@ const HomePage = () => {
 
       <ErrorBoundary>
         <CrashingComponent />
-        <section aria-labelledby="page-heading" className="text-center mb-8">
-          <h1 id="page-heading" className="text-5xl ...">
+        <section aria-labelledby="page-heading" className="mb-8">
+          <h1 id="page-heading" className="text-5xl py-6 text-center">
             Find your perfect stay
           </h1>
           <SearchBar searchTerm={searchTerm} setSearchTerm={handleSearchChange} />

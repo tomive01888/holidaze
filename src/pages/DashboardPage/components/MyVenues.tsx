@@ -61,8 +61,13 @@ const MyVenues: React.FC<MyVenuesProps> = ({ venues }) => {
           {/* Render a card for each venue */}
           <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {venues.map((venue) => (
-              <motion.li initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ duration: 1 }}>
-                <VenueManagementCard key={venue.id} venue={venue} />
+              <motion.li
+                key={venue.id}
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                transition={{ duration: 1 }}
+              >
+                <VenueManagementCard venue={venue} />
               </motion.li>
             ))}
           </ul>
