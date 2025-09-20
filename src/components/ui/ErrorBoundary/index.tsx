@@ -43,19 +43,23 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
   public render() {
     if (this.state.hasError) {
       return (
-        <div className="flex flex-col items-center justify-top h-screen text-white text-center p-4">
-          <h1 className="text-3xl font-bold text-error">Oops! Something went wrong.</h1>
-          <p className="mt-2 text-neutral-300 max-w-md">
+        <div className="flex flex-col items-center justify-top h-[25vh] text-white text-center p-4 border-2 border-dashed border-red-500 rounded-2xl space-y-4">
+          <h1 className="text-3xl font-bold">Oops! Something went wrong.</h1>
+          <p className="mt-2 text-lg text-neutral-300 max-w-md">
             We're sorry for the inconvenience. An unexpected error occurred. Please try refreshing the page.
           </p>
-          <button
+          <Button
+            variant="secondary"
+            size="md"
+            type="button"
+            aria-label="Reload page"
             onClick={() => window.location.reload()}
-            className="mt-6 bg-primary-600 text-white font-semibold py-2 px-6 rounded-md hover:bg-primary-700 transition-colors"
+            className=""
           >
             Refresh Page
-          </button>
-          <Link to="/">
-            <Button variant="primary" size="lg" type="button">
+          </Button>
+          <Link to="/" tabIndex={-1}>
+            <Button variant="primary" size="md" type="button" aria-label="Go back to home page">
               Go back to home
             </Button>
           </Link>

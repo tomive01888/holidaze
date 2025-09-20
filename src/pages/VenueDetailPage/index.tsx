@@ -11,6 +11,9 @@ import { PageTitle } from "../../components/ui/PageTitle";
 import VenueFooter from "./components/VenueFooter";
 import VenueInformation from "./components/VenueInformation";
 import Amenities from "./components/Amenities";
+import CrashingComponent from "../../components/ui/CrashComponent";
+import ErrorBoundary from "../../components/ui/ErrorBoundary";
+import { motion } from "motion/react";
 
 const VenueDetailPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -84,30 +87,58 @@ const VenueDetailPage = () => {
         <ShareButton />
       </div>
       <div className="mt-6 grid grid-cols-1 lg:grid-cols-5 gap-y-8 lg:gap-x-8">
-        <div className="lg:col-span-3 space-y-12">
-          Image gallery coming soon!
-          <div className="min-h-[50vh] bg-black/30 animate-pulse rounded-2xl border-2 border-black" />
-        </div>
+        <motion.div
+          className="lg:col-span-3"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 0.7 }}
+        >
+          <ErrorBoundary>
+            Image gallery coming soon!
+            <CrashingComponent />
+            <div className="min-h-[50vh] bg-black/30 animate-pulse rounded-2xl border-2 border-black" />
+          </ErrorBoundary>
+        </motion.div>
 
         <div className="lg:col-start-4 lg:col-span-2 lg:row-start-1 row-span-2 top-24">
-          {" "}
-          booking coming soon!{" "}
-          <div className="min-h-[50vh] bg-black/30 animate-pulse rounded-2xl border-2 border-black sticky top-24" />
+          <ErrorBoundary>
+            booking coming soon!
+            <div className="min-h-[50vh] bg-black/30 animate-pulse rounded-2xl border-2 border-black sticky top-24">
+              <CrashingComponent />
+            </div>
+          </ErrorBoundary>
         </div>
 
         <div className="lg:row-start-2 lg:col-span-3 space-y-12">
-          <VenueInformation venue={venue} />
-          <section className="bg-none bg-transparent">
+          <motion.div initial={{ y: 70, opacity: 0 }} whileInView={{ y: 0, opacity: 1 }} transition={{ duration: 0.7 }}>
+            <VenueInformation venue={venue} />{" "}
+          </motion.div>
+          <motion.section
+            className="bg-none bg-transparent"
+            initial={{ y: 100, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.7 }}
+          >
             <h2 className="text-3xl font-bold border-b pb-3 mb-6 bg-transparent">Amenities</h2>
             <Amenities meta={venue.meta} />
-          </section>
-          <section>
+          </motion.section>
+          <motion.section
+            initial={{ y: 100, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.7 }}
+          >
             <h2 className="text-3xl font-bold border-b pb-3 mb-4">About this venue</h2>
             <div className="text-lg max-w-none text-neutral-100 break-words">
               <p>{venue.description ? venue.description : "This venue has no description."}</p>
             </div>
-          </section>
-          <VenueFooter venue={venue} />
+          </motion.section>
+          <motion.section
+            initial={{ y: 100, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.7 }}
+          >
+            <VenueFooter venue={venue} />
+          </motion.section>
         </div>
       </div>
     </div>

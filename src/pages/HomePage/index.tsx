@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback, useRef, useTransition } from "react";
 import { useSearchParams } from "react-router-dom";
 import type { Venue, VenuesApiResponse } from "../../types";
 import { apiClient } from "../../api/apiClient";
@@ -12,20 +12,10 @@ import { endpoints } from "../../constants/endpoints";
 import Button from "../../components/ui/Button";
 import { PageTitle } from "../../components/ui/PageTitle";
 import CrashingComponent from "../../components/ui/CrashComponent";
+import { motion } from "motion/react";
 
 const DEFAULT_ITEMS_PER_PAGE = 12;
 
-/**
- * The homepage of the Holidaze app.
- *
- * This component handles:
- * - Fetching paginated venues from the API (with optional search)
- * - Debounced search to reduce API calls
- * - Error handling and skeleton loading states
- * - Pagination controls and scroll-to-top on page change
- *
- * @returns {JSX.Element} The rendered homepage UI.
- */
 const HomePage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const page = Number(searchParams.get("page")) || 1;
@@ -35,102 +25,110 @@ const HomePage = () => {
   const [venues, setVenues] = useState<Venue[]>([]);
   const [pageCount, setPageCount] = useState(0);
   const [error, setError] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+
+  const [isInitialLoading, setIsInitialLoading] = useState(true);
+  const [hasEverLoaded, setHasEverLoaded] = useState(false);
+
+  const [isPending, startTransition] = useTransition();
 
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
   const abortControllerRef = useRef<AbortController | null>(null);
   const mainContentRef = useRef<HTMLElement>(null);
 
-  /**
-   * Fetches venues from the API.
-   *
-   * Aborts any in-progress request if a new one is triggered.
-   *
-   * @param {number} pageNum - The page number to fetch.
-   * @param {number} perPage - Number of items per page.
-   * @param {string} query - Search query string (empty for no search).
-   */
-  const fetchData = useCallback(async (pageNum: number, perPage: number, query: string) => {
-    if (abortControllerRef.current) abortControllerRef.current.abort();
-    abortControllerRef.current = new AbortController();
-    const signal = abortControllerRef.current.signal;
+  const fetchData = useCallback(
+    async (pageNum: number, perPage: number, query: string, isNewSearch = false) => {
+      if (abortControllerRef.current) abortControllerRef.current.abort();
+      abortControllerRef.current = new AbortController();
+      const signal = abortControllerRef.current.signal;
 
-    setIsLoading(true);
-    setError(null);
+      if (isNewSearch || !hasEverLoaded) {
+        setIsInitialLoading(true);
+      }
+      setError(null);
 
-    try {
-      const endpointUrl = query
-        ? `${endpoints.venues.search(query)}&limit=${perPage}&page=${pageNum}`
-        : `${endpoints.venues.all}?sort=created&sortOrder=desc&limit=${perPage}&page=${pageNum}`;
+      try {
+        const endpointUrl = query
+          ? `${endpoints.venues.search(query)}&limit=${perPage}&page=${pageNum}`
+          : `${endpoints.venues.all}?sort=created&sortOrder=desc&limit=${perPage}&page=${pageNum}`;
 
-      const response = await apiClient.get<VenuesApiResponse>(endpointUrl, { signal });
+        const response = await apiClient.get<VenuesApiResponse>(endpointUrl, { signal });
 
-      if (signal.aborted) return;
-      if (!Array.isArray(response.data)) throw new Error("Invalid data from server");
+        if (signal.aborted) return;
+        if (!Array.isArray(response.data)) throw new Error("Invalid data from server");
 
-      setVenues(response.data);
-      setPageCount(response.meta.pageCount);
-    } catch (err) {
-      if (err instanceof Error && err.name === "AbortError") return;
-      const message = err instanceof Error ? err.message : "Unknown error";
-      setError(message);
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
+        startTransition(() => {
+          setVenues(response.data);
+          setPageCount(response.meta.pageCount);
+        });
+      } catch (err) {
+        if (err instanceof Error && err.name === "AbortError") return;
+        const message = err instanceof Error ? err.message : "Unknown error";
+        setError(message);
+      } finally {
+        setIsInitialLoading(false);
+        setHasEverLoaded(true);
+      }
+    },
+    [hasEverLoaded]
+  );
 
-  /**
-   * Effect: Fetch data whenever the page, items per page, or search term changes.
-   * Scrolls to the top of the main content area after loading.
-   */
   useEffect(() => {
-    fetchData(page, itemsPerPage, debouncedSearchTerm).then(() => {
-      mainContentRef.current?.scrollIntoView({ behavior: "smooth" });
+    const isNewSearch = page === 1 && debouncedSearchTerm !== "";
+
+    fetchData(page, itemsPerPage, debouncedSearchTerm, isNewSearch).then(() => {
+      startTransition(() => {
+        mainContentRef.current?.scrollIntoView({ behavior: "smooth" });
+      });
     });
   }, [page, itemsPerPage, debouncedSearchTerm, fetchData]);
 
-  /**
-   * Updates search query in URL params and resets to page 1.
-   *
-   * @param {string} newSearchTerm - The new search term.
-   */
   const handleSearchChange = (newSearchTerm: string) => {
-    const newParams = new URLSearchParams(searchParams);
-    newParams.set("q", newSearchTerm);
-    newParams.set("page", "1");
-    setSearchParams(newParams);
+    startTransition(() => {
+      const newParams = new URLSearchParams(searchParams);
+      newParams.set("q", newSearchTerm);
+      newParams.set("page", "1");
+      setSearchParams(newParams);
+    });
   };
 
-  /**
-   * Updates page number in URL params.
-   *
-   * @param {number} newPage - The new page number.
-   */
   const handlePageChange = (newPage: number) => {
-    const newParams = new URLSearchParams(searchParams);
-    newParams.set("page", String(newPage));
-    setSearchParams(newParams);
+    startTransition(() => {
+      const newParams = new URLSearchParams(searchParams);
+      newParams.set("page", String(newPage));
+      setSearchParams(newParams);
+    });
   };
 
-  /**
-   * Updates items per page in URL params and resets to page 1.
-   *
-   * @param {number} newItems - The number of items to show per page.
-   */
   const handleItemsPerPageChange = (newItems: number) => {
-    const newParams = new URLSearchParams(searchParams);
-    newParams.set("itemsPerPage", String(newItems));
-    newParams.set("page", "1"); // Reset to page 1
-    setSearchParams(newParams);
+    startTransition(() => {
+      const newParams = new URLSearchParams(searchParams);
+      newParams.set("itemsPerPage", String(newItems));
+      newParams.set("page", "1");
+      setSearchParams(newParams);
+    });
   };
 
-  /**
-   * Renders the venue list, skeletons, or error message depending on state.
-   *
-   * @returns {JSX.Element} The content section to display.
-   */
+  const shouldShowPagination = hasEverLoaded && !error && (venues.length > 0 || pageCount > 0);
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.05,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+    },
+  };
+
   const renderContent = () => {
-    if (isLoading) {
+    if (isInitialLoading) {
       return (
         <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {Array.from({ length: itemsPerPage }).map((_, index) => (
@@ -141,6 +139,7 @@ const HomePage = () => {
         </ul>
       );
     }
+
     if (error) {
       return (
         <div role="alert" className="text-center bg-red-50 border border-red-200 p-6 rounded-lg">
@@ -149,25 +148,40 @@ const HomePage = () => {
         </div>
       );
     }
-    if (venues.length === 0) {
+
+    if (venues.length === 0 && hasEverLoaded) {
       return (
         <div className="text-center py-16 px-4 bg-neutral-100 rounded-lg text-black">
           <h2 className="text-2xl font-bold text-neutral-700">No Venues Found</h2>
-          <p className="text-neutral-500 mt-2">We couldn't find any venues matching "{searchTerm}".</p>
-          <Button variant="primary" onClick={() => handleSearchChange("")} className="mt-4">
-            Clear Search
-          </Button>
+          <p className="text-neutral-500 mt-2">
+            {searchTerm
+              ? `We couldn't find any venues matching "${searchTerm}".`
+              : "No venues available at the moment."}
+          </p>
+          {searchTerm && (
+            <Button variant="primary" onClick={() => handleSearchChange("")} className="mt-4">
+              Clear Search
+            </Button>
+          )}
         </div>
       );
     }
+
     return (
-      <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {venues.map((venue) => (
-          <li key={venue.id}>
-            <VenueCard venue={venue} />
-          </li>
-        ))}
-      </ul>
+      <div className={`transition-opacity duration-200 ${isPending ? "opacity-70" : "opacity-100"}`}>
+        <motion.ul
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+        >
+          {venues.map((venue) => (
+            <motion.li key={venue.id} variants={itemVariants} transition={{ duration: 0.8 }}>
+              <VenueCard venue={venue} />
+            </motion.li>
+          ))}
+        </motion.ul>
+      </div>
     );
   };
 
@@ -183,36 +197,45 @@ const HomePage = () => {
           </h1>
           <SearchBar searchTerm={searchTerm} setSearchTerm={handleSearchChange} />
         </section>
+
         <section ref={mainContentRef} id="all-venues" className="my-6 scroll-mt-24">
           <h2 id="venue-results-heading" className="sr-only">
             Venues
           </h2>
 
-          <HomePagination
-            uniqueId="top"
-            isLoading={isLoading}
-            hasItems={!error && venues.length > 0}
-            currentPage={page}
-            pageCount={pageCount}
-            itemsPerPage={itemsPerPage}
-            onPageChange={handlePageChange}
-            onItemsPerPageChange={handleItemsPerPageChange}
-            anchor="all-venues"
-          />
+          {/* Pagination - only shows when there are results to paginate */}
+          {shouldShowPagination && (
+            <HomePagination
+              uniqueId="top"
+              isLoading={false}
+              isPending={isPending}
+              hasItems={venues.length > 0}
+              currentPage={page}
+              pageCount={pageCount}
+              itemsPerPage={itemsPerPage}
+              onPageChange={handlePageChange}
+              onItemsPerPageChange={handleItemsPerPageChange}
+              anchor="all-venues"
+            />
+          )}
 
           <div className="mt-6">{renderContent()}</div>
 
-          <HomePagination
-            uniqueId="bottom"
-            isLoading={isLoading}
-            hasItems={!error && venues.length > 0}
-            currentPage={page}
-            pageCount={pageCount}
-            itemsPerPage={itemsPerPage}
-            onPageChange={handlePageChange}
-            onItemsPerPageChange={handleItemsPerPageChange}
-            anchor="all-venues"
-          />
+          {/* Bottom pagination - same logic */}
+          {shouldShowPagination && (
+            <HomePagination
+              uniqueId="bottom"
+              isLoading={false}
+              isPending={isPending}
+              hasItems={venues.length > 0}
+              currentPage={page}
+              pageCount={pageCount}
+              itemsPerPage={itemsPerPage}
+              onPageChange={handlePageChange}
+              onItemsPerPageChange={handleItemsPerPageChange}
+              anchor="all-venues"
+            />
+          )}
         </section>
       </ErrorBoundary>
     </div>
