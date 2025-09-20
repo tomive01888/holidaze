@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import type { Venue } from "../../../types";
 import Button from "../../../components/ui/Button";
 import VenueManagementCard from "./VenueManagerCard";
+import { motion } from "motion/react";
 
 /**
  * Props for the {@link MyVenues} component.
@@ -54,13 +55,17 @@ const MyVenues: React.FC<MyVenuesProps> = ({ venues }) => {
 
       {/* Display list of venues or empty state */}
       {venues.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div>
           <h2 className="text-3xl font-bold text-neutral-100 col-span-full">Venues you own</h2>
 
           {/* Render a card for each venue */}
-          {venues.map((venue) => (
-            <VenueManagementCard key={venue.id} venue={venue} />
-          ))}
+          <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {venues.map((venue) => (
+              <motion.li initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ duration: 1 }}>
+                <VenueManagementCard key={venue.id} venue={venue} />
+              </motion.li>
+            ))}
+          </ul>
         </div>
       ) : (
         <div className="text-center py-16 px-4 bg-neutral-100 rounded-lg">

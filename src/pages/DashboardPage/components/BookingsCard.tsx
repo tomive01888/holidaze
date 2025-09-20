@@ -38,7 +38,6 @@ const BookingCard: React.FC<BookingCardProps> = ({ booking }) => {
           <p className="text-neutral-500 text-md mt-1">
             {booking.venue.location.city}, {booking.venue.location.country}
           </p>
-          <p className="mt-2 text-neutral-600 text-md">{truncateText(booking.venue.description, 120)}</p>
         </div>
         <div className="mt-4 pt-4 border-t flex-grow flex flex-col justify-end">
           <div className="space-y-1 text-md">

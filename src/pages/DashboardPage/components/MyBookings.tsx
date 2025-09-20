@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import BookingCard from "./BookingsCard";
 import { sortBookingsByDate } from "../../../utils/dateUtils";
 import type { ProfileBooking } from "../../../types";
+import { motion } from "motion/react";
+import { li } from "motion/react-client";
 
 /**
  * Props for the {@link MyBookings} component.
@@ -89,11 +91,13 @@ const MyBookings: React.FC<MyBookingsProps> = ({ bookings }) => {
       <section>
         <h3 className="text-2xl font-bold mb-4">Upcoming Trips</h3>
         {upcomingBookings.length > 0 ? (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <ul className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             {upcomingBookings.map((booking) => (
-              <BookingCard key={booking.id} booking={booking} />
+              <motion.li initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ duration: 0.7 }}>
+                <BookingCard key={booking.id} booking={booking} />
+              </motion.li>
             ))}
-          </div>
+          </ul>
         ) : (
           <p className="text-neutral-500 p-4 bg-neutral-50 rounded-md">
             You have no upcoming bookings. Time to plan your next adventure!{" "}
@@ -108,11 +112,13 @@ const MyBookings: React.FC<MyBookingsProps> = ({ bookings }) => {
       <section>
         <h3 className="text-2xl font-bold mb-4">Past Trips</h3>
         {pastBookings.length > 0 ? (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <ul className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             {pastBookings.map((booking) => (
-              <BookingCard key={booking.id} booking={booking} />
+              <motion.li initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ duration: 1 }}>
+                <BookingCard key={booking.id} booking={booking} />
+              </motion.li>
             ))}
-          </div>
+          </ul>
         ) : (
           <p className="text-neutral-500 text-xl p-4 bg-neutral-50 rounded-md">You have no past bookings yet.</p>
         )}
