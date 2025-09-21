@@ -28,10 +28,8 @@ const HomePage = () => {
 
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
   const abortControllerRef = useRef<AbortController | null>(null);
-  const mainContentRef = useRef<HTMLElement>(null);
-  const firstVenueRef = useRef<HTMLLIElement>(null);
   const topPaginationRef = useRef<HTMLElement>(null);
-  const lastPageRef = useRef(page); // Track previous page to detect actual navigation
+  const lastPageRef = useRef(page);
 
   const fetchData = useCallback(async (pageNum: number, perPage: number, query: string) => {
     if (abortControllerRef.current) abortControllerRef.current.abort();
@@ -64,23 +62,8 @@ const HomePage = () => {
 
   useEffect(() => {
     fetchData(page, itemsPerPage, debouncedSearchTerm).then(() => {
-      const isSearch = page === 1 && debouncedSearchTerm;
-      const isPagination = lastPageRef.current !== page && !isSearch;
-
-      if (isPagination) {
-        setTimeout(() => {
-          if (topPaginationRef.current) {
-            topPaginationRef.current.scrollIntoView({
-              behavior: "smooth",
-            });
-          }
-
-          setTimeout(() => {
-            if (firstVenueRef.current) {
-              firstVenueRef.current.focus();
-            }
-          }, 100);
-        }, 1300);
+      if (lastPageRef.current !== page && topPaginationRef.current) {
+        topPaginationRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
       }
 
       lastPageRef.current = page;
@@ -107,24 +90,7 @@ const HomePage = () => {
     setSearchParams(newParams);
   };
 
-  const shouldShowPagination = !isLoading && !error && (venues.length > 0 || pageCount > 0);
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.05,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-    },
-  };
+  const shouldShowPagination = searchParams && !error && (venues.length > 0 || pageCount > 0);
 
   const renderContent = () => {
     if (isLoading) {
@@ -167,22 +133,18 @@ const HomePage = () => {
     }
 
     return (
-      <motion.ul
+      <ul
         id="venue-list"
         className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 scroll-mt-24"
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
-        role="list"
         aria-label="Available venues"
       >
-        {venues.map((venue, index) => (
+        {venues.map((venue) => (
           <motion.li
-            ref={index === 0 ? firstVenueRef : null}
             tabIndex={-1}
             key={venue.id}
-            variants={itemVariants}
-            transition={{ duration: 0.8 }}
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 0.3 }}
             data-venue-card
             className="focus:outline-2 focus:outline-blue-500 focus:outline-offset-2 rounded-lg"
             aria-label={`Venue: ${venue.name}`}
@@ -190,7 +152,7 @@ const HomePage = () => {
             <VenueCard venue={venue} />
           </motion.li>
         ))}
-      </motion.ul>
+      </ul>
     );
   };
 
@@ -206,7 +168,7 @@ const HomePage = () => {
           <SearchBar searchTerm={searchTerm} setSearchTerm={handleSearchChange} />
         </section>
 
-        <section ref={mainContentRef} id="all-venues" className="my-6 scroll-mt-24">
+        <section className="my-6 scroll-mt-24">
           <h2 id="venue-results-heading" className="sr-only">
             Venues
           </h2>
@@ -223,8 +185,7 @@ const HomePage = () => {
           {shouldShowPagination && (
             <HomePagination
               uniqueId="top"
-              isLoading={isLoading}
-              hasItems={venues.length > 0}
+              ref={topPaginationRef}
               currentPage={page}
               pageCount={pageCount}
               itemsPerPage={itemsPerPage}
@@ -239,8 +200,6 @@ const HomePage = () => {
           {shouldShowPagination && (
             <HomePagination
               uniqueId="bottom"
-              isLoading={isLoading}
-              hasItems={venues.length > 0}
               currentPage={page}
               pageCount={pageCount}
               itemsPerPage={itemsPerPage}
