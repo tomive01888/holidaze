@@ -10,19 +10,11 @@ const CrashingComponent = () => {
 
   return (
     <div style={{ padding: "20px", border: "1px solid #ccc", borderRadius: "8px", textAlign: "center" }}>
-      <h2>Crashing Component</h2>
-      <p>This component will crash when you click the button below.</p>
+      <h2 className="text-3xl">Crashing Component</h2>
+      <p className="text-lg">This component will crash when you click the button below.</p>
       <button
         onClick={() => setCauseError(true)}
-        style={{
-          padding: "10px 20px",
-          fontSize: "16px",
-          cursor: "pointer",
-        backgroundColor: "#ef4444",
-          color: "white",
-          border: "none",
-          borderRadius: "4px",
-        }}
+        className="px-4 py-2 text-lg cursor-pointer bg-red-500 text-white font-bold border-none rounded"
       >
         Crash Now
       </button>

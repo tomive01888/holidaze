@@ -88,8 +88,8 @@ export interface Venue {
     zip: string | null;
     country: string | null;
     continent: string | null;
-    lat: number | null; // API can return null
-    lng: number | null; // API can return null
+    lat: number | null;
+    lng: number | null;
   };
 }
 
@@ -164,8 +164,8 @@ export interface RegisterPayload extends LoginPayload {
  * Defines the shape of the data sent to the API when creating a new booking.
  */
 export interface BookingFormData {
-  dateFrom: string; // ISO date string
-  dateTo: string; // ISO date string
+  dateFrom: string;
+  dateTo: string;
   guests: number;
   venueId: string;
 }
