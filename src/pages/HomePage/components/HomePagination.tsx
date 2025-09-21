@@ -1,9 +1,12 @@
 /**
- * @fileoverview Enhanced pagination component with transition state support
+ * @fileoverview A reusable and accessible pagination component for navigating through pages of data.
+ * @version 1.0
+ * @author Your Name <your.email@example.com>
+ * @license MIT
  */
 
 import React, { useState } from "react";
-import { ChevronLeft, ChevronRight, Ellipsis, Loader2 } from "lucide-react";
+import { ChevronLeft, ChevronRight, Ellipsis } from "lucide-react";
 import Button from "../../../components/ui/Button";
 
 interface HomePaginationProps {
@@ -14,10 +17,8 @@ interface HomePaginationProps {
   itemsPerPage: number;
   onPageChange: (page: number) => void;
   onItemsPerPageChange: (value: number) => void;
-  anchor: string;
   uniqueId?: string;
-  // New optional prop for transition state
-  isPending?: boolean;
+  paginationRef?: React.RefObject<HTMLElement>;
 }
 
 const HomePagination = ({
@@ -29,13 +30,10 @@ const HomePagination = ({
   onPageChange,
   onItemsPerPageChange,
   uniqueId = "",
-  anchor = "",
-  isPending = false,
+  paginationRef,
 }: HomePaginationProps) => {
   const [inputValue, setInputValue] = useState<string>("");
   const showPagination = !isLoading && hasItems;
-
-  const isUpdating = isLoading || isPending;
 
   const goToPage = (page: number) => {
     if (page >= 1 && page <= pageCount) {
@@ -65,10 +63,9 @@ const HomePagination = ({
       <li key={`${uniqueId}-${i}`}>
         <button
           onClick={() => goToPage(i)}
-          disabled={isUpdating}
-          className={`w-10 aspect-square rounded-lg text-sm md:text-base transition-all duration-200 ${
+          className={`w-10 aspect-square rounded-lg text-sm md:text-base ${
             i === currentPage ? "bg-neutral-400 text-white font-bold" : "text-white bg-blue-500 hover:bg-blue-600"
-          } ${isUpdating ? "opacity-50 cursor-not-allowed" : ""}`}
+          }`}
           aria-label={`Go to page ${i}`}
           aria-current={i === currentPage ? "page" : undefined}
         >
@@ -80,25 +77,19 @@ const HomePagination = ({
 
   return (
     <nav
+      ref={paginationRef}
+      id={`${uniqueId}-pagination`}
       aria-label="Pagination"
-      className={`flex flex-wrap items-center justify-center gap-1 md:gap-2 text-white my-6 transition-opacity duration-300 ${
+      className={`flex flex-wrap items-center justify-center gap-1 md:gap-2 text-white my-6 ${
         showPagination ? "opacity-100" : "opacity-0"
       }`}
     >
-      {/* Prev button with transition state */}
+      {/* Prev button */}
       <button
-        onClick={() => {
-          goToPage(currentPage - 1);
-          const anchorTag = document.getElementById(anchor);
-          if (anchorTag) {
-            anchorTag.scrollIntoView({ behavior: "smooth" });
-          }
-        }}
+        onClick={() => goToPage(currentPage - 1)}
         aria-label="Go to previous page"
-        disabled={currentPage === 1 || isUpdating}
-        className={`p-2 rounded-lg bg-blue-500 hover:bg-blue-600 disabled:bg-neutral-300 disabled:opacity-50 transition-all duration-200 ${
-          isUpdating ? "cursor-not-allowed" : ""
-        }`}
+        disabled={currentPage === 1}
+        className="p-2 rounded-lg bg-blue-500 hover:bg-blue-600 disabled:bg-neutral-300 disabled:opacity-50"
       >
         <ChevronLeft size={24} aria-hidden="true" />
       </button>
@@ -118,14 +109,11 @@ const HomePagination = ({
         )}
       </ul>
 
-      {/* Mobile compact page indicator with loading state */}
+      {/* Mobile compact page indicator */}
       <div
-        className={`md:hidden px-3 py-2 border rounded-lg bg-gray-200 text-black w-18 flex justify-center gap-1 items-center transition-opacity duration-200 ${
-          isPending ? "opacity-70" : "opacity-100"
-        }`}
+        className="md:hidden px-3 py-2 border rounded-lg bg-gray-200 text-black w-18 flex justify-center gap-1"
         aria-label={`Page ${currentPage} of ${pageCount}`}
       >
-        {isPending && <Loader2 size={16} className="animate-spin mr-1" />}
         <span className="font-bold">{currentPage}</span> / <span>{pageCount}</span>
       </div>
 
@@ -133,34 +121,23 @@ const HomePagination = ({
       {currentPage <= pageCount - 2 && (
         <button
           onClick={() => goToPage(pageCount)}
-          disabled={isUpdating}
-          className={`hidden md:block w-10 aspect-square text-white rounded-lg bg-blue-500 hover:bg-blue-600 ml-2 transition-all duration-200 ${
-            isUpdating ? "opacity-50 cursor-not-allowed" : ""
-          }`}
+          className="hidden md:block w-10 aspect-square text-white rounded-lg bg-blue-500 hover:bg-blue-600 ml-2"
         >
           <p>{pageCount}</p>
         </button>
       )}
 
-      {/* Next button with transition state */}
+      {/* Next button */}
       <button
-        onClick={() => {
-          goToPage(currentPage + 1);
-          const anchorTag = document.getElementById(anchor);
-          if (anchorTag) {
-            anchorTag.scrollIntoView({ behavior: "smooth" });
-          }
-        }}
+        onClick={() => goToPage(currentPage + 1)}
         aria-label="Go to next page"
-        disabled={currentPage === pageCount || isUpdating}
-        className={`p-2 rounded-lg bg-blue-500 hover:bg-blue-600 disabled:opacity-50 transition-all duration-200 ${
-          isUpdating ? "cursor-not-allowed" : ""
-        }`}
+        disabled={currentPage === pageCount}
+        className="p-2 rounded-lg bg-blue-500 hover:bg-blue-600 disabled:opacity-50"
       >
         <ChevronRight size={24} aria-hidden="true" />
       </button>
 
-      {/* Page jump input with transition state */}
+      {/* Page jump input */}
       <form onSubmit={handleInputSubmit} className="flex items-center gap-2">
         <label htmlFor={`${uniqueId}-page-jump-input`} className="sr-only">
           Go to page
@@ -172,26 +149,16 @@ const HomePagination = ({
           max={pageCount}
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
-          disabled={isUpdating}
-          className={`h-10 aspect-square px-2 border rounded-lg text-center text-white transition-all duration-200 ${
-            isUpdating ? "opacity-50 cursor-not-allowed" : ""
-          }`}
+          className="h-10 aspect-square px-2 border rounded-lg text-center text-white"
           placeholder="Pg"
           aria-label="Enter page number to jump to"
         />
-        <Button
-          variant="primary"
-          type="submit"
-          disabled={isUpdating}
-          className={`w-10 aspect-square !p-0 transition-all duration-200 ${
-            isUpdating ? "opacity-50 cursor-not-allowed" : ""
-          }`}
-        >
-          {isPending ? <Loader2 size={16} className="animate-spin" /> : "GO"}
+        <Button variant="primary" type="submit" className="w-10 aspect-square !p-0">
+          GO
         </Button>
       </form>
 
-      {/* Items-per-page selector with transition state */}
+      {/* Items-per-page selector */}
       <label htmlFor={`${uniqueId}-items-per-page-select`} className="sr-only">
         Items per page
       </label>
@@ -199,10 +166,7 @@ const HomePagination = ({
         id={`${uniqueId}-items-per-page-select`}
         value={itemsPerPage}
         onChange={(e) => onItemsPerPageChange(Number(e.target.value))}
-        disabled={isUpdating}
-        className={`border rounded-lg h-10 px-3 bg-neutral-200 text-black transition-all duration-200 ${
-          isUpdating ? "opacity-50 cursor-not-allowed" : ""
-        }`}
+        className="border rounded-lg h-10 px-3 bg-neutral-200 text-black"
         aria-label="Select items per page"
       >
         {[12, 18, 24].map((size) => (

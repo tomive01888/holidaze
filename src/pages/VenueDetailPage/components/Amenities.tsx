@@ -53,9 +53,11 @@ const Amenities: React.FC<AmenitiesProps> = ({ meta }) => {
       {Object.entries(amenityMap).map(([key, { icon: Icon, name }]) => {
         const isAvailable = meta[key as keyof typeof meta];
         return (
-          <div key={key} className="flex items-center gap-3" title={name}>
+          <div key={key} className="flex items-center gap-3">
             <Icon className={isAvailable ? "text-green-500" : "text-neutral-400"} size={24} />
             <p
+              aria-live="polite"
+              aria-label={`${isAvailable ? name : `No ${name}`}`}
               className={`font-bold bg-white/80 w-full p-1 rounded
                 ${isAvailable ? "text-neutral-800" : "text-neutral-400 line-through"}
               `}

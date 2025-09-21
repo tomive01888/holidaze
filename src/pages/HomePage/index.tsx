@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef, useTransition } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { useSearchParams } from "react-router-dom";
 import type { Venue, VenuesApiResponse } from "../../types";
 import { apiClient } from "../../api/apiClient";
@@ -11,7 +11,6 @@ import HomePagination from "./components/HomePagination";
 import { endpoints } from "../../constants/endpoints";
 import Button from "../../components/ui/Button";
 import { PageTitle } from "../../components/ui/PageTitle";
-import CrashingComponent from "../../components/ui/CrashComponent";
 import { motion } from "motion/react";
 
 const DEFAULT_ITEMS_PER_PAGE = 12;
@@ -25,90 +24,90 @@ const HomePage = () => {
   const [venues, setVenues] = useState<Venue[]>([]);
   const [pageCount, setPageCount] = useState(0);
   const [error, setError] = useState<string | null>(null);
-
-  const [isInitialLoading, setIsInitialLoading] = useState(true);
-  const [hasEverLoaded, setHasEverLoaded] = useState(false);
-
-  const [isPending, startTransition] = useTransition();
+  const [isLoading, setIsLoading] = useState(true);
 
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
   const abortControllerRef = useRef<AbortController | null>(null);
   const mainContentRef = useRef<HTMLElement>(null);
+  const firstVenueRef = useRef<HTMLLIElement>(null);
+  const topPaginationRef = useRef<HTMLElement>(null);
+  const lastPageRef = useRef(page); // Track previous page to detect actual navigation
 
-  const fetchData = useCallback(
-    async (pageNum: number, perPage: number, query: string, isNewSearch = false) => {
-      if (abortControllerRef.current) abortControllerRef.current.abort();
-      abortControllerRef.current = new AbortController();
-      const signal = abortControllerRef.current.signal;
+  const fetchData = useCallback(async (pageNum: number, perPage: number, query: string) => {
+    if (abortControllerRef.current) abortControllerRef.current.abort();
+    abortControllerRef.current = new AbortController();
+    const signal = abortControllerRef.current.signal;
 
-      if (isNewSearch || !hasEverLoaded) {
-        setIsInitialLoading(true);
-      }
-      setError(null);
+    setIsLoading(true);
+    setError(null);
 
-      try {
-        const endpointUrl = query
-          ? `${endpoints.venues.search(query)}&limit=${perPage}&page=${pageNum}`
-          : `${endpoints.venues.all}?sort=created&sortOrder=desc&limit=${perPage}&page=${pageNum}`;
+    try {
+      const endpointUrl = query
+        ? `${endpoints.venues.search(query)}&limit=${perPage}&page=${pageNum}`
+        : `${endpoints.venues.all}?sort=created&sortOrder=desc&limit=${perPage}&page=${pageNum}`;
 
-        const response = await apiClient.get<VenuesApiResponse>(endpointUrl, { signal });
+      const response = await apiClient.get<VenuesApiResponse>(endpointUrl, { signal });
 
-        if (signal.aborted) return;
-        if (!Array.isArray(response.data)) throw new Error("Invalid data from server");
+      if (signal.aborted) return;
+      if (!Array.isArray(response.data)) throw new Error("Invalid data from server");
 
-        startTransition(() => {
-          setVenues(response.data);
-          setPageCount(response.meta.pageCount);
-        });
-      } catch (err) {
-        if (err instanceof Error && err.name === "AbortError") return;
-        const message = err instanceof Error ? err.message : "Unknown error";
-        setError(message);
-      } finally {
-        setIsInitialLoading(false);
-        setHasEverLoaded(true);
-      }
-    },
-    [hasEverLoaded]
-  );
+      setVenues(response.data);
+      setPageCount(response.meta.pageCount);
+    } catch (err) {
+      if (err instanceof Error && err.name === "AbortError") return;
+      const message = err instanceof Error ? err.message : "Unknown error";
+      setError(message);
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
 
   useEffect(() => {
-    const isNewSearch = page === 1 && debouncedSearchTerm !== "";
+    fetchData(page, itemsPerPage, debouncedSearchTerm).then(() => {
+      const isSearch = page === 1 && debouncedSearchTerm;
+      const isPagination = lastPageRef.current !== page && !isSearch;
 
-    fetchData(page, itemsPerPage, debouncedSearchTerm, isNewSearch).then(() => {
-      startTransition(() => {
-        mainContentRef.current?.scrollIntoView({ behavior: "smooth" });
-      });
+      if (isPagination) {
+        setTimeout(() => {
+          if (topPaginationRef.current) {
+            topPaginationRef.current.scrollIntoView({
+              behavior: "smooth",
+            });
+          }
+
+          setTimeout(() => {
+            if (firstVenueRef.current) {
+              firstVenueRef.current.focus();
+            }
+          }, 100);
+        }, 1300);
+      }
+
+      lastPageRef.current = page;
     });
   }, [page, itemsPerPage, debouncedSearchTerm, fetchData]);
 
   const handleSearchChange = (newSearchTerm: string) => {
-    startTransition(() => {
-      const newParams = new URLSearchParams(searchParams);
-      newParams.set("q", newSearchTerm);
-      newParams.set("page", "1");
-      setSearchParams(newParams);
-    });
+    const newParams = new URLSearchParams(searchParams);
+    newParams.set("q", newSearchTerm);
+    newParams.set("page", "1");
+    setSearchParams(newParams);
   };
 
   const handlePageChange = (newPage: number) => {
-    startTransition(() => {
-      const newParams = new URLSearchParams(searchParams);
-      newParams.set("page", String(newPage));
-      setSearchParams(newParams);
-    });
+    const newParams = new URLSearchParams(searchParams);
+    newParams.set("page", String(newPage));
+    setSearchParams(newParams);
   };
 
   const handleItemsPerPageChange = (newItems: number) => {
-    startTransition(() => {
-      const newParams = new URLSearchParams(searchParams);
-      newParams.set("itemsPerPage", String(newItems));
-      newParams.set("page", "1");
-      setSearchParams(newParams);
-    });
+    const newParams = new URLSearchParams(searchParams);
+    newParams.set("itemsPerPage", String(newItems));
+    newParams.set("page", "1");
+    setSearchParams(newParams);
   };
 
-  const shouldShowPagination = hasEverLoaded && !error && (venues.length > 0 || pageCount > 0);
+  const shouldShowPagination = !isLoading && !error && (venues.length > 0 || pageCount > 0);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -128,7 +127,7 @@ const HomePage = () => {
   };
 
   const renderContent = () => {
-    if (isInitialLoading) {
+    if (isLoading) {
       return (
         <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {Array.from({ length: itemsPerPage }).map((_, index) => (
@@ -149,7 +148,7 @@ const HomePage = () => {
       );
     }
 
-    if (venues.length === 0 && hasEverLoaded) {
+    if (venues.length === 0) {
       return (
         <div className="text-center py-16 px-4 bg-neutral-100 rounded-lg text-black">
           <h2 className="text-2xl font-bold text-neutral-700">No Venues Found</h2>
@@ -168,20 +167,30 @@ const HomePage = () => {
     }
 
     return (
-      <div className={`transition-opacity duration-200 ${isPending ? "opacity-70" : "opacity-100"}`}>
-        <motion.ul
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-        >
-          {venues.map((venue) => (
-            <motion.li key={venue.id} variants={itemVariants} transition={{ duration: 0.8 }}>
-              <VenueCard venue={venue} />
-            </motion.li>
-          ))}
-        </motion.ul>
-      </div>
+      <motion.ul
+        id="venue-list"
+        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 scroll-mt-24"
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+        role="list"
+        aria-label="Available venues"
+      >
+        {venues.map((venue, index) => (
+          <motion.li
+            ref={index === 0 ? firstVenueRef : null}
+            tabIndex={-1}
+            key={venue.id}
+            variants={itemVariants}
+            transition={{ duration: 0.8 }}
+            data-venue-card
+            className="focus:outline-2 focus:outline-blue-500 focus:outline-offset-2 rounded-lg"
+            aria-label={`Venue: ${venue.name}`}
+          >
+            <VenueCard venue={venue} />
+          </motion.li>
+        ))}
+      </motion.ul>
     );
   };
 
@@ -190,7 +199,6 @@ const HomePage = () => {
       <PageTitle title={"Holidaze | Homepage"} />
 
       <ErrorBoundary>
-        <CrashingComponent />
         <section aria-labelledby="page-heading" className="mb-8">
           <h1 id="page-heading" className="text-5xl py-6 text-center">
             Find your perfect stay
@@ -203,19 +211,25 @@ const HomePage = () => {
             Venues
           </h2>
 
+          {/* Skip link for screen readers */}
+          <a
+            href="#venue-list"
+            className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-blue-600 text-white px-4 py-2 rounded-md z-50"
+          >
+            Skip to venue results
+          </a>
+
           {/* Pagination - only shows when there are results to paginate */}
           {shouldShowPagination && (
             <HomePagination
               uniqueId="top"
-              isLoading={false}
-              isPending={isPending}
+              isLoading={isLoading}
               hasItems={venues.length > 0}
               currentPage={page}
               pageCount={pageCount}
               itemsPerPage={itemsPerPage}
               onPageChange={handlePageChange}
               onItemsPerPageChange={handleItemsPerPageChange}
-              anchor="all-venues"
             />
           )}
 
@@ -225,15 +239,13 @@ const HomePage = () => {
           {shouldShowPagination && (
             <HomePagination
               uniqueId="bottom"
-              isLoading={false}
-              isPending={isPending}
+              isLoading={isLoading}
               hasItems={venues.length > 0}
               currentPage={page}
               pageCount={pageCount}
               itemsPerPage={itemsPerPage}
               onPageChange={handlePageChange}
               onItemsPerPageChange={handleItemsPerPageChange}
-              anchor="all-venues"
             />
           )}
         </section>

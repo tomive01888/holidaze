@@ -3,6 +3,14 @@ import { toast } from "react-toastify";
 import { Check, Share } from "lucide-react";
 import Button from "../../../components/ui/Button";
 
+/**
+ * ShareButton component allows users to copy the current page URL to their clipboard.
+ * It provides visual feedback and toast notifications on success or failure.
+ *
+ * @component
+ * @example
+ * return <ShareButton />;
+ */
 const ShareButton = () => {
   const [copied, setCopied] = useState(false);
 
@@ -21,10 +29,25 @@ const ShareButton = () => {
   };
 
   return (
-    <Button onClick={handleShare} variant="secondary" className="flex items-center gap-2 self-end md:self-auto">
-      {copied ? <Check size={20} className="text-success" /> : <Share size={20} />}
-      <span>{copied ? "Copied!" : "Share"}</span>
-    </Button>
+    <>
+      <Button
+        onClick={handleShare}
+        variant="secondary"
+        className="flex items-center gap-2 self-end md:self-auto"
+        aria-label={copied ? "Link copied" : "Copy link to clipboard"}
+      >
+        {copied ? (
+          <Check size={20} className="text-success" aria-hidden="true" />
+        ) : (
+          <Share size={20} aria-hidden="true" />
+        )}
+        <span>{copied ? "Copied!" : "Share"}</span>
+      </Button>
+      {/* Screen reader only live region */}
+      <span className="sr-only" aria-live="polite">
+        {copied ? "Link copied to clipboard" : ""}
+      </span>
+    </>
   );
 };
 

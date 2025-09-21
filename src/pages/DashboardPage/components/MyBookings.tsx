@@ -88,7 +88,7 @@ const MyBookings: React.FC<MyBookingsProps> = ({ bookings }) => {
     <div className="space-y-12 bg-black/0">
       {/* --- Upcoming Bookings Section --- */}
       <section>
-        <h3 className="text-2xl font-bold mb-4">Upcoming Trips</h3>
+        <h2 className="text-2xl font-bold mb-4">Upcoming Trips</h2>
         {upcomingBookings.length > 0 ? (
           <ul className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             {upcomingBookings.map((booking) => (
@@ -114,7 +114,7 @@ const MyBookings: React.FC<MyBookingsProps> = ({ bookings }) => {
 
       {/* --- Past Bookings Section --- */}
       <section>
-        <h3 className="text-2xl font-bold mb-4">Past Trips</h3>
+        <h2 className="text-2xl font-bold mb-4">Past Trips</h2>
         {pastBookings.length > 0 ? (
           <ul className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             {pastBookings.map((booking) => (

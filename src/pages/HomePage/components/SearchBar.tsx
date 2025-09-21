@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { ScanSearch, X } from "lucide-react";
 
 /**
@@ -47,24 +47,41 @@ const SearchBar: React.FC<SearchBarProps> = ({
   placeholder = "Search by name or description...",
   className = "",
 }) => {
+  const [inputValue, setInputValue] = useState(searchTerm);
+
+  useEffect(() => {
+    setInputValue(searchTerm);
+  }, [searchTerm]);
+
   /**
    * Handles typing in the input and updates the search term state.
    *
    * @param {React.ChangeEvent<HTMLInputElement>} event - Input change event.
    */
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(event.target.value);
+    const value = event.target.value;
+    setInputValue(value);
+    setSearchTerm(value);
   };
 
   /**
    * Clears the search input and resets the search term.
    */
   const handleClear = () => {
+    setInputValue("");
     setSearchTerm("");
   };
 
+  /**
+   * Handle form submission to prevent page reload
+   */
+  const handleSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
+    setSearchTerm(inputValue);
+  };
+
   return (
-    <form className={`relative w-full max-w-lg mx-auto ${className}`} role="search">
+    <form className={`relative w-full max-w-lg mx-auto ${className}`} role="search" onSubmit={handleSubmit}>
       <label htmlFor="venue-search" className="sr-only">
         Search for venues
       </label>
@@ -75,11 +92,11 @@ const SearchBar: React.FC<SearchBarProps> = ({
           <ScanSearch className="h-5 w-5 text-neutral-300" />
         </div>
 
-        {/* Input */}
+        {/* Input with local state */}
         <input
           type="text"
           id="venue-search"
-          value={searchTerm}
+          value={inputValue} // Use local state
           onChange={handleInputChange}
           placeholder={placeholder}
           className="
@@ -93,7 +110,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
         />
 
         {/* Clear button on right */}
-        {searchTerm && (
+        {inputValue && (
           <button
             type="button"
             onClick={handleClear}

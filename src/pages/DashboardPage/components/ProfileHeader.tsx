@@ -82,7 +82,7 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({ profile, onProfileUpdate 
           <div className="relative flex flex-col items-center gap-4">
             <img
               src={profile.avatar?.url}
-              alt={`${profile.name}'s avatar`}
+              alt={`${profile.name}'s profile avatar`}
               className={`w-32 h-32 rounded-full object-cover border-4 border-white shadow-lg bg-neutral-600 transition-opacity duration-1000 ${
                 renderOpacity ? "opacity-0 animate-pulse" : "opacity-100"
               }`}
