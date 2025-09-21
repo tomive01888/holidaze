@@ -14,6 +14,7 @@ import Amenities from "./components/Amenities";
 import CrashingComponent from "../../components/ui/CrashComponent";
 import ErrorBoundary from "../../components/ui/ErrorBoundary";
 import { motion } from "motion/react";
+import ImageGallery from "./components/ImageGallery";
 
 const VenueDetailPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -96,9 +97,7 @@ const VenueDetailPage = () => {
           transition={{ duration: 0.7 }}
         >
           <ErrorBoundary>
-            Image gallery coming soon!
-            <CrashingComponent />
-            <div className="min-h-[50vh] bg-black/30 animate-pulse rounded-2xl border-2 border-black" />
+            <ImageGallery media={venue.media} />
           </ErrorBoundary>
         </motion.div>
 
