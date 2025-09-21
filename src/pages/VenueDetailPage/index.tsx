@@ -116,7 +116,7 @@ const VenueDetailPage = () => {
           </motion.div>
           <motion.section
             className="bg-none bg-transparent"
-            initial={{ y: 100, opacity: 0 }}
+            initial={{ y: 30, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.7 }}
           >
@@ -124,7 +124,7 @@ const VenueDetailPage = () => {
             <Amenities meta={venue.meta} />
           </motion.section>
           <motion.section
-            initial={{ y: 100, opacity: 0 }}
+            initial={{ y: 30, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.7 }}
           >
@@ -134,7 +134,7 @@ const VenueDetailPage = () => {
             </div>
           </motion.section>
           <motion.section
-            initial={{ y: 100, opacity: 0 }}
+            initial={{ y: 30, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.7 }}
           >

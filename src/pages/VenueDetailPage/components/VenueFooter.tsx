@@ -7,6 +7,7 @@ import type { FullVenue } from "../../../types";
 import Button from "../../../components/ui/Button";
 import Modal from "../../../components/ui/Modal";
 import { toast } from "react-toastify";
+import userRoundCircle from "../../../assets/circleUserRound.svg";
 
 /**
  * Props for the `VenueFooter` component.
@@ -65,7 +66,6 @@ const VenueFooter: React.FC<VenueFooterProps> = ({ venue }) => {
     }
   };
 
-  // --- RENDER THE MANAGER CONTROLS ---
   if (isOwner) {
     return (
       <div className="mt-10 p-6 border-2 border-dashed border-neutral-400 bg-primary-50 rounded-lg text-center text-neutral-100 bg-neutral-700/40">
@@ -113,7 +113,6 @@ const VenueFooter: React.FC<VenueFooterProps> = ({ venue }) => {
     );
   }
 
-  // --- RENDER THE PUBLIC OWNER CARD ---
   return (
     <div className="mt-10">
       <h2 className="text-3xl font-bold border-b pb-3 mb-4">Meet the Host</h2>
@@ -131,9 +130,9 @@ const VenueFooter: React.FC<VenueFooterProps> = ({ venue }) => {
         {/* Content */}
         <div className="relative flex items-center gap-4">
           <img
-            src={venue.owner.avatar?.url || "/default-avatar.png"} // Fallback avatar
+            src={venue.owner.avatar?.url || userRoundCircle}
             alt={venue.owner.avatar?.alt}
-            className="w-24 h-24 rounded-full object-cover border-4 border-white shadow-md"
+            className="w-24 h-24 rounded-full object-cover border-4 border-white shadow-md bg-white"
           />
           <div>
             <h3 className="text-2xl font-bold text-neutral-900">{venue.owner.name}</h3>

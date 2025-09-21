@@ -56,7 +56,7 @@ const Header = () => {
                 <Link to="/profile" className="flex items-center gap-2 font-bold hover:opacity-80">
                   {user.avatar?.url ? (
                     <img
-                      src={user.avatar.url}
+                      src={user.avatar?.url}
                       alt={user.avatar?.alt}
                       className="w-10 aspect-square rounded-full object-cover border-2 border-white/50"
                     />
