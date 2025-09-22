@@ -36,7 +36,6 @@ const BookingModal: React.FC<BookingModalProps> = ({ venueName, bookingDetails, 
       setConfirmationId(randomId);
       setStep(3);
       toast.success("Booking successful!");
-      onSuccess();
     } catch (error) {
       let errorMessage = "Booking failed. Please try again.";
       if (error instanceof Error) {
@@ -59,29 +58,40 @@ const BookingModal: React.FC<BookingModalProps> = ({ venueName, bookingDetails, 
     return (
       <div className="flex justify-center gap-4 my-6">
         {options.map(({ name, icon }) => (
-          <button
+          <Button
+            variant={"secondary"}
             key={name}
             onClick={() => setSelectedPayment(name)}
             className={`
-              p-4 rounded-lg border-2 transition-all w-32 h-24 flex flex-col items-center justify-center gap-2
+              p-4 rounded-lg border-2 transition-all w-32 h-24 flex flex-col items-center justify-center gap-2 
               ${
                 selectedPayment === name
-                  ? "border-neutral-600 bg-primary-500/10 scale-105 shadow-md"
-                  : "border-neutral-300 hover:border-neutral-400 text-neutral-500"
+                  ? "border-neutral-400 !bg-blue-500 !text-white scale-105 shadow-md"
+                  : "border-neutral-300 hover:border-neutral-400"
               }
             `}
             aria-label={`Select ${name}`}
           >
             {icon}
             <span className="font-bold text-md">{name}</span>
-          </button>
+          </Button>
         ))}
       </div>
     );
   };
 
+  const handleClose = () => {
+    if (step < 3) {
+      toast.info("Booking process canceled. Please restart to reserve your stay");
+      onClose();
+    } else {
+      onSuccess();
+      onClose();
+    }
+  };
+
   return (
-    <Modal onClose={onClose} modalTitle="Holidaze | Booking process">
+    <Modal onClose={handleClose} modalTitle="Holidaze | Booking process">
       {/* --- Step 1: Confirmation --- */}
       {step === 1 && (
         <div>
@@ -104,7 +114,7 @@ const BookingModal: React.FC<BookingModalProps> = ({ venueName, bookingDetails, 
             </div>
           </div>
           <div className="flex justify-end gap-4">
-            <Button variant="secondary" onClick={onClose}>
+            <Button variant="secondary" onClick={handleClose}>
               Cancel
             </Button>
             <Button onClick={() => setStep(2)} className="primary">
@@ -124,7 +134,7 @@ const BookingModal: React.FC<BookingModalProps> = ({ venueName, bookingDetails, 
               Back
             </Button>
             <Button onClick={handlePayNow} disabled={isProcessing}>
-              {isProcessing ? "Processing..." : `Pay ${formatCurrency(bookingDetails.totalCost)} Now`}
+              {isProcessing ? "Processing..." : `Pay ${formatCurrency(bookingDetails.totalCost)} Now`}{" "}
             </Button>
           </div>
         </div>
@@ -135,7 +145,7 @@ const BookingModal: React.FC<BookingModalProps> = ({ venueName, bookingDetails, 
         <div>
           <h2 className="text-3xl font-bold text-success text-center">Booking Confirmed!</h2>
           <p className="my-2 text-center text-neutral-600">A confirmation has been sent to your registered email.</p>
-          <div className="my-6 p-4 bg-neutral-100 rounded-lg border space-y-2">
+          <div className="my-6 p-4 bg-neutral-100 rounded-lg border space-y-2 text-lg">
             <p>
               <strong>Confirmation ID:</strong> <span className="font-mono">{confirmationId}</span>
             </p>
@@ -161,7 +171,7 @@ const BookingModal: React.FC<BookingModalProps> = ({ venueName, bookingDetails, 
             </p>
           </div>
           <div className="flex justify-end">
-            <Button onClick={onClose} className="w-full" size="lg">
+            <Button onClick={onSuccess} className="w-full" size="lg">
               Done
             </Button>
           </div>

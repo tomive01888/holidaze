@@ -123,12 +123,12 @@
 
   .datepicker-custom-class .react-datepicker__day--in-range,
   .datepicker-custom-class .react-datepicker__day--in-selecting-range {
-    @apply !bg-blue-100 !text-black;
+    @apply !bg-blue-200 !text-black;
   }
 
   .datepicker-custom-class .react-datepicker__day--range-start,
   .datepicker-custom-class .react-datepicker__day--range-end {
-    @apply !bg-blue-400 !text-black;
+    @apply !bg-blue-400/80 !text-black;
   }
 
   .datepicker-custom-class .react-datepicker__day:not(.react-datepicker__day--disabled):not(.booked-day):hover {
