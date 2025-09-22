@@ -43,3 +43,102 @@
     @apply rounded-lg outline-dashed outline-3 outline-offset-2 outline-pink-400;
   }
 }
+
+@layer components {
+  /*
+  ==============================================================
+  Main react-datepicker container
+  ==============================================================
+  */
+  .datepicker-custom-class .react-datepicker {
+    @apply w-full;
+  }
+
+  .react-datepicker__month-container {
+    @apply w-full !border-1 !border-blue-500 rounded;
+  }
+
+  /*
+  ==============================================================
+  Navigation react-datepicker container 
+  ==============================================================
+  */
+  .datepicker-custom-class .react-datepicker__navigation {
+    @apply scale-150 mt-2;
+  }
+
+  /*
+  ==============================================================
+  Header react-datepicker container  
+  ==============================================================
+  */
+  .datepicker-custom-class .react-datepicker__header {
+    @apply pt-4 bg-neutral-50 !border-b !border-b-neutral-200 select-none;
+  }
+
+  .datepicker-custom-class .react-datepicker__current-month {
+    font-family: "Josefin Slab", serif;
+    @apply w-full !text-2xl;
+  }
+
+  /*
+  ==============================================================
+  Weekdays react-datepicker container
+  ==============================================================
+  */
+
+  .datepicker-custom-class .react-datepicker__day-names {
+    display: table-row;
+    @apply text-lg flex justify-center !bg-neutral-100 !border-b !border-b-neutral-400 select-none;
+  }
+
+  .datepicker-custom-class .react-datepicker__day-name {
+    @apply font-semibold !leading-9 last-of-type:!text-red-600;
+  }
+
+  /*
+  ==============================================================
+  Days react-datepicker container
+  ==============================================================
+  */
+  .datepicker-custom-class .react-datepicker__day,
+  .datepicker-custom-class .react-datepicker__day-name {
+    font-family: "Josefin Slab", serif;
+    @apply !w-9 md:!w-12 lg:!w-9 xl:!w-12 !h-9;
+  }
+
+  .datepicker-custom-class .react-datepicker__day {
+    @apply text-lg !leading-10 !rounded !outline-1 !outline-gray-300 !bg-gray-200;
+  }
+
+  .datepicker-custom-class .react-datepicker__day--outside-month {
+    @apply !bg-neutral-100 !text-black !outline-none;
+  }
+
+  /*
+  ==============================================================
+  Custom styling for react-datepicker
+  ==============================================================
+  */
+
+  .datepicker-custom-class .react-datepicker__day--in-range,
+  .datepicker-custom-class .react-datepicker__day--in-selecting-range {
+    @apply !bg-blue-100 !text-black;
+  }
+
+  .datepicker-custom-class .react-datepicker__day--range-start,
+  .datepicker-custom-class .react-datepicker__day--range-end {
+    @apply !bg-blue-400 !text-black;
+  }
+
+  .datepicker-custom-class .react-datepicker__day:not(.react-datepicker__day--disabled):not(.booked-day):hover {
+    @apply !bg-green-400/50 hover:!text-black;
+  }
+  .datepicker-custom-class .react-datepicker__day--disabled {
+    @apply !bg-white !text-neutral-300 !outline-none;
+  }
+
+  .datepicker-custom-class .booked-day {
+    @apply !bg-red-200 !text-red-800 rounded pointer-events-none;
+  }
+}

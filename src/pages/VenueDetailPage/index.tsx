@@ -11,16 +11,19 @@ import { PageTitle } from "../../components/ui/PageTitle";
 import VenueFooter from "./components/VenueFooter";
 import VenueInformation from "./components/VenueInformation";
 import Amenities from "./components/Amenities";
-import CrashingComponent from "../../components/ui/CrashComponent";
 import ErrorBoundary from "../../components/ui/ErrorBoundary";
 import { motion } from "motion/react";
 import ImageGallery from "./components/ImageGallery";
+import BookingSection from "./components/BookingSection";
+import { useScrollPosition } from "../../hooks/useStickyShare";
 
 const VenueDetailPage = () => {
   const { id } = useParams<{ id: string }>();
   const [venue, setVenue] = useState<FullVenue | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<ApiError | Error | null>(null);
+  const scrollPosition = useScrollPosition();
+  const showStickyShare = scrollPosition > 100;
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -32,7 +35,6 @@ const VenueDetailPage = () => {
     try {
       const endpoint = `${endpoints.venues.byId(id)}?_owner=true&_bookings=true`;
       const response = await apiClient.get<SingleVenueApiResponse>(endpoint);
-      console.log(response.data);
 
       setVenue(response.data);
     } catch (err) {
@@ -45,6 +47,10 @@ const VenueDetailPage = () => {
   useEffect(() => {
     fetchVenue();
   }, [fetchVenue]);
+
+  const handleBookingSuccess = () => {
+    fetchVenue();
+  };
 
   if (isLoading) {
     return (
@@ -105,10 +111,7 @@ const VenueDetailPage = () => {
 
         <div className="lg:col-start-4 lg:col-span-2 lg:row-start-1 row-span-2 top-24">
           <ErrorBoundary>
-            booking coming soon!
-            <div className="min-h-[50vh] bg-black/30 animate-pulse rounded-2xl border-2 border-black sticky top-24">
-              <CrashingComponent />
-            </div>
+            <BookingSection venue={venue} showStickyShare={showStickyShare} onBookingSuccess={handleBookingSuccess} />
           </ErrorBoundary>
         </div>
 

@@ -11,7 +11,6 @@ import HomePagination from "./components/HomePagination";
 import { endpoints } from "../../constants/endpoints";
 import Button from "../../components/ui/Button";
 import { PageTitle } from "../../components/ui/PageTitle";
-import { motion } from "motion/react";
 
 const DEFAULT_ITEMS_PER_PAGE = 12;
 
@@ -73,15 +72,17 @@ const HomePage = () => {
     setSearchParams(newParams);
   };
 
-  const handlePageChange = (newPage: number) => {
+  const handlePageChange = (newPage: number, source: "keyboard" | "mouse" | "input") => {
     if (newPage !== page) {
       const newParams = new URLSearchParams(searchParams);
       newParams.set("page", String(newPage));
       setSearchParams(newParams);
 
-      setTimeout(() => {
-        skipLinkRef.current?.focus();
-      }, 0);
+      if (source === "keyboard") {
+        setTimeout(() => {
+          skipLinkRef.current?.focus();
+        }, 0);
+      }
     }
   };
 
@@ -141,18 +142,15 @@ const HomePage = () => {
         aria-label="Available venues"
       >
         {venues.map((venue) => (
-          <motion.li
+          <li
             tabIndex={-1}
             key={venue.id}
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ duration: 0.3 }}
             data-venue-card
             className="focus:outline-2 focus:outline-blue-500 focus:outline-offset-2 rounded-lg"
             aria-label={`Venue: ${venue.name}`}
           >
             <VenueCard venue={venue} />
-          </motion.li>
+          </li>
         ))}
       </ul>
     );
@@ -179,7 +177,7 @@ const HomePage = () => {
           <a
             href="#venue-list"
             ref={skipLinkRef}
-            className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-blue-600 text-white focus:p-2 focus:text-xl focus:font-bold rounded-md z-50"
+            className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 bg-blue-600 text-white focus:p-2 focus:text-xl focus:font-bold rounded-md z-50"
           >
             Skip to venue results
           </a>
