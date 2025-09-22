@@ -28,7 +28,7 @@ const HomePage = () => {
 
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
   const abortControllerRef = useRef<AbortController | null>(null);
-  const topPaginationRef = useRef<HTMLElement>(null);
+  const skipLinkRef = useRef<HTMLAnchorElement>(null);
   const lastPageRef = useRef(page);
 
   const fetchData = useCallback(async (pageNum: number, perPage: number, query: string) => {
@@ -62,10 +62,6 @@ const HomePage = () => {
 
   useEffect(() => {
     fetchData(page, itemsPerPage, debouncedSearchTerm).then(() => {
-      if (lastPageRef.current !== page && topPaginationRef.current) {
-        topPaginationRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
-      }
-
       lastPageRef.current = page;
     });
   }, [page, itemsPerPage, debouncedSearchTerm, fetchData]);
@@ -78,9 +74,15 @@ const HomePage = () => {
   };
 
   const handlePageChange = (newPage: number) => {
-    const newParams = new URLSearchParams(searchParams);
-    newParams.set("page", String(newPage));
-    setSearchParams(newParams);
+    if (newPage !== page) {
+      const newParams = new URLSearchParams(searchParams);
+      newParams.set("page", String(newPage));
+      setSearchParams(newParams);
+
+      setTimeout(() => {
+        skipLinkRef.current?.focus();
+      }, 0);
+    }
   };
 
   const handleItemsPerPageChange = (newItems: number) => {
@@ -135,7 +137,7 @@ const HomePage = () => {
     return (
       <ul
         id="venue-list"
-        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 scroll-mt-24"
+        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 scroll-mt-[500px]"
         aria-label="Available venues"
       >
         {venues.map((venue) => (
@@ -176,7 +178,8 @@ const HomePage = () => {
           {/* Skip link for screen readers */}
           <a
             href="#venue-list"
-            className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-blue-600 text-white px-4 py-2 rounded-md z-50"
+            ref={skipLinkRef}
+            className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-blue-600 text-white focus:p-2 focus:text-xl focus:font-bold rounded-md z-50"
           >
             Skip to venue results
           </a>
@@ -185,7 +188,6 @@ const HomePage = () => {
           {shouldShowPagination && (
             <HomePagination
               uniqueId="top"
-              ref={topPaginationRef}
               currentPage={page}
               pageCount={pageCount}
               itemsPerPage={itemsPerPage}

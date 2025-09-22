@@ -83,7 +83,9 @@ const VenueDetailPage = () => {
           </h1>
           <p className="text-xl text-neutral-200 mt-1">
             <span className="font-black">
-              {venue.location?.city ? `${venue.location?.city}, ${venue.location?.country}` : "No set location"}
+              <span>{venue.location?.city ? `${venue.location?.city}` : ""}</span>
+              <span>{venue.location?.city && venue.location?.country ? ", " : ""}</span>
+              <span>{venue.location?.country ? `${venue.location?.country}` : ""}</span>
             </span>
           </p>
         </div>
