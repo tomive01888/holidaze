@@ -58,9 +58,9 @@ const BecomeManagerPrompt: React.FC<BecomeManagerPromptProps> = ({ onUpgradeSucc
 
   return (
     <>
-      <div className="p-8 bg-primary-500/10 rounded-lg text-center border-2 border-dashed border-neutral-300">
+      <div className="p-8 bg-black/20 bg-linear-to-r from-neutral-600/20 to-teal-400/20 rounded-lg text-center border-2 border-dashed border-neutral-300">
         <h3 className="text-2xl font-bold">Ready to Host?</h3>
-        <p className="mt-2 text-neutral-100 max-w-md mx-auto">
+        <p className="mt-2 text-neutral-100 max-w-md mx-auto text-lg">
           Become a Venue Manager today to list your own properties, manage bookings, and start earning.
         </p>
         <Button onClick={() => setIsModalOpen(true)} className="mt-6" size="lg">

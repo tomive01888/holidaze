@@ -1,21 +1,22 @@
+import { Suspense, lazy } from "react";
 import { useRoutes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+
 import Layout from "./components/layout/Layout";
-import NotFoundPage from "./pages/NotFoundPage";
-import RegisterPage from "./pages/RegisterPage";
-import HomePage from "./pages/HomePage";
-import VenueDetailPage from "./pages/VenueDetailPage";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
-import DashboardPage from "./pages/DashboardPage";
 import VenueManagerRoute from "./components/auth/VenueManagerRoute";
-import EditVenuePage from "./pages/EditVenuePage";
-import CreateVenuePage from "./pages/CreateVenuePage";
 import AutoScrollToTop from "./components/ui/AutoScrollToTop";
 
-/**
- * The main application component that defines and renders all routes.
- */
+// 🔑 Lazy-load all pages
+const NotFoundPage = lazy(() => import("./pages/NotFoundPage"));
+const RegisterPage = lazy(() => import("./pages/RegisterPage"));
+const HomePage = lazy(() => import("./pages/HomePage"));
+const VenueDetailPage = lazy(() => import("./pages/VenueDetailPage"));
+const DashboardPage = lazy(() => import("./pages/DashboardPage"));
+const EditVenuePage = lazy(() => import("./pages/EditVenuePage"));
+const CreateVenuePage = lazy(() => import("./pages/CreateVenuePage"));
+
 function App() {
   const routes = useRoutes([
     {
@@ -49,7 +50,9 @@ function App() {
   return (
     <>
       <AutoScrollToTop />
-      {routes}
+      {/* 🔑 Wrap routes in Suspense */}
+      <Suspense fallback={<div>Loading...</div>}>{routes}</Suspense>
+
       <ToastContainer position="top-right" style={{ top: "90px" }} autoClose={3500} theme="light" closeOnClick />
     </>
   );

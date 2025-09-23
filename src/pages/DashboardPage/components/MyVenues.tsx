@@ -59,7 +59,7 @@ const MyVenues: React.FC<MyVenuesProps> = ({ venues }) => {
           <h2 className="text-3xl font-bold text-neutral-100 col-span-full">Venues you own</h2>
 
           {/* Render a card for each venue */}
-          <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <ul className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {venues.map((venue) => (
               <motion.li
                 key={venue.id}
