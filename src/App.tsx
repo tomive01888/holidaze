@@ -8,7 +8,6 @@ import ProtectedRoute from "./components/auth/ProtectedRoute";
 import VenueManagerRoute from "./components/auth/VenueManagerRoute";
 import AutoScrollToTop from "./components/ui/AutoScrollToTop";
 
-// 🔑 Lazy-load all pages
 const NotFoundPage = lazy(() => import("./pages/NotFoundPage"));
 const RegisterPage = lazy(() => import("./pages/RegisterPage"));
 const HomePage = lazy(() => import("./pages/HomePage"));

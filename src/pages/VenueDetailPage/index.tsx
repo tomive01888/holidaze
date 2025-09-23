@@ -15,20 +15,27 @@ import ErrorBoundary from "../../components/ui/ErrorBoundary";
 import { motion } from "motion/react";
 import ImageGallery from "./components/ImageGallery";
 import BookingSection from "./components/BookingSection";
-import { useScrollPosition } from "../../hooks/useStickyShare";
 
+/**
+ * Page component that displays full details for a single venue, including:
+ * - Title, location, description
+ * - Image gallery
+ * - Amenities and metadata
+ * - Booking section with date picker and pricing
+ * - Share functionality
+ *
+ * Data is fetched from the API by venue ID from the URL.
+ */
 const VenueDetailPage = () => {
   const { id } = useParams<{ id: string }>();
   const [venue, setVenue] = useState<FullVenue | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<ApiError | Error | null>(null);
-  const scrollPosition = useScrollPosition();
-  const showStickyShare = scrollPosition > 100;
 
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }, [id]);
-
+  /**
+   * Fetches venue details (with owner and bookings) from the API.
+   * Wrapped in useCallback to avoid unnecessary re-renders.
+   */
   const fetchVenue = useCallback(async () => {
     if (!id) return;
     setIsLoading(true);
@@ -44,10 +51,17 @@ const VenueDetailPage = () => {
     }
   }, [id]);
 
+  /**
+   * Runs the venue fetch whenever the ID changes.
+   */
   useEffect(() => {
     fetchVenue();
   }, [fetchVenue]);
 
+  /**
+   * Callback fired when a booking is completed successfully.
+   * Refreshes the venue data to update booked dates.
+   */
   const handleBookingSuccess = () => {
     fetchVenue();
   };
@@ -80,7 +94,7 @@ const VenueDetailPage = () => {
   }
 
   return (
-    <div className="py-16 bg-black/0">
+    <div className="py-16 bg-black/0 relative">
       <PageTitle title={`Holidaze | ${venue.name}`} />
       <div className="flex flex-col md:flex-row gap-6 justify-between items-start mb-6 text-white">
         <div>
@@ -111,7 +125,7 @@ const VenueDetailPage = () => {
 
         <div className="lg:col-start-4 lg:col-span-2 lg:row-start-1 row-span-2 top-24">
           <ErrorBoundary>
-            <BookingSection venue={venue} showStickyShare={showStickyShare} onBookingSuccess={handleBookingSuccess} />
+            <BookingSection venue={venue} onBookingSuccess={handleBookingSuccess} />
           </ErrorBoundary>
         </div>
 

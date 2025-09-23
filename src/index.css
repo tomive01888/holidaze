@@ -64,7 +64,18 @@
   ==============================================================
   */
   .datepicker-custom-class .react-datepicker__navigation {
-    @apply scale-150 mt-2;
+    @apply m-2 rounded-full;
+  }
+  .datepicker-custom-class .react-datepicker__navigation--previous {
+    @apply !flex !items-center !justify-center;
+  }
+  .datepicker-custom-class .react-datepicker__navigation-icon--next::before {
+    @apply scale-100;
+  }
+
+  .datepicker-custom-class .react-datepicker__navigation-icon--next::before,
+  .datepicker-custom-class .react-datepicker__navigation-icon--previous::before {
+    @apply scale-150 !border-blue-300 hover:!border-blue-500;
   }
 
   /*
@@ -101,6 +112,10 @@
   Days react-datepicker container
   ==============================================================
   */
+
+  .datepicker-custom-class .react-datepicker__month {
+    @apply !py-6;
+  }
   .datepicker-custom-class .react-datepicker__day,
   .datepicker-custom-class .react-datepicker__day-name {
     font-family: "Josefin Slab", serif;
@@ -108,7 +123,7 @@
   }
 
   .datepicker-custom-class .react-datepicker__day {
-    @apply text-lg !leading-10 !rounded !outline-1 !outline-gray-300 !bg-gray-200;
+    @apply text-lg !leading-10 !rounded  !bg-gray-200;
   }
 
   .datepicker-custom-class .react-datepicker__day--outside-month {

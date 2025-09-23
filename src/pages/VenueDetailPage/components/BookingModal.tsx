@@ -6,28 +6,60 @@ import { formatCurrency } from "../../../utils/currencyUtils";
 import Button from "../../../components/ui/Button";
 import { CreditCard } from "lucide-react";
 
+/**
+ * Available payment methods for booking.
+ */
 type PaymentMethod = "Google Pay" | "Credit Card" | "Apple Pay";
 
+/**
+ * Props for the {@link BookingModal} component.
+ */
 interface BookingModalProps {
+  /** Name of the venue being booked */
   venueName: string;
+  /** Details of the booking, including dates, guests, and pricing */
   bookingDetails: {
+    /** Start date of the booking */
     dateFrom: Date;
+    /** End date of the booking */
     dateTo: Date;
+    /** Number of guests */
     guests: number;
+    /** Total booking cost */
     totalCost: number;
+    /** Number of nights included */
     nights: number;
   };
+  /** Callback to close the modal */
   onClose: () => void;
+  /** Callback triggered when confirming the booking (e.g., API call) */
   onConfirm: () => Promise<void>;
+  /** Callback triggered after a successful booking */
   onSuccess: () => void;
 }
 
+/**
+ * A multi-step modal component for confirming and paying for a venue booking.
+ *
+ * Steps:
+ * 1. Confirm booking details
+ * 2. Choose payment method and pay
+ * 3. Display booking confirmation
+ *
+ * @param {BookingModalProps} props - Component props
+ * @returns {JSX.Element} A booking modal UI
+ */
 const BookingModal: React.FC<BookingModalProps> = ({ venueName, bookingDetails, onClose, onConfirm, onSuccess }) => {
   const [step, setStep] = useState(1);
   const [selectedPayment, setSelectedPayment] = useState<PaymentMethod>("Credit Card");
   const [isProcessing, setIsProcessing] = useState(false);
   const [confirmationId, setConfirmationId] = useState("");
 
+  /**
+   * Handles the "Pay Now" action.
+   * Calls `onConfirm`, generates a confirmation ID,
+   * and transitions to the success step.
+   */
   const handlePayNow = async () => {
     setIsProcessing(true);
     try {
@@ -48,6 +80,11 @@ const BookingModal: React.FC<BookingModalProps> = ({ venueName, bookingDetails, 
     }
   };
 
+  /**
+   * Renders available payment options as selectable buttons.
+   *
+   * @returns {JSX.Element} Payment method selection UI
+   */
   const renderPaymentOptions = () => {
     const options: { name: PaymentMethod; icon: React.ReactNode }[] = [
       { name: "Credit Card", icon: <CreditCard size={40} /> },
@@ -80,6 +117,11 @@ const BookingModal: React.FC<BookingModalProps> = ({ venueName, bookingDetails, 
     );
   };
 
+  /**
+   * Handles closing the modal.
+   * - If the booking is incomplete, cancels the process.
+   * - If the booking succeeded, calls `onSuccess` before closing.
+   */
   const handleClose = () => {
     if (step < 3) {
       toast.info("Booking process canceled. Please restart to reserve your stay");

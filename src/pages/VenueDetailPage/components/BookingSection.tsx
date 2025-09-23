@@ -6,35 +6,63 @@ import type { BookingFormData, FullVenue } from "../../../types";
 import { calculateNumberOfNights, generateBookedDateArray, isRangeOverlapping } from "../../../utils/dateUtils";
 import { formatCurrency } from "../../../utils/currencyUtils";
 import Button from "../../../components/ui/Button";
-import ShareButton from "./ShareButton";
 import DatePicker from "react-datepicker";
 import BookingModal from "./BookingModal";
 import { toast } from "react-toastify";
 import "react-datepicker/dist/react-datepicker.css";
 
+/**
+ * Props for the {@link BookingSection} component.
+ */
 interface BookingSectionProps {
+  /** Venue object containing details and availability */
   venue: FullVenue;
-  showStickyShare: boolean;
+  /** Callback when booking succeeds */
   onBookingSuccess: () => void;
 }
 
-const BookingSection: React.FC<BookingSectionProps> = ({ venue, onBookingSuccess, showStickyShare }) => {
+/**
+ * Booking section component that allows users to:
+ * - Select a date range
+ * - Specify number of guests
+ * - Preview cost calculation
+ * - Complete the booking via modal confirmation
+ *
+ * @param {BookingSectionProps} props - Component props
+ */
+const BookingSection: React.FC<BookingSectionProps> = ({ venue, onBookingSuccess }) => {
   const { user, openLoginModal } = useAuth();
   const [dateRange, setDateRange] = useState<[Date | null, Date | null]>([null, null]);
   const [guests, setGuests] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
   const [startDate, endDate] = dateRange;
   const nights = calculateNumberOfNights(startDate, endDate);
   const totalCost = nights * venue.price;
 
+  /**
+   * Pre-computed list of dates that are already booked for this venue.
+   * Memoized to avoid recalculation on re-renders.
+   */
   const bookedDates = useMemo(() => generateBookedDateArray(venue.bookings), [venue.bookings]);
 
+  /**
+   * Returns a custom CSS class for a given day in the date picker.
+   * Marks days as "booked" if they are already taken.
+   *
+   * @param {Date} date - The date to check
+   * @returns {string} CSS class name for the day
+   */
   const getDayClassName = (date: Date) => {
     const isBooked = bookedDates.some((bookedDate: Date) => bookedDate.toDateString() === date.toDateString());
     return isBooked ? "booked-day" : "";
   };
 
+  /**
+   * Handles the "Book Now" button click:
+   * - Validates dates and guest count
+   * - Checks for overlapping bookings
+   * - Opens the booking modal if valid
+   */
   const handleBookingClick = () => {
     if (!startDate || !endDate) {
       toast.error("Please select a start and end date for your stay.");
@@ -51,6 +79,10 @@ const BookingSection: React.FC<BookingSectionProps> = ({ venue, onBookingSuccess
     setIsModalOpen(true);
   };
 
+  /**
+   * Confirms the booking by sending a POST request to the API.
+   * Constructs a {@link BookingFormData} payload with user input.
+   */
   const handleConfirmBooking = async () => {
     if (!startDate || !endDate || !venue.id) return;
 
@@ -65,7 +97,7 @@ const BookingSection: React.FC<BookingSectionProps> = ({ venue, onBookingSuccess
   };
 
   return (
-    <aside className="sticky top-24 p-6 border rounded-lg shadow-lg bg-white text-black">
+    <aside className="sticky top-24 p-6 rounded-lg shadow-lg bg-white bg-linear-to-bl from-teal-400/30 from-10% to-gray-800/40 text-black border-4 border-teal-500 ">
       <div className="flex justify-between items-baseline">
         <h2 className="text-3xl font-bold">Book your stay</h2>
         <p className="text-xl">
@@ -156,15 +188,6 @@ const BookingSection: React.FC<BookingSectionProps> = ({ venue, onBookingSuccess
           onSuccess={onBookingSuccess}
         />
       )}
-
-      <div
-        className={`
-            transition-opacity duration-300 hidden lg:block  absolute right-0 -bottom-16
-            ${showStickyShare ? "opacity-100" : "opacity-0 pointer-events-none"}
-          `}
-      >
-        <ShareButton />
-      </div>
     </aside>
   );
 };
