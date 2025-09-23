@@ -15,6 +15,7 @@ import ErrorBoundary from "../../components/ui/ErrorBoundary";
 import { motion } from "motion/react";
 import ImageGallery from "./components/ImageGallery";
 import BookingSection from "./components/BookingSection";
+import TravelSlider from "./components/TravelSlider";
 
 /**
  * Page component that displays full details for a single venue, including:
@@ -142,6 +143,11 @@ const VenueDetailPage = () => {
             <h2 className="text-3xl font-bold border-b pb-3 mb-6 bg-transparent">Amenities</h2>
             <Amenities meta={venue.meta} />
           </motion.section>
+
+          <div className="border-4 border-teal-500 rounded-xl">
+            <TravelSlider />
+          </div>
+
           <motion.section
             initial={{ y: 30, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}

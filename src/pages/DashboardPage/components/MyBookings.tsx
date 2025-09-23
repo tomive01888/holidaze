@@ -4,6 +4,7 @@ import BookingCard from "./BookingsCard";
 import { sortBookingsByDate } from "../../../utils/dateUtils";
 import type { ProfileBooking } from "../../../types";
 import { motion } from "motion/react";
+import TravelSlider from "../../VenueDetailPage/components/TravelSlider";
 
 /**
  * Props for the {@link MyBookings} component.
@@ -111,6 +112,10 @@ const MyBookings: React.FC<MyBookingsProps> = ({ bookings }) => {
           </p>
         )}
       </section>
+
+      <div className="lg:px-20 lg:py-20 lg:rounded-2xl lg:border-4 border-teal-500 bg-black lg:bg-linear-to-br from-pink-200 from-15% to-teal-200">
+        <TravelSlider />
+      </div>
 
       {/* --- Past Bookings Section --- */}
       <section>
