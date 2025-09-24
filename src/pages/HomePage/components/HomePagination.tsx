@@ -159,7 +159,7 @@ const HomePagination = ({
           max={pageCount}
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
-          className="h-10 aspect-square px-2 border rounded-lg text-center text-white"
+          className="h-10 w-16 px-2 border rounded-lg text-center text-white"
           placeholder="Pg"
           aria-label="Enter page number to jump to"
         />
