@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../../../../hooks/useAuth";
 import type { AuthResponse, LoginPayload } from "../../../../types";
 import { endpoints } from "../../../../constants/endpoints";
@@ -44,6 +44,8 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSuccess }) => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const currentLocation = useLocation();
+  const navigate = useNavigate();
 
   /**
    * Handles form submission.
@@ -71,6 +73,9 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSuccess }) => {
       if (response?.data?.accessToken && response?.data?.name) {
         login(response.data);
         onSuccess();
+        if (currentLocation.pathname === "/register") {
+          navigate("/");
+        }
       } else {
         throw new Error("Login failed: Invalid response from server.");
       }
