@@ -7,6 +7,7 @@ import Layout from "./components/layout/Layout";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 import VenueManagerRoute from "./components/auth/VenueManagerRoute";
 import AutoScrollToTop from "./components/ui/AutoScrollToTop";
+import Spinner from "./components/ui/Spinner";
 
 const NotFoundPage = lazy(() => import("./pages/NotFoundPage"));
 const RegisterPage = lazy(() => import("./pages/RegisterPage"));
@@ -50,7 +51,16 @@ function App() {
     <>
       <AutoScrollToTop />
       {/* 🔑 Wrap routes in Suspense */}
-      <Suspense fallback={<div>Loading...</div>}>{routes}</Suspense>
+      <Suspense
+        fallback={
+          <div className="text-2xl text-white w-full min-h-[50vh] flex flex-col gap-2 items-center justify-center">
+            <Spinner />
+            <span> Loading...</span>
+          </div>
+        }
+      >
+        {routes}
+      </Suspense>
 
       <ToastContainer position="top-right" style={{ top: "90px" }} autoClose={3500} theme="light" closeOnClick />
     </>

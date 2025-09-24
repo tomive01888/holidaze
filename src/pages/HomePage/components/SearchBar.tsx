@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { ScanSearch, X } from "lucide-react";
 
 /**
@@ -41,88 +41,88 @@ export interface SearchBarProps {
  * );
  * ```
  */
-const SearchBar: React.FC<SearchBarProps> = ({
-  searchTerm,
-  setSearchTerm,
-  placeholder = "Search by name or description...",
-  className = "",
-}) => {
-  const [inputValue, setInputValue] = useState(searchTerm);
+const SearchBar = React.forwardRef<HTMLInputElement, SearchBarProps>(
+  ({ searchTerm, setSearchTerm, placeholder = "Search by name or description....", className = "" }, ref) => {
+    const [inputValue, setInputValue] = useState(searchTerm);
+    const inputRef = useRef<HTMLInputElement>(null);
 
-  useEffect(() => {
-    setInputValue(searchTerm);
-  }, [searchTerm]);
+    useEffect(() => {
+      setInputValue(searchTerm);
+    }, [searchTerm]);
 
-  /**
-   * Handles typing in the input and updates the search term state.
-   *
-   * @param {React.ChangeEvent<HTMLInputElement>} event - Input change event.
-   */
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
-    setInputValue(value);
-    setSearchTerm(value);
-  };
+    /**
+     * Handles typing in the input and updates the search term state.
+     *
+     * @param {React.ChangeEvent<HTMLInputElement>} event - Input change event.
+     */
+    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+      const value = event.target.value;
+      setInputValue(value);
+      setSearchTerm(value);
+    };
 
-  /**
-   * Clears the search input and resets the search term.
-   */
-  const handleClear = () => {
-    setInputValue("");
-    setSearchTerm("");
-  };
+    /**
+     * Clears the search input and resets the search term.
+     */
+    const handleClear = () => {
+      setInputValue("");
+      setSearchTerm("");
+      if (inputRef.current) {
+        inputRef.current.focus();
+      }
+    };
 
-  /**
-   * Handle form submission to prevent page reload
-   */
-  const handleSubmit = (event: React.FormEvent) => {
-    event.preventDefault();
-    setSearchTerm(inputValue);
-  };
+    /**
+     * Handle form submission to prevent page reload
+     */
+    const handleSubmit = (event: React.FormEvent) => {
+      event.preventDefault();
+    };
 
-  return (
-    <form className={`relative w-full max-w-lg mx-auto ${className}`} role="search" onSubmit={handleSubmit}>
-      <label htmlFor="venue-search" className="sr-only">
-        Search for venues
-      </label>
+    return (
+      <form className={`relative w-full max-w-lg mx-auto ${className}`} role="search" onSubmit={handleSubmit}>
+        <label htmlFor="venue-search" className="sr-only">
+          Search for venues
+        </label>
 
-      <div className="relative">
-        {/* Search icon on left */}
-        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-          <ScanSearch className="h-5 w-5 text-neutral-300" />
-        </div>
+        <div className="relative">
+          {/* Search icon on left */}
+          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <ScanSearch className="h-5 w-5 text-neutral-300" />
+          </div>
 
-        {/* Input with local state */}
-        <input
-          type="text"
-          id="venue-search"
-          value={inputValue} // Use local state
-          onChange={handleInputChange}
-          placeholder={placeholder}
-          className="
+          {/* Input with local state */}
+          <input
+            type="text"
+            id="venue-search"
+            ref={ref}
+            value={inputValue}
+            onChange={handleInputChange}
+            placeholder={placeholder}
+            className="
             w-full 
             py-3 pl-10 pr-10
             text-xl font-semibold text-white
-            border-2 border-neutral-300 rounded-full 
-            focus:outline-dashed focus:outline-offset-2 focus:ring-orange-400
-            transition-colors
+            border-2 border-neutral-300 rounded-full
+            bg-black/50
           "
-        />
+          />
 
-        {/* Clear button on right */}
-        {inputValue && (
-          <button
-            type="button"
-            onClick={handleClear}
-            className="absolute inset-y-0 right-0 pr-3 flex items-center justify-center"
-            aria-label="Clear search"
-          >
-            <X className="h-8 w-8 text-2xl text-neutral-400 hover:text-white" />
-          </button>
-        )}
-      </div>
-    </form>
-  );
-};
+          {/* Clear button on right */}
+          {inputValue && (
+            <button
+              type="button"
+              onClick={handleClear}
+              className="absolute inset-y-0 right-0 top-1/2 h-8 w-8 -translate-x-1/2 -translate-y-1/2"
+              aria-label="Clear search"
+            >
+              <X className="h-8 w-8 text-2xl text-neutral-400 hover:text-white" />
+            </button>
+          )}
+        </div>
+      </form>
+    );
+  }
+);
 
 export default SearchBar;

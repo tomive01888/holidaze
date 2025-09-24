@@ -1,0 +1,85 @@
+import { useState, useEffect, useCallback } from "react";
+import Button from "../../../components/ui/Button"; // Adjust path as necessary
+
+interface PopularSearchesSectionProps {
+  onSearchChange: (searchTerm: string) => void;
+}
+
+/** Popular search term suggestions for quick filters. */
+const popularSearches = [
+  "London",
+  "Paris",
+  "New York",
+  "Tokyo",
+  "Beach",
+  "Cabin",
+  "Luxury",
+  "Dubai",
+  "Forest",
+  "Villa",
+  "Maldives",
+  "Lake",
+];
+
+const PopularSearchesSection = ({ onSearchChange }: PopularSearchesSectionProps) => {
+  const [isVisible, setIsVisible] = useState(true);
+
+  useEffect(() => {
+    const savedVisibility = localStorage.getItem("popularSearchesVisible");
+    if (savedVisibility !== null) {
+      setIsVisible(savedVisibility === "true");
+    }
+  }, []);
+
+  const toggleVisibility = useCallback(() => {
+    setIsVisible((prev) => {
+      const newState = !prev;
+      localStorage.setItem("popularSearchesVisible", String(newState));
+      return newState;
+    });
+  }, []);
+
+  const handleButtonClick = (term: string) => {
+    onSearchChange(term);
+  };
+
+  return (
+    <section aria-labelledby="popular-searches-heading" className="my-8 px-4">
+      <div className="flex justify-between items-center border-b-1 border-b-gray-300">
+        <h2 id="popular-searches-heading" className="text-2xl font-semibold">
+          Popular Searches on Holidaze
+        </h2>
+
+        <Button
+          onClick={toggleVisibility}
+          aria-expanded={isVisible}
+          aria-controls="popular-searches-content"
+          className="bg-transparent text-neutral-200 hover:!bg-black/20"
+        >
+          {isVisible ? "Hide" : "Show"}
+        </Button>
+      </div>
+
+      {isVisible && (
+        <div
+          id="popular-searches-content"
+          className="flex flex-wrap justify-start gap-3 py-4 border-b border-neutral-200"
+        >
+          {popularSearches.map((term) => (
+            <Button
+              variant="secondary"
+              size="sm"
+              key={term}
+              onClick={() => handleButtonClick(term)}
+              className="px-3 py-1 font-medium rounded-full bg-neutral-100 text-black hover:bg-neutral-200 transition-colors"
+            >
+              {term}
+            </Button>
+          ))}
+        </div>
+      )}
+    </section>
+  );
+};
+
+export default PopularSearchesSection;

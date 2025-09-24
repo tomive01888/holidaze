@@ -1,35 +1,75 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { useSearchParams } from "react-router-dom";
-import type { Venue, VenuesApiResponse } from "../../types";
-import { apiClient } from "../../api/apiClient";
 import { useDebounce } from "../../hooks/useDebounce";
+import { apiClient } from "../../api/apiClient";
+import { endpoints } from "../../constants/endpoints";
+import type { Venue, VenuesApiResponse } from "../../types";
 import ErrorBoundary from "../../components/ui/ErrorBoundary";
-import SearchBar from "./components/SearchBar";
+import HeroSection from "./components/HeroSection";
+import HomePagination from "./components/HomePagination";
 import VenueCard from "./components/VenueCard";
 import VenueCardSkeleton from "./components/VenueCardSkeleton";
-import HomePagination from "./components/HomePagination";
-import { endpoints } from "../../constants/endpoints";
 import Button from "../../components/ui/Button";
 import { PageTitle } from "../../components/ui/PageTitle";
+import PopularSearchesSection from "./components/PopularSearchedSection";
 
 const DEFAULT_ITEMS_PER_PAGE = 12;
 
+/**
+ * HomePage component
+ *
+ * Displays the main homepage for Holidaze, including:
+ * - Hero banner with search functionality
+ * - Popular search term buttons
+ * - Venue results grid with pagination
+ * - Skeleton loaders while fetching
+ * - Error handling UI
+ *
+ * Accessibility:
+ * - Provides a "Skip to venue results" link for keyboard and screen reader users.
+ * - Uses semantic headings and ARIA labels for lists and cards.
+ *
+ * State management:
+ * - Search, pagination, and items-per-page are persisted in the URL query string.
+ * - API requests are debounced and abortable.
+ *
+ * @returns {JSX.Element} The rendered homepage UI.
+ */
 const HomePage = () => {
+  // URL params
   const [searchParams, setSearchParams] = useSearchParams();
   const page = Number(searchParams.get("page")) || 1;
   const itemsPerPage = Number(searchParams.get("itemsPerPage")) || DEFAULT_ITEMS_PER_PAGE;
   const searchTerm = searchParams.get("q") || "";
 
+  // Refs for focus management
+  const clearSearchButtonRef = useRef<HTMLButtonElement | null>(null);
+  const searchInputRef = useRef<HTMLInputElement | null>(null);
+  const skipLinkRef = useRef<HTMLAnchorElement | null>(null);
+
+  // Data state
   const [venues, setVenues] = useState<Venue[]>([]);
   const [pageCount, setPageCount] = useState(0);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
+  // Helpers
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
   const abortControllerRef = useRef<AbortController | null>(null);
-  const skipLinkRef = useRef<HTMLAnchorElement>(null);
   const lastPageRef = useRef(page);
 
+  // derived boolean to centralize "has results" logic
+  const hasResults = venues.length > 0;
+
+  /**
+   * Fetch venues from the API.
+   *
+   * Cancels outdated requests with AbortController.
+   *
+   * @param pageNum - Page number to request.
+   * @param perPage - Number of items per page.
+   * @param query - Search query string.
+   */
   const fetchData = useCallback(async (pageNum: number, perPage: number, query: string) => {
     if (abortControllerRef.current) abortControllerRef.current.abort();
     abortControllerRef.current = new AbortController();
@@ -59,19 +99,70 @@ const HomePage = () => {
     }
   }, []);
 
+  /**
+   * Trigger data fetching whenever page, itemsPerPage, or searchTerm changes.
+   */
   useEffect(() => {
     fetchData(page, itemsPerPage, debouncedSearchTerm).then(() => {
       lastPageRef.current = page;
     });
   }, [page, itemsPerPage, debouncedSearchTerm, fetchData]);
 
+  /**
+   * Handle focus management after search completes.
+   *
+   * Ensures only one element is focused based on final resolved state:
+   * - Results found (venues.length > 0) → skip link is focused
+   * - No results with search term → Clear Search button is focused
+   * - No results and no search term → Search input is focused
+   *
+   * IMPORTANT: skip link is only focusable (tabIndex=0) when hasResults === true.
+   */
+  useEffect(() => {
+    if (isLoading) return;
+
+    const isNewSearch = page === 1 && debouncedSearchTerm;
+    if (isNewSearch) {
+      // small delay to let DOM settle after render & state updates
+      const t = setTimeout(() => {
+        if (hasResults) {
+          // Only focus the skip link when there are results
+          skipLinkRef.current?.focus();
+        } else if (searchTerm) {
+          // No results but user searched — focus Clear Search button
+          clearSearchButtonRef.current?.focus();
+        } else {
+          // No active search — put focus back into the search input
+          searchInputRef.current?.focus();
+        }
+      }, 10);
+
+      return () => clearTimeout(t);
+    }
+  }, [isLoading, page, debouncedSearchTerm, hasResults, searchTerm]);
+
+  /**
+   * Updates the search term in query params and resets to page 1.
+   *
+   * @param newSearchTerm - The new search term to set.
+   */
   const handleSearchChange = (newSearchTerm: string) => {
     const newParams = new URLSearchParams(searchParams);
     newParams.set("q", newSearchTerm);
     newParams.set("page", "1");
     setSearchParams(newParams);
+
+    if (newSearchTerm === "") {
+      searchInputRef.current?.focus();
+    }
   };
 
+  /**
+   * Handles pagination page change.
+   *
+   * @param newPage - Target page number.
+   * @param source - Origin of the page change (keyboard, mouse, or input).
+   */
   const handlePageChange = (newPage: number, source: "keyboard" | "mouse" | "input") => {
     if (newPage !== page) {
       const newParams = new URLSearchParams(searchParams);
@@ -79,13 +170,19 @@ const HomePage = () => {
       setSearchParams(newParams);
 
       if (source === "keyboard") {
+        // Only focus the skip link if there are results to skip to
         setTimeout(() => {
-          skipLinkRef.current?.focus();
-        }, 0);
+          if (hasResults) skipLinkRef.current?.focus();
+        }, 200);
       }
     }
   };
 
+  /**
+   * Updates items per page in query params and resets to page 1.
+   *
+   * @param newItems - The new items-per-page value.
+   */
   const handleItemsPerPageChange = (newItems: number) => {
     const newParams = new URLSearchParams(searchParams);
     newParams.set("itemsPerPage", String(newItems));
@@ -93,8 +190,14 @@ const HomePage = () => {
     setSearchParams(newParams);
   };
 
+  /** Whether pagination controls should be shown. */
   const shouldShowPagination = searchParams && !error && (venues.length > 0 || pageCount > 0);
 
+  /**
+   * Render the main content section depending on state.
+   *
+   * @returns {JSX.Element} Content UI
+   */
   const renderContent = () => {
     if (isLoading) {
       return (
@@ -127,7 +230,12 @@ const HomePage = () => {
               : "No venues available at the moment."}
           </p>
           {searchTerm && (
-            <Button variant="primary" onClick={() => handleSearchChange("")} className="mt-4">
+            <Button
+              variant="primary"
+              onClick={() => handleSearchChange("")}
+              className="mt-4"
+              ref={clearSearchButtonRef}
+            >
               Clear Search
             </Button>
           )}
@@ -138,7 +246,7 @@ const HomePage = () => {
     return (
       <ul
         id="venue-list"
-        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 scroll-mt-[500px]"
+        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 scroll-mt-[500px] px-4"
         aria-label="Available venues"
       >
         {venues.map((venue) => (
@@ -161,28 +269,23 @@ const HomePage = () => {
       <PageTitle title={"Holidaze | Homepage"} />
 
       <ErrorBoundary>
-        <section aria-labelledby="page-heading" className="mb-8">
-          <h1 id="page-heading" className="text-5xl py-6 text-center">
-            Find your perfect stay
-          </h1>
-          <SearchBar searchTerm={searchTerm} setSearchTerm={handleSearchChange} />
-        </section>
+        <HeroSection searchTerm={searchTerm} onSearchChange={handleSearchChange} searchInputRef={searchInputRef} />
+
+        <PopularSearchesSection onSearchChange={handleSearchChange} />
 
         <section className="my-6 scroll-mt-24">
-          <h2 id="venue-results-heading" className="sr-only">
-            Venues
-          </h2>
-
-          {/* Skip link for screen readers */}
+          {/* Skip link for screen readers — only focusable when there are results */}
           <a
             href="#venue-list"
             ref={skipLinkRef}
-            className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 bg-blue-600 text-white focus:p-2 focus:text-xl focus:font-bold rounded-md z-50"
+            tabIndex={hasResults ? 0 : -1}
+            aria-hidden={!hasResults}
+            className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 bg-blue-600 text-white focus:p-2 focus:text-xl focus:font-bold rounded-md z-[101]"
           >
             Skip to venue results
           </a>
 
-          {/* Pagination - only shows when there are results to paginate */}
+          {/* Top pagination */}
           {shouldShowPagination && (
             <HomePagination
               uniqueId="top"
@@ -194,9 +297,12 @@ const HomePage = () => {
             />
           )}
 
+          <h3 id="venue-results-heading" className="sr-only">
+            Venues
+          </h3>
           <div className="mt-6">{renderContent()}</div>
 
-          {/* Bottom pagination - same logic */}
+          {/* Bottom pagination */}
           {shouldShowPagination && (
             <HomePagination
               uniqueId="bottom"

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { forwardRef } from "react";
 
 type ButtonVariant = "primary" | "secondary" | "destructive";
 type ButtonSize = "sm" | "md" | "lg";
@@ -29,40 +29,34 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
  * It's built to be the standard button for the entire application, ensuring
  * a consistent look and feel.
  */
-const Button: React.FC<ButtonProps> = ({
-  children,
-  variant = "primary",
-  size = "md",
-  className = "",
-  disabled = false,
-  ...props
-}) => {
-  const baseClasses = "font-bold rounded-md cursor-pointer transition-colors focus:outline-3 focus:outline-offset-2";
+const Button = forwardRef<HTMLButtonElement, ButtonProps>(
+  ({ children, variant = "primary", size = "md", className = "", disabled = false, ...props }, ref) => {
+    const baseClasses = "font-bold rounded-md cursor-pointer transition-colors focus:outline-3 focus:outline-offset-2";
 
-  const variantClasses: Record<ButtonVariant, string> = {
-    primary: "bg-blue-500 text-white hover:bg-blue-600 focus:outline-blue-400 focus:outline-dashed",
-    secondary: "bg-neutral-200 text-neutral-800 hover:bg-neutral-300 focus:outline-pink-400 focus:outline-dashed",
-    destructive:
-      "bg-neutral-800/20 text-white hover:text-white hover:bg-red-700 focus:outline-red-400 focus:outline-dashed",
-  };
+    const variantClasses: Record<ButtonVariant, string> = {
+      primary: "bg-blue-500 text-white hover:bg-blue-600 focus:outline-blue-400 focus:outline-dashed",
+      secondary: "bg-neutral-200 text-neutral-800 hover:bg-neutral-300 focus:outline-pink-400 focus:outline-dashed",
+      destructive:
+        "bg-neutral-800/20 text-white hover:text-white hover:bg-red-700 focus:outline-red-400 focus:outline-dashed",
+    };
 
-  const sizeClasses: Record<ButtonSize, string> = {
-    sm: "py-1 px-3 ",
-    md: "py-2 px-4 text-lg",
-    lg: "py-3 px-6 text-xl",
-  };
+    const sizeClasses: Record<ButtonSize, string> = {
+      sm: "py-1 px-3 ",
+      md: "py-2 px-4 text-lg",
+      lg: "py-3 px-6 text-xl",
+    };
 
-  const disabledClasses = "disabled:bg-neutral-200 disabled:text-neutral-400 disabled:cursor-not-allowed";
+    const disabledClasses = "disabled:bg-neutral-200 disabled:text-neutral-400 disabled:cursor-not-allowed";
 
-  const finalClassName = [baseClasses, variantClasses[variant], sizeClasses[size], disabledClasses, className].join(
-    " "
-  );
+    const finalClassName = [baseClasses, variantClasses[variant], sizeClasses[size], disabledClasses, className].join(
+      " "
+    );
 
-  return (
-    <button className={finalClassName} disabled={disabled} {...props}>
-      {children}
-    </button>
-  );
-};
-
+    return (
+      <button ref={ref} className={finalClassName} disabled={disabled} {...props}>
+        {children}
+      </button>
+    );
+  }
+);
 export default Button;

@@ -44,7 +44,7 @@ const Header = () => {
 
   return (
     <>
-      <header className={`fixed w-full top-0 z-[999] h-16 shadow-md transition-colors ${getHeaderClass()}`}>
+      <header className={`fixed w-full top-0 z-[100] h-16 shadow-md transition-colors ${getHeaderClass()}`}>
         <nav className="container mx-auto px-4 py-3 flex justify-between items-center">
           <Link to="/" className="text-2xl font-bold hover:opacity-80 transition-opacity font-new flex gap-1">
             <img src={holidazeLogo} alt="Holidaze logo including a globe" className=" w-full max-w-30" />
