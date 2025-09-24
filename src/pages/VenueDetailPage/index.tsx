@@ -3,19 +3,19 @@ import { Link, useParams } from "react-router-dom";
 import { apiClient, ApiError } from "../../api/apiClient";
 import { endpoints } from "../../constants/endpoints";
 import type { FullVenue, SingleVenueApiResponse } from "../../types";
+import { motion } from "motion/react";
+import ErrorBoundary from "../../components/ui/ErrorBoundary";
 import NotFoundPage from "../NotFoundPage";
-import Button from "../../components/ui/Button";
 import ShareButton from "./components/ShareButton";
-import Spinner from "../../components/ui/Spinner";
-import { PageTitle } from "../../components/ui/PageTitle";
 import VenueFooter from "./components/VenueFooter";
 import VenueInformation from "./components/VenueInformation";
 import Amenities from "./components/Amenities";
-import ErrorBoundary from "../../components/ui/ErrorBoundary";
-import { motion } from "motion/react";
 import ImageGallery from "./components/ImageGallery";
 import BookingSection from "./components/BookingSection";
-import TravelSlider from "./components/TravelSlider";
+import { PageTitle } from "../../components/ui/PageTitle";
+import Button from "../../components/ui/Button";
+import Spinner from "../../components/ui/Spinner";
+import TravelSlider from "../../components/ui/TravelSlider";
 
 /**
  * Page component that displays full details for a single venue, including:
@@ -43,6 +43,7 @@ const VenueDetailPage = () => {
     try {
       const endpoint = `${endpoints.venues.byId(id)}?_owner=true&_bookings=true`;
       const response = await apiClient.get<SingleVenueApiResponse>(endpoint);
+      console.log(response.data);
 
       setVenue(response.data);
     } catch (err) {
@@ -103,10 +104,9 @@ const VenueDetailPage = () => {
             {venue.name ? venue.name : "Unknown"}
           </h1>
           <p className="text-xl text-neutral-200 mt-1">
-            <span className="font-black">
-              <span>{venue.location?.city ? `${venue.location?.city}` : ""}</span>
-              <span>{venue.location?.city && venue.location?.country ? ", " : ""}</span>
-              <span>{venue.location?.country ? `${venue.location?.country}` : ""}</span>
+            <span>
+              <span>{venue.location?.city ? `${venue.location?.city}` : "City: N/A"}</span>, {"  "}
+              <span>{venue.location?.country ? `${venue.location?.country}` : "Country: N/A"}</span>
             </span>
           </p>
         </div>
@@ -144,7 +144,7 @@ const VenueDetailPage = () => {
             <Amenities meta={venue.meta} />
           </motion.section>
 
-          <div className="border-4 border-teal-500 rounded-xl">
+          <div className="border-2 border-e-teal-200 border-s-teal-200 border-y-teal-400 rounded-xl">
             <TravelSlider />
           </div>
 

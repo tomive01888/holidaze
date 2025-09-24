@@ -187,11 +187,11 @@ export interface VenueFormData {
     pets: boolean;
   };
   location: {
-    address?: string;
-    city?: string;
-    zip?: string;
-    country?: string;
-    continent?: string;
+    address?: string | null;
+    city?: string | null;
+    zip?: string | null;
+    country?: string | null;
+    continent?: string | null;
     lat?: number;
     lng?: number;
   };

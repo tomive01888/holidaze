@@ -38,7 +38,7 @@ const VenueForm: React.FC<VenueFormProps> = ({
       maxGuests: 1,
       rating: 0,
       meta: { wifi: false, parking: false, breakfast: false, pets: false },
-      location: { address: "", city: "", zip: "", country: "", continent: "", lat: 0, lng: 0 },
+      location: { address: null, city: null, zip: null, country: null, continent: null, lat: 0, lng: 0 },
     }
   );
 
@@ -97,15 +97,21 @@ const VenueForm: React.FC<VenueFormProps> = ({
     toast.info("Cover image updated.");
   };
 
+  function sanitizeOrNull(value: string | null | undefined): string | null {
+    if (value == null) return null;
+    const clean = DOMPurify.sanitize(value);
+    return clean.trim() === "" ? null : clean;
+  }
+
   const handleSubmit = (e: React.FormEvent) => {
     /** Sanitize string inputs */
     const sanitizedName = DOMPurify.sanitize(formData.name ?? "");
     const sanitizedDescription = DOMPurify.sanitize(formData.description ?? "");
-    const sanitizedLocationAddress = DOMPurify.sanitize(formData.location.address ?? "");
-    const sanitizedLocationCity = DOMPurify.sanitize(formData.location.city ?? "");
-    const sanitizedLocationZip = DOMPurify.sanitize(formData.location.zip ?? "");
-    const sanitizedLocationCountry = DOMPurify.sanitize(formData.location.country ?? "");
-    const sanitizedLocationContinent = DOMPurify.sanitize(formData.location.continent ?? "");
+    const sanitizedLocationAddress = sanitizeOrNull(formData.location.address ?? "");
+    const sanitizedLocationCity = sanitizeOrNull(formData.location.city ?? "");
+    const sanitizedLocationZip = sanitizeOrNull(formData.location.zip ?? "");
+    const sanitizedLocationCountry = sanitizeOrNull(formData.location.country ?? "");
+    const sanitizedLocationContinent = sanitizeOrNull(formData.location.continent ?? "");
 
     e.preventDefault();
     const payload: VenueFormData = {
