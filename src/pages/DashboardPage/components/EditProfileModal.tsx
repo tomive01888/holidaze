@@ -62,7 +62,7 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({ profile, onClose, o
   };
 
   return (
-    <Modal onClose={onClose} modalTitle={`Holidaze | Editing ${profile.name} avatar and banner`}>
+    <Modal onClose={onClose} modalTitle={`Holidaze | Editing ${profile.name} avatar and banner`} className="!max-w-xl">
       <h2 className="text-3xl font-bold mb-6">Edit Your Profile</h2>
       <div className="grid grid-cols-1 gap-8">
         {/* --- Top Side: Form Inputs --- */}
@@ -94,7 +94,7 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({ profile, onClose, o
         {/* ---  Under Side: Live Preview --- */}
         <div>
           <p className="block mb-2 font-bold">Live Preview</p>
-          <div className="w-full h-[20rem] border rounded-lg overflow-hidden relative origin-top-left ">
+          <div className="w-full h-[14rem] border rounded-lg overflow-hidden relative origin-top-left ">
             <div className="absolute z-2 top-0 left-0 right-0 bottom-0 bg-black/20 backdrop-blur-xs"></div>
             <div
               className="absolute inset-0 bg-neutral-200 "
@@ -108,9 +108,9 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({ profile, onClose, o
               <img
                 src={formData.avatarUrl || "/default-avatar.png"}
                 alt="Avatar Preview"
-                className="w-34 aspect-square rounded-full object-cover border-2 border-white shadow-md"
+                className="w-24 aspect-square rounded-full object-cover border-2 border-white shadow-md"
               />
-              <p className="text-white font-bold mt-2 text-3xl drop-shadow-md">{profile.name}</p>
+              <h4 className="text-white font-bold mt-2 text-3xl drop-shadow-md">{profile.name}</h4>
             </div>
           </div>
         </div>

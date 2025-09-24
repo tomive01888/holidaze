@@ -18,7 +18,7 @@ export const MediaFields = () => {
 
   return (
     <fieldset className="p-4 border rounded-md">
-      <legend className="font-bold px-2 text-lg">Images (up to 8)</legend>
+      <legend className="font-bold px-2">Images (up to 8)</legend>
 
       <p className="italic text-neutral-600 border-dashed border-1 border-neutral-400 rounded p-2 bg-neutral-100">
         <strong>Tip:</strong> Adding images helps attract customers, just make sure they are valid!

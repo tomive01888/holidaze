@@ -214,7 +214,7 @@ const HomePage = () => {
     if (error) {
       return (
         <div role="alert" className="text-center bg-red-50 border border-red-200 p-6 rounded-lg">
-          <h3 className="text-lg font-bold text-red-800 mb-2">Unable to load venues</h3>
+          <h3 className="text-2xl font-bold text-red-800 mb-2">Unable to load venues</h3>
           <p className="text-red-700">{error}</p>
         </div>
       );

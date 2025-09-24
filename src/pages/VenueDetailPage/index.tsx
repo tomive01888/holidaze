@@ -154,7 +154,7 @@ const VenueDetailPage = () => {
             transition={{ duration: 0.7 }}
           >
             <h2 className="text-3xl font-bold border-b pb-3 mb-4">About this venue</h2>
-            <div className="text-lg max-w-none text-neutral-100 break-words">
+            <div className="max-w-none text-neutral-100 break-words">
               <p>{venue.description ? venue.description : "This venue has no description."}</p>
             </div>
           </motion.section>

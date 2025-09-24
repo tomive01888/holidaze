@@ -9,7 +9,7 @@ export const CoreDetailsFields = () => {
 
   return (
     <fieldset className="space-y-4 p-4 border rounded-md">
-      <legend className="font-bold px-2 text-lg">Core Information</legend>
+      <legend className="font-bold px-2">Core Information</legend>
       <div>
         <label htmlFor="name" className={labelClasses}>
           Venue Name
