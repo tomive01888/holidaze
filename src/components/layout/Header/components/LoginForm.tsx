@@ -46,7 +46,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSuccess }) => {
   const [isLoading, setIsLoading] = useState(false);
   const currentLocation = useLocation();
   const navigate = useNavigate();
-
+ 
   /**
    * Handles form submission.
    *
@@ -141,7 +141,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSuccess }) => {
 
         {/* Visible Error Message (for sighted users) */}
         {error && (
-          <p
+          <p  
             id="form-error-message"
             className="text-md text-center text-error bg-error/10 p-2 rounded-md font-bold outline-1 outline-red-600 text-red-600"
           >
