@@ -36,7 +36,7 @@ export const endpoints = {
      * Generates the endpoint for a user's venues.
      * @param {string} name The name of the user.
      */
-    venues: (name: string) => `/holidaze/profiles/${name}/venues`,
+    venues: (name: string) => `/holidaze/profiles/${name}/venues?_bookings=true`,
     /**
      * Generates the endpoint for a user's bookings.
      * @param {string} name The name of the user.

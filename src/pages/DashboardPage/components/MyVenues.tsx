@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import type { Venue } from "../../../types";
+import type { FullVenue } from "../../../types";
 import Button from "../../../components/ui/Button";
 import VenueManagementCard from "./VenueManagerCard";
 import { motion } from "motion/react";
@@ -9,10 +9,10 @@ import { motion } from "motion/react";
  * Props for the {@link MyVenues} component.
  *
  * @typedef {Object} MyVenuesProps
- * @property {Venue[]} venues - An array of venues owned by the logged-in user.
+ * @property {FullVenue[]} venues - An array of venues owned by the logged-in user.
  */
 interface MyVenuesProps {
-  venues: Venue[];
+  venues: FullVenue[];
 }
 
 /**

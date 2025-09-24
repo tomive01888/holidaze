@@ -103,6 +103,7 @@ export interface BaseBooking {
   guests: number;
   created: string;
   updated: string;
+  length?: number;
 }
 
 // ============================================================================
@@ -130,7 +131,7 @@ export interface ProfileBooking extends BaseBooking {
  * This is the primary type for your Venue Detail Page.
  */
 export interface FullVenue extends Venue {
-  owner: PublicProfile;
+  owner?: PublicProfile;
   bookings: VenueBooking[];
   _count: {
     bookings: number;
@@ -211,6 +212,13 @@ export interface AuthResponse {
 export interface VenuesApiResponse {
   data: Venue[];
   meta: PaginationMeta;
+}
+
+/**
+ * Represents the Venue reponse with a list of customer bookings
+ */
+export interface VenueWithBookings extends Venue {
+  bookings: VenueBooking[];
 }
 
 /**

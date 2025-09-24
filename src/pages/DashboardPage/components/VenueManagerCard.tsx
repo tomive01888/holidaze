@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { apiClient } from "../../../api/apiClient";
 import { endpoints } from "../../../constants/endpoints";
-import type { Venue } from "../../../types";
+import type { VenueWithBookings } from "../../../types";
 import ViewBookingsModal from "./ViewBookingsModal";
 import Button from "../../../components/ui/Button";
 import Modal from "../../../components/ui/Modal";
@@ -16,7 +16,7 @@ import { Trash2 } from "lucide-react";
  * @property {Venue} venue - The venue data to display and manage.
  */
 interface VenueManagementCardProps {
-  venue: Venue;
+  venue: VenueWithBookings;
 }
 
 /**
@@ -46,6 +46,8 @@ const VenueManagementCard: React.FC<VenueManagementCardProps> = ({ venue }) => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isBookingsModalOpen, setIsBookingsModalOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+
+  console.log(venue);
 
   /**
    * Handles deleting the venue.
@@ -92,30 +94,33 @@ const VenueManagementCard: React.FC<VenueManagementCardProps> = ({ venue }) => {
             <h3 className="absolute bottom-4 left-4 text-xl font-bold text-white truncate max-w-full pr-4">
               {venue.name}
             </h3>
+            <p className="absolute bottom-2 right-2">Total bookings - {venue.bookings?.length}</p>
           </div>
-
-          {/* --- Delete Icon --- */}
-          <Button
-            variant="destructive"
-            onClick={() => setIsDeleteModalOpen(true)}
-            className="absolute top-3 right-3 !p-2 !aspect-square !rounded-full hover:scale-110 
-                       lg:opacity-0 lg:group-hover:opacity-100 focus:opacity-100 focus:!bg-red-500"
-            aria-label={`Delete venue ${venue.name}`}
-          >
-            <Trash2 size={28} />
-          </Button>
         </div>
 
         {/* --- Actions Section --- */}
         <div className="p-4 bg-white flex-grow flex flex-col justify-end">
-          <div className="flex flex-col gap-3">
-            <Link to={`/venue/edit/${venue.id}`} aria-label={`View details for venue ${venue.name}`} tabIndex={-1}>
+          <div className="flex gap-3">
+            <Link
+              to={`/venue/edit/${venue.id}`}
+              aria-label={`View details for venue ${venue.name}`}
+              tabIndex={-1}
+              className="w-full"
+            >
               <Button variant="primary" className="w-full">
                 Edit Venue
               </Button>
             </Link>
             <Button variant="secondary" className="w-full" onClick={() => setIsBookingsModalOpen(true)}>
-              View Bookings
+              View Active Bookings
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={() => setIsDeleteModalOpen(true)}
+              className="!rounded-full w-fit !px-4"
+              aria-label={`Delete venue ${venue.name}`}
+            >
+              <Trash2 size={28} />
             </Button>
           </div>
         </div>
@@ -141,7 +146,11 @@ const VenueManagementCard: React.FC<VenueManagementCardProps> = ({ venue }) => {
 
       {/* --- View Bookings Modal --- */}
       {isBookingsModalOpen && (
-        <ViewBookingsModal venueId={venue.id} venueName={venue.name} onClose={() => setIsBookingsModalOpen(false)} />
+        <ViewBookingsModal
+          venueId={venue.id}
+          venueName={venue.name}
+          onClose={() => setIsBookingsModalOpen(false)}
+        />
       )}
     </>
   );

@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from "react";
 import { useAuth } from "../../hooks/useAuth";
-import type { FullUserProfile, ProfileApiResponse } from "../../types";
+import type { FullUserProfile, FullVenue, ProfileApiResponse } from "../../types";
 import { endpoints } from "../../constants/endpoints";
 import { apiClient, ApiError } from "../../api/apiClient";
 import Spinner from "../../components/ui/Spinner";
@@ -34,7 +34,7 @@ const DashboardPage = () => {
   const [error, setError] = useState<string | null>(null);
   const [refetchTrigger, setRefetchTrigger] = useState(0);
   const [activeTab, setActiveTab] = useState<DashboardTab>("bookings");
-
+  const [profileOwnVenues, setProfilOwnVenues] = useState<FullVenue[] | []>([]);
   /**
    * Fetches the user's profile data including bookings (and venues if user is a manager).
    * Uses `apiClient` to call the API and handles loading & error states.
@@ -67,6 +67,27 @@ const DashboardPage = () => {
   useEffect(() => {
     fetchProfile();
   }, [fetchProfile, refetchTrigger]);
+
+  useEffect(() => {
+    if (!user?.name) {
+      setIsLoading(false);
+      return;
+    }
+    const fetchBookings = async () => {
+      try {
+        const endpoint = `${endpoints.profiles.venues(user.name)}`;
+        const response = await apiClient.get<{ data: FullVenue[] }>(endpoint);
+        console.log(response);
+
+        setProfilOwnVenues(response.data);
+      } catch (err) {
+        setError(err instanceof ApiError ? err.message : "Failed to load bookings.");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchBookings();
+  }, [profileData, user]);
 
   /**
    * Handles profile updates (e.g., avatar changes or role upgrades).
@@ -139,7 +160,7 @@ const DashboardPage = () => {
         <div>
           {profileData.venueManager ? (
             <>
-              {activeTab === "venues" && <MyVenues venues={profileData.venues || []} />}
+              {activeTab === "venues" && <MyVenues venues={profileOwnVenues || []} />}
               {activeTab === "bookings" && <MyBookings bookings={profileData.bookings || []} />}
             </>
           ) : (

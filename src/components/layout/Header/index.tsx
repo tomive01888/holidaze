@@ -65,7 +65,12 @@ const Header = () => {
                   )}
                   <span className="hidden sm:inline">{user.name}</span>
                 </Link>
-                <Button variant="destructive" size="sm" onClick={logout} className="cursor-pointer text-white py-2">
+                <Button
+                  variant="destructive"
+                  size="sm"
+                  onClick={logout}
+                  className="cursor-pointer text-white py-2 !bg-neutral-800/25 hover:!bg-red-600"
+                >
                   Logout
                 </Button>
               </>

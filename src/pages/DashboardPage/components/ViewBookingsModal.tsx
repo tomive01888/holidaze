@@ -50,6 +50,7 @@ const ViewBookingsModal: React.FC<ViewBookingsModalProps> = ({ venueId, venueNam
       try {
         const endpoint = `${endpoints.venues.byId(venueId)}?_bookings=true&_customer=true`;
         const response = await apiClient.get<{ data: FullVenue }>(endpoint);
+
         setBookings(response.data.bookings);
       } catch (err) {
         setError(err instanceof ApiError ? err.message : "Failed to load bookings.");

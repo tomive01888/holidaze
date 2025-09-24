@@ -64,10 +64,10 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({ profile, onProfileUpdate 
   return (
     <>
       {/* --- Banner & Profile Info --- */}
-      <div className="relative h-64 md:h-96 w-full bg-neutral-200">
+      <div className="relative h-64 md:h-96 w-full bg-neutral-200 border-lg">
         {/* Banner image as background */}
         <div
-          className={`absolute inset-0 bg-neutral-800 transition-opacity duration-2000 ${
+          className={`absolute inset-0 bg-neutral-800 transition-opacity duration-2000 border-lg ${
             renderOpacity ? "opacity-0 animate-pulse" : "opacity-100"
           }`}
           style={{
@@ -77,9 +77,9 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({ profile, onProfileUpdate 
           }}
         ></div>
 
-        <section className="relative h-full flex flex-col justify-center items-center text-white text-center p-4 bg-gradient-to-t from-black/60 to-transparent">
-          <div className="absolute inset-0 bg-black/20 backdrop-blur-xs"></div>
-          <div className="relative flex flex-col items-center gap-4">
+        <section className="relative h-full flex flex-col justify-center items-center text-white text-center p-4 bg-gradient-to-t from-black/60 to-transparent border-lg">
+          <div className="absolute inset-0 bg-black/20 backdrop-blur-xs border-lg"></div>
+          <div className="relative flex flex-col items-center gap-4 border-lg">
             <img
               src={profile.avatar?.url}
               alt={`${profile.name}'s profile avatar`}
