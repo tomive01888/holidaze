@@ -2,6 +2,8 @@ import React from "react";
 import type { Venue } from "../../../types";
 import VenueManagementCard from "./VenueManagerCard";
 import { motion } from "motion/react";
+import { useAuth } from "../../../hooks/useAuth";
+import { PageTitle } from "../../../components/ui/PageTitle";
 
 /**
  * Props for the {@link MyVenues} component.
@@ -40,8 +42,12 @@ interface MyVenuesProps {
  * ```
  */
 const MyVenues: React.FC<MyVenuesProps> = ({ venues }) => {
+  const { user } = useAuth();
   return (
     <div className="bg-black/0">
+      <PageTitle
+        title={`Holidaze | ${user?.venueManager ? "VenueManager" : "Customer"} ${user?.name} managing venues `}
+      />
       {/* Create New Venue Button */}
 
       {/* Display list of venues or empty state */}

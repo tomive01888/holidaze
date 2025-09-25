@@ -8,7 +8,6 @@ import ProfileHeader from "./components/ProfileHeader";
 import MyBookings from "./components/MyBookings";
 import BecomeManagerPrompt from "./components/BecomeManagerPrompt";
 import MyVenues from "./components/MyVenues";
-import { PageTitle } from "../../components/ui/PageTitle";
 import Button from "../../components/ui/Button";
 import EditProfileModal from "./components/EditProfileModal";
 import { UserRoundPen } from "lucide-react";
@@ -146,8 +145,6 @@ const DashboardPage = () => {
 
   return (
     <>
-      <PageTitle title={`Holidaze | ${user?.venueManager ? "VenueManager" : "Customer"} ${user?.name} `} />
-
       {/* Grid layout: sidebar (left) + main content (right) */}
       <div className="grid grid-cols-1 gap-8 md:p-8 md:grid-cols-[1.5fr_2.5fr] max-w-4xl mx-auto my-16">
         {/* ======== LEFT PANEL ======== */}

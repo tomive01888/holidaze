@@ -4,6 +4,8 @@ import BookingCard from "./BookingsCard";
 import { sortBookingsByDate } from "../../../utils/dateUtils";
 import type { ProfileBooking } from "../../../types";
 import { motion } from "motion/react";
+import { useAuth } from "../../../hooks/useAuth";
+import { PageTitle } from "../../../components/ui/PageTitle";
 
 /**
  * Props for the {@link MyBookings} component.
@@ -54,6 +56,7 @@ interface MyBookingsProps {
  * ```
  */
 const MyBookings: React.FC<MyBookingsProps> = ({ bookings }) => {
+  const { user } = useAuth();
   const { upcomingBookings, pastBookings } = useMemo(() => {
     const now = new Date();
     const upcoming: ProfileBooking[] = [];
@@ -86,6 +89,10 @@ const MyBookings: React.FC<MyBookingsProps> = ({ bookings }) => {
 
   return (
     <div className="space-y-12 bg-black/0">
+      <PageTitle
+        title={`Holidaze | ${user?.venueManager ? "VenueManager" : "Customer"} ${user?.name} own booking history `}
+      />
+
       {/* --- Upcoming Bookings Section --- */}
       <section>
         <h2 className="text-2xl font-bold mb-4">Upcoming Trips</h2>
