@@ -25,7 +25,7 @@ const BookingCard: React.FC<BookingCardProps> = ({ booking, className }) => {
 
       <div className="flex flex-col flex-shrink-0 col-span-5 sm:col-start-2 sm:row-start-1">
         <h3 className="text-lg font-semibold truncate text-black">{booking.venue.name}</h3>
-        <p className="text-neutral-400 text-sm truncate">
+        <p className="text-neutral-600 text-sm truncate">
           {booking.venue.location?.city ? `${booking.venue.location?.city}` : "N/A"}
           {booking.venue.location?.city && booking.venue.location?.country ? "," : ""}
           {booking.venue.location?.country ? ` ${booking.venue.location?.country}` : " N/A"}
