@@ -115,7 +115,7 @@ const TravelSlider = () => {
   const currentImage = travelImages[currentImageIndex];
 
   return (
-    <div aria-label="Travel destination slideshow" className="w-full h-fit overflow-hidden rounded-lg">
+    <div aria-label="Travel destination slideshow" className="w-full h-fit overflow-hidden rounded-lg select-none">
       <div className="relative w-full h-80 md:h-96 rounded-lg ">
         <div className="bg-black w-full h-80 md:h-96 absolute top-0 left-0 z-[2] rounded-lg" />
         <AnimatePresence mode="wait">
@@ -149,7 +149,7 @@ const TravelSlider = () => {
             </AnimatePresence>
           </h2>
         </div>
-        <p className="w-full text-end text-sm px-2 text-gray-300 absolute bottom-2 right-2  z-[8]  select-none">
+        <p className="text-end backdrop-blur-[2px] bg-black/40 text-sm px-2 text-gray-300 absolute bottom-2 right-2 z-[8] select-none">
           Images sourced from Unsplash
         </p>
       </div>

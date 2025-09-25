@@ -10,7 +10,6 @@ import DatePicker from "react-datepicker";
 import BookingModal from "./BookingModal";
 import { toast } from "react-toastify";
 import "react-datepicker/dist/react-datepicker.css";
-import TravelSlider from "../../../components/ui/TravelSlider";
 
 /**
  * Props for the {@link BookingSection} component.
@@ -191,10 +190,6 @@ const BookingSection: React.FC<BookingSectionProps> = ({ venue, onBookingSuccess
           />
         )}
       </section>
-
-      <div className="border-2 border-e-teal-200 border-s-teal-200 border-y-teal-400 rounded-xl mt-6 hidden md:block">
-        <TravelSlider />
-      </div>
     </aside>
   );
 };
