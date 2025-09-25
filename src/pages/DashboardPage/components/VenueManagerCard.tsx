@@ -123,7 +123,7 @@ const VenueManagementCard: React.FC<VenueManagementCardProps> = ({ venue }) => {
             className="!rounded-full w-fit sm:!px-4"
             aria-label={`Delete venue ${venue.name}`}
           >
-            <Trash2 size={28} />
+            <Trash2 size={22} />
           </Button>
         </div>
       </div>
