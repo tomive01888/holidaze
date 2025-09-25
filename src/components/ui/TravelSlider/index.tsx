@@ -130,10 +130,10 @@ const TravelSlider = () => {
             transition={{ duration: shouldReduceMotion ? 0 : 1.2 }}
           />
         </AnimatePresence>
-        <div className="absolute inset-0 flex items-start py-6 px-2 lg:p-8 rounded-lg">
+        <div className="absolute inset-0 flex items-start py-4 px-2 lg:p-4 rounded-lg">
           <h2
             aria-live="polite"
-            className="text-white font-bold text-3xl md:text-4xl tracking-wide mt-auto flex z-[8] select-none text-shadow-md text-shadow-black backdrop-blur-[1px] backdrop-opacity-100 px-4 py-2"
+            className="text-white font-bold text-2xl md:text-3xl tracking-wide mt-auto flex z-[8] select-none text-shadow-md text-shadow-black backdrop-blur-[1px] backdrop-opacity-100 px-4 py-2"
           >
             <AnimatePresence mode="wait">
               <motion.span

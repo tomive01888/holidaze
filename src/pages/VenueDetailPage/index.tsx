@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Link, useParams } from "react-router-dom";
 import { apiClient, ApiError } from "../../api/apiClient";
 import { endpoints } from "../../constants/endpoints";
@@ -15,7 +15,6 @@ import BookingSection from "./components/BookingSection";
 import { PageTitle } from "../../components/ui/PageTitle";
 import Button from "../../components/ui/Button";
 import Spinner from "../../components/ui/Spinner";
-import TravelSlider from "../../components/ui/TravelSlider";
 
 /**
  * Page component that displays full details for a single venue, including:
@@ -64,6 +63,35 @@ const VenueDetailPage = () => {
    */
   const handleBookingSuccess = () => {
     fetchVenue();
+  };
+
+  /**
+   * Renders a plain text string into a React component by replacing
+   * newline characters ('\n') with HTML <br /> elements.
+   *
+   * This is the recommended safe method in React (JSX) to display
+   * formatted text from a plain string, as it avoids using dangerouslySetInnerHTML.
+   * Double newlines (paragraph breaks) will naturally render as two <br /> tags,
+   * providing the necessary vertical space.
+   *
+   * @param {string} text - The plain text string containing newline characters.
+   * @returns {Array<React.Element> | null} An array of React fragments and <br /> elements,
+   * or null if the input text is falsy.
+   */
+  const renderTextWithBreaks = (text: string) => {
+    if (!text) return null;
+
+    const lines = text.split("\n");
+
+    return lines.map((line, index) => (
+      <React.Fragment key={index}>
+        {/* The actual text content for this line/paragraph */}
+        {line}
+
+        {/* Conditionally insert a <br /> after every line except the last one. */}
+        {index < lines.length - 1 && <br />}
+      </React.Fragment>
+    ));
   };
 
   if (isLoading) {
@@ -142,10 +170,6 @@ const VenueDetailPage = () => {
             <Amenities meta={venue.meta} />
           </motion.section>
 
-          <div className="border-2 border-e-teal-200 border-s-teal-200 border-y-teal-400 rounded-xl">
-            <TravelSlider />
-          </div>
-
           <motion.section
             initial={{ y: 30, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
@@ -153,7 +177,7 @@ const VenueDetailPage = () => {
           >
             <h2 className="text-3xl font-bold border-b pb-3 mb-4">About this venue</h2>
             <div className="max-w-none text-neutral-100 break-words">
-              <p>{venue.description ? venue.description : "This venue has no description."}</p>
+              <p>{venue.description ? renderTextWithBreaks(venue.description) : "This venue has no description."}</p>
             </div>
           </motion.section>
           <motion.section

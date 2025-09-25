@@ -123,58 +123,56 @@ const DashboardPage = () => {
       <PageTitle title={`Holidaze | ${user?.venueManager ? "VenueManager" : "Customer"} ${user?.name} `} />
 
       <ProfileHeader profile={profileData} onProfileUpdate={handleProfileUpdate} />
-      <div className="container mx-auto p-4 md:p-8">
-        {/* --- TAB NAVIGATION (Only for Venue Managers) --- */}
-        {profileData.venueManager && (
-          <div className="border-b border-neutral-200 mb-8">
-            <nav className="flex space-x-6">
-              <button
-                onClick={() => setActiveTab("bookings")}
-                className={`pb-3 px-1 font-bold text-xl transition-colors ${
-                  activeTab === "bookings"
-                    ? "border-b-2 border-neutral-300 text-neutral-50"
-                    : "text-neutral-300 hover:text-neutral-200 "
-                }`}
-              >
-                <span className={`p-2 rounded-lg ${activeTab === "bookings" ? "bg-none" : "hover:bg-black/10 "}`}>
-                  My Bookings
-                </span>
-              </button>
-              <button
-                onClick={() => setActiveTab("venues")}
-                className={`pb-3 px-1 font-bold text-xl transition-colors ${
-                  activeTab === "venues"
-                    ? "border-b-2 border-neutral-300 text-neutral-50"
-                    : "text-neutral-300 hover:text-neutral-100"
-                }`}
-              >
-                <span className={`p-2 rounded-lg ${activeTab === "venues" ? "bg-none" : "hover:bg-black/10 "}`}>
-                  My Venues
-                </span>
-              </button>
-            </nav>
-          </div>
-        )}
-
-        {/* --- TAB CONTENT --- */}
-        <div>
-          {profileData.venueManager ? (
-            <>
-              {activeTab === "venues" && <MyVenues venues={profileOwnVenues || []} />}
-              {activeTab === "bookings" && <MyBookings bookings={profileData.bookings || []} />}
-            </>
-          ) : (
-            <>
-              <section className="bg-black/0">
-                <h2 className="text-3xl font-bold border-b pb-3 mb-6">My Bookings</h2>
-                <MyBookings bookings={profileData.bookings || []} />
-              </section>
-              <section className="mt-12">
-                <BecomeManagerPrompt onUpgradeSuccess={handleProfileUpdate} />
-              </section>
-            </>
-          )}
+      {/* --- TAB NAVIGATION (Only for Venue Managers) --- */}
+      {profileData.venueManager && (
+        <div className="border-b border-neutral-200 mb-8">
+          <nav className="flex space-x-6">
+            <button
+              onClick={() => setActiveTab("bookings")}
+              className={`pb-3 px-1 font-bold text-xl transition-colors ${
+                activeTab === "bookings"
+                  ? "border-b-2 border-neutral-300 text-neutral-50"
+                  : "text-neutral-300 hover:text-neutral-200 "
+              }`}
+            >
+              <span className={`p-2 rounded-lg ${activeTab === "bookings" ? "bg-none" : "hover:bg-black/10 "}`}>
+                My Bookings
+              </span>
+            </button>
+            <button
+              onClick={() => setActiveTab("venues")}
+              className={`pb-3 px-1 font-bold text-xl transition-colors ${
+                activeTab === "venues"
+                  ? "border-b-2 border-neutral-300 text-neutral-50"
+                  : "text-neutral-300 hover:text-neutral-100"
+              }`}
+            >
+              <span className={`p-2 rounded-lg ${activeTab === "venues" ? "bg-none" : "hover:bg-black/10 "}`}>
+                My Venues
+              </span>
+            </button>
+          </nav>
         </div>
+      )}
+
+      {/* --- TAB CONTENT --- */}
+      <div>
+        {profileData.venueManager ? (
+          <>
+            {activeTab === "venues" && <MyVenues venues={profileOwnVenues || []} />}
+            {activeTab === "bookings" && <MyBookings bookings={profileData.bookings || []} />}
+          </>
+        ) : (
+          <>
+            <section className="bg-black/0">
+              <h2 className="text-3xl font-bold border-b pb-3 mb-6">My Bookings</h2>
+              <MyBookings bookings={profileData.bookings || []} />
+            </section>
+            <section className="mt-12">
+              <BecomeManagerPrompt onUpgradeSuccess={handleProfileUpdate} />
+            </section>
+          </>
+        )}
       </div>
     </>
   );

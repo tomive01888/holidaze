@@ -64,7 +64,7 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({ profile, onProfileUpdate 
   return (
     <>
       {/* --- Banner & Profile Info --- */}
-      <div className="relative h-64 md:h-96 w-full bg-neutral-200 border-lg">
+      <div className="relative h-64 md:h-96 w-full bg-neutral-200 border-lg mb-6">
         {/* Banner image as background */}
         <div
           className={`absolute inset-0 bg-neutral-800 transition-opacity duration-2000 border-lg ${

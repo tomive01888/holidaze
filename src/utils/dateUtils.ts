@@ -18,8 +18,8 @@ export function formatDate(date: Date | string): string {
   if (!date) return "N/A";
   const dateObj = typeof date === "string" ? new Date(date) : date;
   return new Intl.DateTimeFormat("en-US", {
-    year: "numeric",
-    month: "long",
+    year: "2-digit",
+    month: "short",
     day: "numeric",
   }).format(dateObj);
 }

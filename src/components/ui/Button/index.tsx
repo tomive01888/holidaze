@@ -34,9 +34,9 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     const baseClasses = "font-bold rounded-md cursor-pointer transition-colors focus:outline-3 focus:outline-offset-2";
 
     const variantClasses: Record<ButtonVariant, string> = {
-      primary: "bg-blue-500 text-white hover:bg-blue-600 focus:outline-blue-400 focus:outline-dashed",
-      secondary: "bg-neutral-200 text-neutral-800 hover:bg-neutral-300 focus:outline-pink-400 focus:outline-dashed",
-      destructive: "bg-red-400 text-white hover:text-white hover:bg-red-700 focus:outline-red-400 focus:outline-dashed",
+      primary: "bg-blue-500 text-white hover:bg-blue-600 focus:outline-sky-600 focus:outline-dashed",
+      secondary: "bg-neutral-300 text-neutral-800 hover:bg-neutral-400/80 focus:outline-pink-400 focus:outline-dashed",
+      destructive: "bg-red-400 text-white hover:text-white hover:bg-red-700 focus:outline-red-700 focus:outline-dashed",
     };
 
     const sizeClasses: Record<ButtonSize, string> = {

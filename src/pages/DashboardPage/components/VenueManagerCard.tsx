@@ -80,49 +80,51 @@ const VenueManagementCard: React.FC<VenueManagementCardProps> = ({ venue }) => {
 
   return (
     <>
-      <div className="rounded-lg overflow-hidden shadow-lg h-full flex flex-col text-lg">
+      <div className="rounded-lg shadow-lg h-full flex flex-col text-lg bg-black">
         {/* --- Image and Title Section --- */}
-        <div className="relative group">
-          <div>
-            <img
-              loading="lazy"
-              src={venue.media[0]?.url || "https://placehold.co/600x400/e2e8f0/475569?text=No+Image"}
-              alt={`view of ${venue.name}`}
-              className="w-full h-56 object-cover transition-transform duration-300 bg-black/80"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
-            <h3 className="absolute bottom-4 left-4 text-xl font-bold text-white truncate max-w-full pr-4">
-              {venue.name}
-            </h3>
-            <p className="absolute bottom-2 right-2">Total bookings - {venue.bookings?.length}</p>
-          </div>
-        </div>
+        <Link
+          to={`/venue/${venue.id}`}
+          tabIndex={0}
+          className="focus:outline-2 focus:outline-pink-400 focus:outline-offset-3 relative overflow-hidden rounded-lg"
+        >
+          <img
+            tabIndex={-1}
+            loading="lazy"
+            src={venue.media[0]?.url || "https://placehold.co/600x400/e2e8f0/475569?text=No+Image"}
+            alt={`view of ${venue.name}`}
+            className="w-full h-56 object-cover transition-transform duration-300 bg-black/80"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+          <h3 className="absolute bottom-4 left-4 text-xl font-bold text-white truncate max-w-full pr-4">
+            {venue.name}
+          </h3>
+          <p className="absolute bottom-2 right-2">Total bookings - {venue.bookings?.length}</p>
+        </Link>
 
         {/* --- Actions Section --- */}
-        <div className="p-4 bg-white flex-grow flex flex-col justify-end">
-          <div className="flex gap-3">
-            <Link
-              to={`/venue/edit/${venue.id}`}
-              aria-label={`View details for venue ${venue.name}`}
-              tabIndex={-1}
-              className="w-full"
-            >
-              <Button variant="primary" className="w-full">
-                Edit Venue
-              </Button>
-            </Link>
-            <Button variant="secondary" className="w-full" onClick={() => setIsBookingsModalOpen(true)}>
-              View Active Bookings
+        <div className="flex gap-2 p-2 sm:p-4 bg-neutral-100 flex-grow rounded-b-lg">
+          <Link
+            to={`/venue/edit/${venue.id}`}
+            aria-label={`View details for venue ${venue.name}`}
+            tabIndex={-1}
+            className="w-full"
+          >
+            <Button variant="primary" size="sm" className="w-full">
+              Edit Venue
             </Button>
-            <Button
-              variant="destructive"
-              onClick={() => setIsDeleteModalOpen(true)}
-              className="!rounded-full w-fit !px-4"
-              aria-label={`Delete venue ${venue.name}`}
-            >
-              <Trash2 size={28} />
-            </Button>
-          </div>
+          </Link>
+          <Button variant="secondary" size="sm" className="w-full" onClick={() => setIsBookingsModalOpen(true)}>
+            View Bookings
+          </Button>
+          <Button
+            variant="destructive"
+            size="sm"
+            onClick={() => setIsDeleteModalOpen(true)}
+            className="!rounded-full w-fit sm:!px-4"
+            aria-label={`Delete venue ${venue.name}`}
+          >
+            <Trash2 size={28} />
+          </Button>
         </div>
       </div>
 
@@ -146,11 +148,7 @@ const VenueManagementCard: React.FC<VenueManagementCardProps> = ({ venue }) => {
 
       {/* --- View Bookings Modal --- */}
       {isBookingsModalOpen && (
-        <ViewBookingsModal
-          venueId={venue.id}
-          venueName={venue.name}
-          onClose={() => setIsBookingsModalOpen(false)}
-        />
+        <ViewBookingsModal venueId={venue.id} venueName={venue.name} onClose={() => setIsBookingsModalOpen(false)} />
       )}
     </>
   );
