@@ -9,6 +9,10 @@ import MyBookings from "./components/MyBookings";
 import BecomeManagerPrompt from "./components/BecomeManagerPrompt";
 import MyVenues from "./components/MyVenues";
 import { PageTitle } from "../../components/ui/PageTitle";
+import { Link } from "react-router-dom";
+import Button from "../../components/ui/Button";
+import EditProfileModal from "./components/EditProfileModal";
+import { UserRoundPen } from "lucide-react";
 
 type DashboardTab = "venues" | "bookings";
 
@@ -35,6 +39,9 @@ const DashboardPage = () => {
   const [refetchTrigger, setRefetchTrigger] = useState(0);
   const [activeTab, setActiveTab] = useState<DashboardTab>("bookings");
   const [profileOwnVenues, setProfilOwnVenues] = useState<FullVenue[] | []>([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const isOwnProfile = user?.name === profileData?.name;
+
   /**
    * Fetches the user's profile data including bookings (and venues if user is a manager).
    * Uses `apiClient` to call the API and handles loading & error states.
@@ -77,8 +84,6 @@ const DashboardPage = () => {
       try {
         const endpoint = `${endpoints.profiles.venues(user.name)}`;
         const response = await apiClient.get<{ data: FullVenue[] }>(endpoint);
-        console.log(response);
-
         setProfilOwnVenues(response.data);
       } catch (err) {
         setError(err instanceof ApiError ? err.message : "Failed to load bookings.");
@@ -102,6 +107,25 @@ const DashboardPage = () => {
     setRefetchTrigger((prev) => prev + 1);
   };
 
+  const tabContent = (
+    <div className="flex flex-col gap-8">
+      {/* Tab Navigation/Title for the main content area (moved from the top) */}
+      <h2 className="text-3xl font-bold text-white border-b pb-3">
+        {profileData?.venueManager ? (activeTab === "bookings" ? "My Bookings" : "My Venues") : "My Bookings"}
+      </h2>
+
+      {/* Render Active Tab Content */}
+      {profileData?.venueManager ? (
+        <>
+          {activeTab === "venues" && <MyVenues venues={profileOwnVenues || []} />}
+          {activeTab === "bookings" && <MyBookings bookings={profileData.bookings || []} />}
+        </>
+      ) : (
+        <MyBookings bookings={profileData?.bookings || []} />
+      )}
+    </div>
+  );
+
   if (isLoading) {
     return (
       <div className="flex justify-center items-center h-screen">
@@ -121,57 +145,76 @@ const DashboardPage = () => {
   return (
     <>
       <PageTitle title={`Holidaze | ${user?.venueManager ? "VenueManager" : "Customer"} ${user?.name} `} />
+      {/* Base: Single column on mobile, switches to 2 columns on 'lg' */}
+      <div className="grid grid-cols-1 gap-8 p-4 md:p-8 lg:grid-cols-[1.5fr_2.5fr] max-w-4xl mx-auto">
+        {/* ======== 1. LEFT PANEL (Sticky/Sidebar) ======== */}
+        <aside className="lg:sticky lg:top-24 self-start flex flex-col gap-2 bg-neutral-700 border-1 border-teal-700 rounded-xl p-4 shadow-xl">
+          <ProfileHeader profile={profileData} onProfileUpdate={handleProfileUpdate} />
 
-      <ProfileHeader profile={profileData} onProfileUpdate={handleProfileUpdate} />
-      {/* --- TAB NAVIGATION (Only for Venue Managers) --- */}
-      {profileData.venueManager && (
-        <div className="border-b border-neutral-200 mb-8">
-          <nav className="flex space-x-6">
-            <button
-              onClick={() => setActiveTab("bookings")}
-              className={`pb-3 px-1 font-bold text-xl transition-colors ${
-                activeTab === "bookings"
-                  ? "border-b-2 border-neutral-300 text-neutral-50"
-                  : "text-neutral-300 hover:text-neutral-200 "
-              }`}
+          {isOwnProfile && (
+            <Button
+              variant="secondary"
+              className="flex items-center justify-center gap-2"
+              size="sm"
+              onClick={() => setIsModalOpen(true)}
             >
-              <span className={`p-2 rounded-lg ${activeTab === "bookings" ? "bg-none" : "hover:bg-black/10 "}`}>
-                My Bookings
-              </span>
-            </button>
-            <button
-              onClick={() => setActiveTab("venues")}
-              className={`pb-3 px-1 font-bold text-xl transition-colors ${
-                activeTab === "venues"
-                  ? "border-b-2 border-neutral-300 text-neutral-50"
-                  : "text-neutral-300 hover:text-neutral-100"
-              }`}
-            >
-              <span className={`p-2 rounded-lg ${activeTab === "venues" ? "bg-none" : "hover:bg-black/10 "}`}>
-                My Venues
-              </span>
-            </button>
-          </nav>
-        </div>
-      )}
+              <UserRoundPen size={20} className="mb-1 text-2xl md:text-lg" />
+              <span>Edit Profile</span>
+              <span className="sr-only md:hidden">Edit Profile</span>
+            </Button>
+          )}
 
-      {/* --- TAB CONTENT --- */}
-      <div>
-        {profileData.venueManager ? (
-          <>
-            {activeTab === "venues" && <MyVenues venues={profileOwnVenues || []} />}
-            {activeTab === "bookings" && <MyBookings bookings={profileData.bookings || []} />}
-          </>
-        ) : (
-          <>
-            <section className="bg-black/0">
-              <h2 className="text-3xl font-bold border-b pb-3 mb-6">My Bookings</h2>
-              <MyBookings bookings={profileData.bookings || []} />
-            </section>
-            <section className="mt-12">
-              <BecomeManagerPrompt onUpgradeSuccess={handleProfileUpdate} />
-            </section>
-          </>
+          {/* Tab Navigation moved here (Only for Venue Managers) */}
+          {profileData.venueManager && (
+            <>
+              <Link to="/venue/create" tabIndex={-1}>
+                <Button variant="primary" className="w-full" size="sm">
+                  + Create New Venue
+                </Button>
+              </Link>
+
+              {/* Tab navigation for changing views MyBookings and MyVenues */}
+              <nav className="flex flex-col space-y-2 border-t border-neutral-700 pt-4 mt-4">
+                <button
+                  onClick={() => setActiveTab("bookings")}
+                  className={`py-2 px-3 text-left font-semibold text-lg rounded-lg transition-colors flex items-center justify-between ${
+                    activeTab === "bookings" ? "border-2 border-neutral-200" : "text-neutral-300 hover:bg-neutral-800"
+                  }`}
+                >
+                  My Bookings{" "}
+                  {activeTab === "bookings" ? <span className="animate-pulse bg-teal-500 h-2 w-2 rounded-full" /> : ""}
+                </button>
+
+                <button
+                  onClick={() => setActiveTab("venues")}
+                  className={`py-2 px-3 text-left font-semibold text-lg rounded-lg transition-colors flex items-center justify-between ${
+                    activeTab === "venues" ? "border-2 border-neutral-200" : "text-neutral-300 hover:bg-neutral-800"
+                  }`}
+                >
+                  My Venues{" "}
+                  {activeTab === "venues" ? <span className="animate-pulse bg-teal-500 h-2 w-2 rounded-full" /> : ""}
+                </button>
+              </nav>
+            </>
+          )}
+
+          {/* Prompt for non-managers */}
+          {!profileData.venueManager && <BecomeManagerPrompt onUpgradeSuccess={handleProfileUpdate} />}
+        </aside>
+
+        {/* ======== 2. RIGHT CONTENT (Scrollable Main Area) ======== */}
+        <div className="lg:min-h-[80vh]">{tabContent}</div>
+
+        {/* --- Edit Profile Modal --- */}
+        {isModalOpen && (
+          <EditProfileModal
+            profile={profileData}
+            onClose={() => setIsModalOpen(false)}
+            onSaveSuccess={(updatedProfile) => {
+              handleProfileUpdate(updatedProfile);
+              setIsModalOpen(false);
+            }}
+          />
         )}
       </div>
     </>

@@ -58,12 +58,12 @@ const BecomeManagerPrompt: React.FC<BecomeManagerPromptProps> = ({ onUpgradeSucc
 
   return (
     <>
-      <div className="p-8 bg-black/20 bg-linear-to-r from-neutral-600/20 to-teal-400/20 rounded-lg text-center border-2 border-dashed border-neutral-300">
+      <div className="px-3 py-6 bg-black/20 bg-linear-to-tr from-neutral-700/20 to-teal-400/20 rounded-lg text-center border-1 border-dashed border-neutral-300">
         <h3 className="text-2xl font-bold">Ready to Host?</h3>
         <p className="mt-2 text-neutral-100 max-w-md mx-auto">
           Become a Venue Manager today to list your own properties, manage bookings, and start earning.
         </p>
-        <Button onClick={() => setIsModalOpen(true)} className="mt-6" size="md">
+        <Button onClick={() => setIsModalOpen(true)} className="mt-6" size="sm">
           Start your journey
         </Button>
       </div>
@@ -82,7 +82,7 @@ const BecomeManagerPrompt: React.FC<BecomeManagerPromptProps> = ({ onUpgradeSucc
             <Button variant="secondary" onClick={() => setIsModalOpen(false)}>
               Cancel
             </Button>
-            <Button variant="primary" onClick={handleConfirmUpgrade} disabled={isLoading}>
+            <Button variant="primary" size="sm" onClick={handleConfirmUpgrade} className="!text-sm">
               {isLoading ? "Upgrading..." : "I Understand, Upgrade My Account"}
             </Button>
           </div>

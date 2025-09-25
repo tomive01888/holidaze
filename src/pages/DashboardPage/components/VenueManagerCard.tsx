@@ -47,8 +47,6 @@ const VenueManagementCard: React.FC<VenueManagementCardProps> = ({ venue }) => {
   const [isBookingsModalOpen, setIsBookingsModalOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
 
-  console.log(venue);
-
   /**
    * Handles deleting the venue.
    *

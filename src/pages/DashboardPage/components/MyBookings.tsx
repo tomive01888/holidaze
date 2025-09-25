@@ -90,7 +90,7 @@ const MyBookings: React.FC<MyBookingsProps> = ({ bookings }) => {
       <section>
         <h2 className="text-2xl font-bold mb-4">Upcoming Trips</h2>
         {upcomingBookings.length > 0 ? (
-          <ul className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <ul className="grid gap-4">
             {upcomingBookings.map((booking) => (
               <motion.li
                 key={booking.id}
@@ -98,7 +98,7 @@ const MyBookings: React.FC<MyBookingsProps> = ({ bookings }) => {
                 whileInView={{ opacity: 1 }}
                 transition={{ duration: 1.3 }}
               >
-                <BookingCard booking={booking} />
+                <BookingCard booking={booking} className="!border-teal-500 !shadow-teal-400/10" />
               </motion.li>
             ))}
           </ul>
@@ -116,7 +116,7 @@ const MyBookings: React.FC<MyBookingsProps> = ({ bookings }) => {
       <section>
         <h2 className="text-2xl font-bold mb-4">Past Trips</h2>
         {pastBookings.length > 0 ? (
-          <ul className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <ul className="grid gap-4">
             {pastBookings.map((booking) => (
               <motion.li
                 key={booking.id}
@@ -124,7 +124,7 @@ const MyBookings: React.FC<MyBookingsProps> = ({ bookings }) => {
                 whileInView={{ opacity: 1 }}
                 transition={{ duration: 1.3 }}
               >
-                <BookingCard booking={booking} />
+                <BookingCard booking={booking} className="!bg-gray-300" />
               </motion.li>
             ))}
           </ul>

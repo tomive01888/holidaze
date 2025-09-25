@@ -1,9 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useAuth } from "../../../hooks/useAuth";
 import type { FullUserProfile } from "../../../types";
-import Button from "../../../components/ui/Button";
-import EditProfileModal from "./EditProfileModal";
-import { UserRoundPen } from "lucide-react";
 
 /**
  * Props for the {@link ProfileHeader} component.
@@ -45,11 +41,8 @@ interface ProfileHeaderProps {
  * );
  * ```
  */
-const ProfileHeader: React.FC<ProfileHeaderProps> = ({ profile, onProfileUpdate }) => {
-  const { user } = useAuth();
-  const [isModalOpen, setIsModalOpen] = useState(false);
+const ProfileHeader: React.FC<ProfileHeaderProps> = ({ profile }) => {
   const [renderOpacity, setRenderOpacity] = useState(false);
-  const isOwnProfile = user?.name === profile.name;
 
   useEffect(() => {
     setRenderOpacity(true);
@@ -64,7 +57,7 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({ profile, onProfileUpdate 
   return (
     <>
       {/* --- Banner & Profile Info --- */}
-      <div className="relative h-64 md:h-96 w-full bg-neutral-200 border-lg mb-6">
+      <div className="relative h-64 md:h-96 w-full bg-neutral-200 border-lg mb-2">
         {/* Banner image as background */}
         <div
           className={`absolute inset-0 bg-neutral-800 transition-opacity duration-2000 border-lg ${
@@ -91,35 +84,7 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({ profile, onProfileUpdate 
             <p className="text-lg drop-shadow-md">{profile.email}</p>
           </div>
         </section>
-
-        {/* --- Edit Button (Only if this is the user's own profile) --- */}
-        {isOwnProfile && (
-          <div className="absolute top-4 right-4">
-            <Button
-              variant="secondary"
-              className="flex items-center justify-center gap-2"
-              size="sm"
-              onClick={() => setIsModalOpen(true)}
-            >
-              <UserRoundPen className="mb-1 text-2xl md:text-lg" />
-              <span className="hidden md:block">Edit Profile</span>
-              <span className="sr-only md:hidden">Edit Profile</span>
-            </Button>
-          </div>
-        )}
       </div>
-
-      {/* --- Edit Profile Modal --- */}
-      {isModalOpen && (
-        <EditProfileModal
-          profile={profile}
-          onClose={() => setIsModalOpen(false)}
-          onSaveSuccess={(updatedProfile) => {
-            onProfileUpdate(updatedProfile);
-            setIsModalOpen(false);
-          }}
-        />
-      )}
     </>
   );
 };

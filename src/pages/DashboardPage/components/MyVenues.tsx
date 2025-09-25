@@ -1,7 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import type { FullVenue } from "../../../types";
-import Button from "../../../components/ui/Button";
 import VenueManagementCard from "./VenueManagerCard";
 import { motion } from "motion/react";
 
@@ -45,13 +43,6 @@ const MyVenues: React.FC<MyVenuesProps> = ({ venues }) => {
   return (
     <div className="bg-black/0">
       {/* Create New Venue Button */}
-      <div className="flex justify-end mb-6">
-        <Link to="/venue/create" tabIndex={-1}>
-          <Button variant="primary" size="lg">
-            + Create New Venue
-          </Button>
-        </Link>
-      </div>
 
       {/* Display list of venues or empty state */}
       {venues.length > 0 ? (
@@ -59,7 +50,7 @@ const MyVenues: React.FC<MyVenuesProps> = ({ venues }) => {
           <h2 className="text-3xl font-bold text-neutral-100 col-span-full">Venues you own</h2>
 
           {/* Render a card for each venue */}
-          <ul className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8">
+          <ul className="grid gap-8">
             {venues.map((venue) => (
               <motion.li
                 key={venue.id}

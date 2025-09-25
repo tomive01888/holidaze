@@ -120,6 +120,15 @@ const SearchBar = React.forwardRef<HTMLInputElement, SearchBarProps>(
             </button>
           )}
         </div>
+
+        {/* Putte lenker her som sklir ned og inn i synsfeltet under søkebaren */}
+        {/* Lokal skip link, vises bare når det finnes resultater */}
+        <a
+          href="#venue-list"
+          className="sr-only focus:not-sr-only !-bottom-12 -translate-x-1/2 !absolute mt-2 bg-blue-600/40 border-[1px] border-white !px-3 text-white !py-1 rounded"
+        >
+          Skip to venue results
+        </a>
       </form>
     );
   }

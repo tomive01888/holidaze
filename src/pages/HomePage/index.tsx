@@ -123,16 +123,12 @@ const HomePage = () => {
 
     const isNewSearch = page === 1 && debouncedSearchTerm;
     if (isNewSearch) {
-      // small delay to let DOM settle after render & state updates
       const t = setTimeout(() => {
         if (hasResults) {
-          // Only focus the skip link when there are results
           skipLinkRef.current?.focus();
         } else if (searchTerm) {
-          // No results but user searched — focus Clear Search button
           clearSearchButtonRef.current?.focus();
         } else {
-          // No active search — put focus back into the search input
           searchInputRef.current?.focus();
         }
       }, 10);
