@@ -96,7 +96,6 @@ const VenueManagementCard: React.FC<VenueManagementCardProps> = ({ venue }) => {
           <h3 className="absolute bottom-4 left-4 text-xl font-bold text-white truncate max-w-full pr-4">
             {venue.name}
           </h3>
-          <p className="absolute bottom-2 right-2">Total bookings - {venue.bookings?.length}</p>
         </Link>
 
         {/* --- Actions Section --- */}

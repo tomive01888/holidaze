@@ -4,10 +4,28 @@ import { formatDate } from "../../../utils/dateUtils";
 import type { ProfileBooking } from "../../../types";
 
 interface BookingCardProps {
+  /** Booking object containing venue details, dates, and guests */
   booking: ProfileBooking;
+  /** Optional CSS classes for additional styling */
   className?: string;
 }
 
+/**
+ * `BookingCard` renders a card-style link for a single booking.
+ *
+ * It displays:
+ * - The venue image and name
+ * - The location (city and country, if available)
+ * - Booking details: check-in, check-out, and guest count
+ *
+ * The entire card is clickable and links to the venue details page.
+ *
+ * @component
+ * @example
+ * ```tsx
+ * <BookingCard booking={myBooking} className="mb-4" />
+ * ```
+ */
 const BookingCard: React.FC<BookingCardProps> = ({ booking, className }) => {
   return (
     <Link

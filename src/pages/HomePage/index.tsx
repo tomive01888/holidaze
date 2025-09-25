@@ -36,29 +36,24 @@ const DEFAULT_ITEMS_PER_PAGE = 12;
  * @returns {JSX.Element} The rendered homepage UI.
  */
 const HomePage = () => {
-  // URL params
   const [searchParams, setSearchParams] = useSearchParams();
   const page = Number(searchParams.get("page")) || 1;
   const itemsPerPage = Number(searchParams.get("itemsPerPage")) || DEFAULT_ITEMS_PER_PAGE;
   const searchTerm = searchParams.get("q") || "";
 
-  // Refs for focus management
   const clearSearchButtonRef = useRef<HTMLButtonElement | null>(null);
   const searchInputRef = useRef<HTMLInputElement | null>(null);
   const skipLinkRef = useRef<HTMLAnchorElement | null>(null);
 
-  // Data state
   const [venues, setVenues] = useState<Venue[]>([]);
   const [pageCount, setPageCount] = useState(0);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Helpers
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
   const abortControllerRef = useRef<AbortController | null>(null);
   const lastPageRef = useRef(page);
 
-  // derived boolean to centralize "has results" logic
   const hasResults = venues.length > 0;
 
   /**

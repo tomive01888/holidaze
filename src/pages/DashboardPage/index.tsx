@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from "react";
 import { useAuth } from "../../hooks/useAuth";
-import type { FullUserProfile, FullVenue, ProfileApiResponse } from "../../types";
+import type { FullUserProfile, ProfileApiResponse } from "../../types";
 import { endpoints } from "../../constants/endpoints";
 import { apiClient, ApiError } from "../../api/apiClient";
 import Spinner from "../../components/ui/Spinner";
@@ -9,27 +9,37 @@ import MyBookings from "./components/MyBookings";
 import BecomeManagerPrompt from "./components/BecomeManagerPrompt";
 import MyVenues from "./components/MyVenues";
 import { PageTitle } from "../../components/ui/PageTitle";
-import { Link } from "react-router-dom";
 import Button from "../../components/ui/Button";
 import EditProfileModal from "./components/EditProfileModal";
 import { UserRoundPen } from "lucide-react";
+import VenueManagerTools from "./components/VenueManagerTools";
 
 type DashboardTab = "venues" | "bookings";
 
 /**
- * DashboardPage component
+ * DashboardPage
  *
- * Displays the user's dashboard including their profile, bookings, and (if they are a venue manager)
- * their venues. Handles fetching profile data from the API, switching between "Bookings" and "Venues"
- * tabs, and refreshing data after profile updates.
+ * Renders the logged-in user's dashboard view, which combines:
+ * - Profile information (avatar, name, email, etc.)
+ * - User bookings
+ * - Venue management tools (if the user is a venue manager)
  *
- * Features:
- * - Dynamically sets the page title with the user's name.
- * - Fetches profile data (bookings, venues if applicable).
- * - Shows loading spinner while fetching data.
- * - Handles and displays API errors.
- * - Allows the user to toggle between "Bookings" and "Venues" tabs if they are a venue manager.
- * - Displays "Become a Manager" prompt for non-venue managers.
+ * Core responsibilities:
+ * - Fetches the authenticated user's profile from the API.
+ * - Displays loading and error states.
+ * - Allows the user to edit their profile via a modal.
+ * - Provides navigation between "My Bookings" and "My Venues" tabs (if applicable).
+ * - Shows a prompt to become a venue manager for non-managers.
+ *
+ * Layout:
+ * - Two-column grid (sidebar + main content) on large screens.
+ * - Collapses to a single-column layout on mobile.
+ *
+ * @component
+ * @example
+ * ```tsx
+ * <Route path="/dashboard" element={<DashboardPage />} />
+ * ```
  */
 const DashboardPage = () => {
   const { user, updateUser } = useAuth();
@@ -38,13 +48,19 @@ const DashboardPage = () => {
   const [error, setError] = useState<string | null>(null);
   const [refetchTrigger, setRefetchTrigger] = useState(0);
   const [activeTab, setActiveTab] = useState<DashboardTab>("bookings");
-  const [profileOwnVenues, setProfilOwnVenues] = useState<FullVenue[] | []>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const isOwnProfile = user?.name === profileData?.name;
 
   /**
-   * Fetches the user's profile data including bookings (and venues if user is a manager).
-   * Uses `apiClient` to call the API and handles loading & error states.
+   * Fetches the logged-in user's profile data from the API.
+   *
+   * - Always fetches bookings.
+   * - Also fetches venues if the user is a venue manager.
+   * - Updates `profileData` state with the result.
+   *
+   * Handles:
+   * - Loading state
+   * - API errors (via `ApiError` or fallback message)
    */
   const fetchProfile = useCallback(async () => {
     if (!user?.name) {
@@ -68,37 +84,20 @@ const DashboardPage = () => {
   }, [user]);
 
   /**
-   * Effect: Runs `fetchProfile` whenever the component mounts,
-   * the logged-in user changes, or `refetchTrigger` increments.
+   * Effect hook:
+   * - Calls `fetchProfile` on mount
+   * - Re-runs when `user` changes or `refetchTrigger` increments
    */
   useEffect(() => {
     fetchProfile();
   }, [fetchProfile, refetchTrigger]);
 
-  useEffect(() => {
-    if (!user?.name) {
-      setIsLoading(false);
-      return;
-    }
-    const fetchBookings = async () => {
-      try {
-        const endpoint = `${endpoints.profiles.venues(user.name)}`;
-        const response = await apiClient.get<{ data: FullVenue[] }>(endpoint);
-        setProfilOwnVenues(response.data);
-      } catch (err) {
-        setError(err instanceof ApiError ? err.message : "Failed to load bookings.");
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    fetchBookings();
-  }, [profileData, user]);
-
   /**
-   * Handles profile updates (e.g., avatar changes or role upgrades).
-   * Updates the user context and triggers a re-fetch of profile data.
+   * Handles profile updates (e.g., after editing avatar or becoming a manager).
+   * - Updates the user context.
+   * - Forces a profile re-fetch by incrementing `refetchTrigger`.
    *
-   * @param updatedProfile - The updated profile object returned from the API.
+   * @param updatedProfile - The updated profile object returned from the API
    */
   const handleProfileUpdate = (updatedProfile: FullUserProfile) => {
     if (user) {
@@ -107,17 +106,20 @@ const DashboardPage = () => {
     setRefetchTrigger((prev) => prev + 1);
   };
 
+  /**
+   * Content for the main (right) panel of the dashboard.
+   * - Renders "My Bookings" for regular users.
+   * - Renders tab-based content ("My Bookings" or "My Venues") for venue managers.
+   */
   const tabContent = (
     <div className="flex flex-col gap-8">
-      {/* Tab Navigation/Title for the main content area (moved from the top) */}
       <h2 className="text-3xl font-bold text-white border-b pb-3">
-        {profileData?.venueManager ? (activeTab === "bookings" ? "My Bookings" : "My Venues") : "My Bookings"}
+        {profileData?.venueManager ? (activeTab === "bookings" ? "My Bookings" : "Manage Venues") : "My Bookings"}
       </h2>
 
-      {/* Render Active Tab Content */}
       {profileData?.venueManager ? (
         <>
-          {activeTab === "venues" && <MyVenues venues={profileOwnVenues || []} />}
+          {activeTab === "venues" && <MyVenues venues={profileData.venues || []} />}
           {activeTab === "bookings" && <MyBookings bookings={profileData.bookings || []} />}
         </>
       ) : (
@@ -145,10 +147,11 @@ const DashboardPage = () => {
   return (
     <>
       <PageTitle title={`Holidaze | ${user?.venueManager ? "VenueManager" : "Customer"} ${user?.name} `} />
-      {/* Base: Single column on mobile, switches to 2 columns on 'lg' */}
-      <div className="grid grid-cols-1 gap-8 p-4 md:p-8 lg:grid-cols-[1.5fr_2.5fr] max-w-4xl mx-auto">
-        {/* ======== 1. LEFT PANEL (Sticky/Sidebar) ======== */}
-        <aside className="lg:sticky lg:top-24 self-start flex flex-col gap-2 bg-neutral-700 border-1 border-teal-700 rounded-xl p-4 shadow-xl">
+
+      {/* Grid layout: sidebar (left) + main content (right) */}
+      <div className="grid grid-cols-1 gap-8 md:p-8 md:grid-cols-[1.5fr_2.5fr] max-w-4xl mx-auto my-16">
+        {/* ======== LEFT PANEL ======== */}
+        <aside className="lg:sticky lg:top-24 self-start flex flex-col gap-2 w-full max-w-md mx-auto bg-neutral-700 border-1 border-teal-700 rounded-xl p-4 shadow-xl">
           <ProfileHeader profile={profileData} onProfileUpdate={handleProfileUpdate} />
 
           {isOwnProfile && (
@@ -164,48 +167,17 @@ const DashboardPage = () => {
             </Button>
           )}
 
-          {/* Tab Navigation moved here (Only for Venue Managers) */}
-          {profileData.venueManager && (
-            <>
-              <Link to="/venue/create" tabIndex={-1}>
-                <Button variant="primary" className="w-full" size="sm">
-                  + Create New Venue
-                </Button>
-              </Link>
-
-              {/* Tab navigation for changing views MyBookings and MyVenues */}
-              <nav className="flex flex-col space-y-2 border-t border-neutral-700 pt-4 mt-4">
-                <button
-                  onClick={() => setActiveTab("bookings")}
-                  className={`py-2 px-3 text-left font-semibold text-lg rounded-lg transition-colors flex items-center justify-between ${
-                    activeTab === "bookings" ? "border-2 border-neutral-200" : "text-neutral-300 hover:bg-neutral-800"
-                  }`}
-                >
-                  My Bookings{" "}
-                  {activeTab === "bookings" ? <span className="animate-pulse bg-teal-500 h-2 w-2 rounded-full" /> : ""}
-                </button>
-
-                <button
-                  onClick={() => setActiveTab("venues")}
-                  className={`py-2 px-3 text-left font-semibold text-lg rounded-lg transition-colors flex items-center justify-between ${
-                    activeTab === "venues" ? "border-2 border-neutral-200" : "text-neutral-300 hover:bg-neutral-800"
-                  }`}
-                >
-                  My Venues{" "}
-                  {activeTab === "venues" ? <span className="animate-pulse bg-teal-500 h-2 w-2 rounded-full" /> : ""}
-                </button>
-              </nav>
-            </>
-          )}
+          {/* Venue manager tools */}
+          {profileData.venueManager && <VenueManagerTools activeTab={activeTab} onTabChange={setActiveTab} />}
 
           {/* Prompt for non-managers */}
           {!profileData.venueManager && <BecomeManagerPrompt onUpgradeSuccess={handleProfileUpdate} />}
         </aside>
 
-        {/* ======== 2. RIGHT CONTENT (Scrollable Main Area) ======== */}
+        {/* ======== RIGHT PANEL ======== */}
         <div className="lg:min-h-[80vh]">{tabContent}</div>
 
-        {/* --- Edit Profile Modal --- */}
+        {/* Edit profile modal */}
         {isModalOpen && (
           <EditProfileModal
             profile={profileData}

@@ -1,5 +1,5 @@
 import React from "react";
-import type { FullVenue } from "../../../types";
+import type { Venue } from "../../../types";
 import VenueManagementCard from "./VenueManagerCard";
 import { motion } from "motion/react";
 
@@ -7,10 +7,10 @@ import { motion } from "motion/react";
  * Props for the {@link MyVenues} component.
  *
  * @typedef {Object} MyVenuesProps
- * @property {FullVenue[]} venues - An array of venues owned by the logged-in user.
+ * @property {VenueWithBookings[]} venues - An array of venues owned by the logged-in user.
  */
 interface MyVenuesProps {
-  venues: FullVenue[];
+  venues: Venue[];
 }
 
 /**
@@ -47,8 +47,6 @@ const MyVenues: React.FC<MyVenuesProps> = ({ venues }) => {
       {/* Display list of venues or empty state */}
       {venues.length > 0 ? (
         <div>
-          <h2 className="text-3xl font-bold text-neutral-100 col-span-full">Venues you own</h2>
-
           {/* Render a card for each venue */}
           <ul className="grid gap-8">
             {venues.map((venue) => (

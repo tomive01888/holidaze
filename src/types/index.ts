@@ -218,7 +218,7 @@ export interface VenuesApiResponse {
  * Represents the Venue reponse with a list of customer bookings
  */
 export interface VenueWithBookings extends Venue {
-  bookings: VenueBooking[];
+  bookings?: Venue[];
 }
 
 /**
