@@ -11,7 +11,7 @@ import VenueCard from "./components/VenueCard";
 import VenueCardSkeleton from "./components/VenueCardSkeleton";
 import Button from "../../components/ui/Button";
 import { PageTitle } from "../../components/ui/PageTitle";
-import PopularSearchesSection from "./components/PopularSearchedSection";
+import PopularSearchesSection from "./components/PopularSearchesSection";
 
 const DEFAULT_ITEMS_PER_PAGE = 12;
 

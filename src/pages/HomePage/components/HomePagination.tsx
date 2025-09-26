@@ -148,7 +148,10 @@ const HomePagination = ({
       </button>
 
       {/* Page jump input */}
-      <form onSubmit={handleInputSubmit} className="flex items-center gap-2">
+      <form
+        onSubmit={handleInputSubmit}
+        className="flex items-center border border-neutral-400 rounded-lg  bg-black/20"
+      >
         <label htmlFor={`${uniqueId}-page-jump-input`} className="sr-only">
           Go to page
         </label>
@@ -159,11 +162,11 @@ const HomePagination = ({
           max={pageCount}
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
-          className="h-10 w-16 px-2 border rounded-lg text-center text-white"
+          className="h-10 w-16 px-2  text-center text-white"
           placeholder="Pg"
           aria-label="Enter page number to jump to"
         />
-        <Button variant="primary" type="submit" className="w-10 aspect-square !p-0">
+        <Button variant="primary" type="submit" className="!w-10 !h-10 text-center !p-0 !rounded-lg ml-1">
           GO
         </Button>
       </form>

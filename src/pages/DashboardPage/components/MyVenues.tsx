@@ -48,8 +48,6 @@ const MyVenues: React.FC<MyVenuesProps> = ({ venues }) => {
       <PageTitle
         title={`Holidaze | ${user?.venueManager ? "VenueManager" : "Customer"} ${user?.name} managing venues `}
       />
-      {/* Create New Venue Button */}
-
       {/* Display list of venues or empty state */}
       {venues.length > 0 ? (
         <div>

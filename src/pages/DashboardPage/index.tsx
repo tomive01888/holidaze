@@ -146,7 +146,7 @@ const DashboardPage = () => {
   return (
     <>
       {/* Grid layout: sidebar (left) + main content (right) */}
-      <div className="grid grid-cols-1 gap-8 md:p-8 md:grid-cols-[1.5fr_2.5fr] max-w-4xl mx-auto my-16">
+      <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1.5fr_2.5fr] my-16">
         {/* ======== LEFT PANEL ======== */}
         <aside className="lg:sticky lg:top-24 self-start flex flex-col gap-2 w-full max-w-md mx-auto bg-neutral-700 border-1 border-teal-700 rounded-xl p-4 shadow-xl">
           <ProfileHeader profile={profileData} onProfileUpdate={handleProfileUpdate} />

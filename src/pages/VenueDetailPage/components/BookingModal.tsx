@@ -185,8 +185,8 @@ const BookingModal: React.FC<BookingModalProps> = ({ venueName, bookingDetails, 
       {/* --- Step 3: Success --- */}
       {step === 3 && (
         <div>
-          <h2 className="text-3xl font-bold text-success text-center">Booking Confirmed!</h2>
-          <p className="my-2 text-center text-neutral-600">A confirmation has been sent to your registered email.</p>
+          <h2 className="text-3xl font-bold">Booking Confirmed!</h2>
+          <p className="my-2 text-neutral-600">A confirmation has been sent to your registered email.</p>
           <div className="my-6 p-4 bg-neutral-100 rounded-lg border space-y-2 text-lg">
             <p>
               <strong>Confirmation ID:</strong> <span className="font-mono">{confirmationId}</span>

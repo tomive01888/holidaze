@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import Button from "../../../components/ui/Button"; // Adjust path as necessary
+import Button from "../../../components/ui/Button";
 
 interface PopularSearchesSectionProps {
   onSearchChange: (searchTerm: string) => void;
@@ -44,7 +44,7 @@ const PopularSearchesSection = ({ onSearchChange }: PopularSearchesSectionProps)
   };
 
   return (
-    <section aria-labelledby="popular-searches-heading" className="my-8 px-4">
+    <section aria-labelledby="popular-searches-heading" className="my-8 px-4 bg-black/0">
       <div className="flex justify-between items-center border-b-1 border-b-gray-300">
         <h2 id="popular-searches-heading" className="text-2xl font-semibold">
           Popular Searches on Holidaze
@@ -54,7 +54,7 @@ const PopularSearchesSection = ({ onSearchChange }: PopularSearchesSectionProps)
           onClick={toggleVisibility}
           aria-expanded={isVisible}
           aria-controls="popular-searches-content"
-          className="bg-transparent text-neutral-200 hover:!bg-black/20"
+          className="bg-transparent text-neutral-200 hover:!bg-black/15"
         >
           {isVisible ? "Hide" : "Show"}
         </Button>
@@ -68,10 +68,10 @@ const PopularSearchesSection = ({ onSearchChange }: PopularSearchesSectionProps)
           {popularSearches.map((term) => (
             <Button
               variant="secondary"
-              size="sm"
+              size="md"
               key={term}
               onClick={() => handleButtonClick(term)}
-              className="px-3 py-1 font-medium rounded-full bg-neutral-100 text-black hover:bg-neutral-200 transition-colors"
+              className="!bg-transparent underline text-teal-300 font-black drop-shadow-xs drop-shadow-teal-700 hover:scale-110 transition-transform duration-400"
             >
               {term}
             </Button>
