@@ -66,12 +66,12 @@ export const MediaFields = () => {
         <p className="text-sm text-neutral-600 mb-2">
           The first image is the main cover image. Click the star to change it.
         </p>
-        <div className="grid grid-cols-1 gap-4 p-2 overflow-x-auto bg-neutral-100 rounded-lg">
+        <div className="grid grid-cols-1 grid-480-break md:!grid-cols-3 gap-2 p-2 overflow-x-auto bg-neutral-100 rounded-lg">
           {formData.media.length > 0 ? (
             formData.media.map((image, index) => (
               <div
                 key={index}
-                className="relative flex-shrink-0 w-full aspect-[16/7] rounded-md overflow-hidden group shadow-md"
+                className="relative flex-shrink-0 w-full aspect-video rounded-md overflow-hidden group shadow-md"
               >
                 <img
                   src={image.url}
@@ -83,12 +83,12 @@ export const MediaFields = () => {
                     e.currentTarget.alt = "Invalid image URL";
                   }}
                 />
-                <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3">
+                <div className="absolute inset-0 lg:bg-black/60 lg:opacity-0 group-hover:opacity-100 transition-opacity flex items-start justify-end w-full p-2 lg:items-center lg:justify-center gap-3">
                   {index !== 0 && (
                     <button
                       type="button"
                       onClick={() => handleSetMainImage(index)}
-                      className="text-white hover:text-yellow-400"
+                      className="drop-shadow-md drop-shadow-black/30 text-white hover:text-yellow-400 active:text-yellow-400"
                       title="Make cover image"
                     >
                       <Star size={24} />
@@ -104,7 +104,7 @@ export const MediaFields = () => {
                   </button>
                 </div>
                 {index === 0 && (
-                  <div className="absolute top-1 left-1 bg-primary-600 text-white text-xs font-bold px-2 py-1 rounded">
+                  <div className="absolute top-1 left-1 bg-primary-600 text-white text-xs font-bold px-2 py-1 rounded bg-black/40 backdrop-blur-[5px]">
                     MAIN
                   </div>
                 )}
