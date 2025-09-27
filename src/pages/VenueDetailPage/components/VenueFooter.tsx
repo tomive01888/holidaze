@@ -40,7 +40,7 @@ const VenueFooter: React.FC<VenueFooterProps> = ({ venue }) => {
    * Verifies if logged user is the owner of the venue they have visited.
    * Grants access to venue manager controls if they match.
    */
-  const isOwner = user && user.name === venue.owner.name;
+  const isOwner = user && user.name === venue.owner?.name;
 
   /**
    * Handles the deletion of the venue by calling the API and redirecting the user.
@@ -119,7 +119,7 @@ const VenueFooter: React.FC<VenueFooterProps> = ({ venue }) => {
       <div
         className="relative p-6 rounded-lg overflow-hidden"
         style={{
-          backgroundImage: `url(${venue.owner.banner?.url})`,
+          backgroundImage: `url(${venue.owner?.banner?.url})`,
           backgroundSize: "contain",
           backgroundPosition: "center",
         }}
@@ -130,13 +130,13 @@ const VenueFooter: React.FC<VenueFooterProps> = ({ venue }) => {
         {/* Content */}
         <div className="relative flex items-center gap-4">
           <img
-            src={venue.owner.avatar?.url || userRoundCircle}
-            alt={venue.owner.avatar?.alt}
+            src={venue.owner?.avatar?.url || userRoundCircle}
+            alt={venue.owner?.avatar?.alt}
             className="w-24 h-24 rounded-full object-cover border-4 border-white shadow-md bg-white"
           />
           <div>
-            <h3 className="text-2xl font-bold text-neutral-900">{venue.owner.name}</h3>
-            <p className="text-neutral-600">{venue.owner.email}</p>
+            <h3 className="text-2xl font-bold text-neutral-900">{venue.owner?.name}</h3>
+            <p className="text-neutral-600">{venue.owner?.email}</p>
           </div>
         </div>
       </div>

@@ -12,31 +12,65 @@ import { PageTitle } from "../../components/ui/PageTitle";
 type RegisterRole = "customer" | "manager";
 
 /**
- * A page for new users to create an account as either a Customer or a Venue Manager.
- * It handles form input, validation and API submission.
+ * RegisterPage component.
+ * Renders a registration form for new users to create an account
+ * as either a Customer or Venue Manager. Handles form input,
+ * client-side validation, role selection, and API submission.
+ *
+ * @component
+ * @example
+ * return <RegisterPage />
  */
 const RegisterPage = () => {
+  /** Selected account role. Defaults to "customer". */
   const [role, setRole] = useState<RegisterRole>("customer");
+
+  /** Form input state. */
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
   });
-  const [fieldErrors, setFieldErrors] = useState<{ name?: string; email?: string; password?: string }>({});
+
+  /** Individual field validation errors. */
+  const [fieldErrors, setFieldErrors] = useState<{
+    name?: string;
+    email?: string;
+    password?: string;
+  }>({});
+
+  /** General form submission error (e.g., API errors). */
   const [formError, setFormError] = useState<string | null>(null);
 
+  /** Loading state while submitting the form. */
   const [isLoading, setIsLoading] = useState(false);
+
   const navigate = useNavigate();
+
+  /**
+   * Handles changes in form input fields.
+   * Updates the `formData` state.
+   *
+   * @param {React.ChangeEvent<HTMLInputElement>} e - The input change event.
+   */
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  /**
+   * Handles form submission.
+   * Performs client-side validation and sends POST request
+   * to register a new user.
+   *
+   * @param {React.FormEvent<HTMLFormElement>} e - The form submit event.
+   */
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setFieldErrors({ name: "", email: "", password: "" });
     setFormError(null);
 
+    // Client-side validation
     if (!isValidUsername(formData.name)) {
       setFieldErrors({ name: "Username can only contain letters, numbers, and underscores (_)." });
       return;
@@ -72,12 +106,18 @@ const RegisterPage = () => {
     }
   };
 
+  /**
+   * Ensures the input field scrolls into view when focused.
+   *
+   * @param {React.FocusEvent<HTMLInputElement>} event - The input focus event.
+   */
   const handleInputFocus = (event: React.FocusEvent<HTMLInputElement>) => {
     setTimeout(() => {
       event.target.scrollIntoView({ behavior: "smooth", block: "center" });
     }, 300);
   };
 
+  /** Default input field styling classes */
   const inputClasses =
     "mt-1 block w-full px-3 py-2 border border-neutral-300 rounded-md shadow-sm focus:rounded-lg focus:outline-dashed focus:outline-offset-2 focus:outline-3 focus:outline-pink-400";
 
@@ -155,7 +195,7 @@ const RegisterPage = () => {
               className={inputClasses}
             />
             {fieldErrors.email && (
-              <p id="name-error" className="text-red-600">
+              <p id="email-error" className="text-red-600">
                 {fieldErrors.email}
               </p>
             )}
@@ -178,7 +218,7 @@ const RegisterPage = () => {
               Must be at least 8 characters long.
             </p>
             {fieldErrors.password && (
-              <p id="name-error" className="text-red-600">
+              <p id="password-error" className="text-red-600">
                 {fieldErrors.password}
               </p>
             )}
@@ -197,6 +237,7 @@ const RegisterPage = () => {
             </div>
           )}
 
+          {/* --- Form Error Display --- */}
           {formError && (
             <p className="text-center text-error text-red-600 outline-1 outline-red-600 bg-red-50 rounded text-lg font-semibold">
               {formError}
