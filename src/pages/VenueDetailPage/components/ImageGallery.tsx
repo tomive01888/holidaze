@@ -114,17 +114,16 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ media }) => {
 
       {/* Image transition */}
       <div className="w-full h-full bg-neutral-800">
-        <AnimatePresence mode="wait">
+        <AnimatePresence mode="popLayout">
           <motion.img
-            loading="lazy"
             key={currentIndex}
             src={media[currentIndex].url}
             alt={media[currentIndex].alt || "Gallery image"}
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover absolute inset-0"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.02 }}
+            transition={{ duration: 0.4, ease: "easeInOut" }}
             draggable={false}
           />
         </AnimatePresence>
