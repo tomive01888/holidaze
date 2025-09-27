@@ -21,7 +21,7 @@ export interface ModalProps {
    */
   description?: string;
   /**
-   * Optional document title to set while the modal is open.
+   * Optional temporary document title to set while the modal is open.
    * When the modal closes, the original title will be restored.
    */
   modalTitle?: string;
@@ -30,15 +30,30 @@ export interface ModalProps {
 /**
  * @component Modal
  * @description
- * A reusable, accessible modal component with:
+ * A fully accessible, reusable modal component with:
  * - Focus trap (keyboard users cannot tab outside)
- * - Escape key to close
- * - ARIA roles and labels for screen readers
+ * - Escape key closes the modal
+ * - Scroll lock while open
+ * - Restores focus to the previously focused element on close
  * - Optional temporary document title while open
- * - Restores focus to previously focused element on close
+ * - ARIA roles and labels for screen readers
+ * - Optional screen-reader-only description
+ * - Close button with accessible label
+ *
+ * The modal is rendered in a React portal (`document.body`) and ensures the rest
+ * of the app is hidden from assistive technologies while open.
  *
  * @param {ModalProps} props - Props for the modal component.
  * @returns {React.ReactPortal} A portal rendering the modal content.
+ *
+ * @example
+ * <Modal
+ *   onClose={() => setShowModal(false)}
+ *   modalTitle="My Modal"
+ *   description="This modal allows users to perform important actions."
+ * >
+ *   <p>Modal content goes here.</p>
+ * </Modal>
  */
 const Modal: FC<ModalProps> = ({ children, onClose, className = "", description, modalTitle }) => {
   const titleId = useId();
