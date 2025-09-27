@@ -1,6 +1,14 @@
 # Holidaze Project
 
-Add images later
+## 📸 Screenshots & Mockups
+
+<div style="display: flex; flex-wrap: wrap; gap: 10px;">
+  <img src="./docs/assets/hero-img.png" width="100%" alt="Landing Page" style="width: 99%;"/>
+  <img src="./docs/assets/mock-views.png" width="48%" alt="Mock views" style="width: 49%;"/>
+  <img src="./docs/assets/venue-details.png" width="48%" alt="Venue details" style="width: 49%;"/>
+  <img src="./docs/assets/customer-bookings.png" width="75%" alt="Customer bookings" style=" width: 74%;"/>
+  <img src="./docs/assets/vm-venues.png" width="25%" alt="Venue manager own venues" style="width: 24%;"/> 
+</div>
 
 ### 🌐 Visit the live site: [Holidaze website](https://tom-holidaze.netlify.app/)
 
@@ -47,6 +55,8 @@ Holidaze is a booking website designed for both customers and venue managers. Vi
 
 ---
 
+<p  align="right"><a href="#top">⬆️ Back to Top</a></p>
+
 ## 🚀 Getting Started
 
 ### 🔹 Clone or Download
@@ -91,6 +101,8 @@ npm install
 npm run dev
 ```
 
+<p  align="right"><a href="#top">⬆️ Back to Top</a></p>
+
 ---
 
 ## 🔑 Environment Variables
@@ -111,6 +123,8 @@ Replace `<your_api_key>` with the actual API key.
 
 ---
 
+<p  align="right"><a href="#top">⬆️ Back to Top</a></p>
+
 ## API Reference
 
 This project interacts with the **Noroff Holidaze API**, which provides endpoints for holidaze venues, booking and make venues.  
@@ -128,6 +142,7 @@ Read more in the link above about which requires authentication and more on url 
 ---
 
 ## Project and design planning
+
 - [Kanban holidaze](https://github.com/users/tomive01888/projects/11/views/2)
 - [Figma project holidaze](https://www.figma.com/design/Md8qmtG2FMgwvo1laUyAEX/Holidaze_projectExam2?node-id=0-1&t=gufZ72GY3tznweza-1)
 
@@ -161,4 +176,4 @@ Read more in the link above about which requires authentication and more on url 
 
 ---
 
-<p align="right"><a href="#top">⬆️ Back to Top</a></p>
+<p  align="right"><a href="#top">⬆️ Back to Top</a></p>
