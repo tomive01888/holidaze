@@ -17,6 +17,18 @@ const DashboardPage = lazy(() => import("./pages/DashboardPage"));
 const EditVenuePage = lazy(() => import("./pages/EditVenuePage"));
 const CreateVenuePage = lazy(() => import("./pages/CreateVenuePage"));
 
+/**
+ * Root application component.
+ *
+ * Sets up:
+ * - App routes with `react-router-dom`
+ * - Protected routes and venue manager routes
+ * - Lazy-loaded pages with `Suspense`
+ * - Scroll-to-top behavior
+ * - Global toast notifications via `react-toastify`
+ *
+ * @returns {JSX.Element} The main application layout with routing.
+ */
 function App() {
   const routes = useRoutes([
     {
