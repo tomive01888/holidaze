@@ -1,4 +1,3 @@
-Hello readme
 # Holidaze Project
 
 Add images later
@@ -45,28 +44,6 @@ Holidaze is a booking website designed for both customers and venue managers. Vi
 - Include advanced search and filtering options
 - Improve UI with animations and visual feedback
 - Implement admin panel for site-wide management
-
----
-
-## 🛠 Built With
-
-<div style="display: flex; gap: 10px;">
-  <a href="https://www.figma.com/">
-    <img title="Figma" height="48px" width="48px" src="https://skillicons.dev/icons?i=figma"/>
-  </a>  
-  <a href="https://react.dev/">
-    <img title="HTML" height="48px" width="48px" src="https://skillicons.dev/icons?i=react"/>
-  </a>  
-  <a href="https://tailwindcss.com/">
-    <img title="Tailwind CSS" height="48px" width="48px" src="https://skillicons.dev/icons?i=tailwind"/>
-  </a>  
-  <a href="https://developer.mozilla.org/en-US/docs/Glossary/TypeScript">
-    <img title="TypeScript" height="48px" width="48px" src="https://skillicons.dev/icons?i=ts"/>
-  </a>  
-  <a href="https://vite.dev/">
-    <img title="Vite" height="48px" width="48px" src="https://skillicons.dev/icons?i=vite"/>
-  </a>
-</div>
 
 ---
 
@@ -147,6 +124,34 @@ https://api.noroff.dev/api/v2
 
 ⚠️ Some of the endpoints requires authenticated keys to use.
 Read more in the link above about which requires authentication and more on url parameters.
+
+---
+
+## Project and design planning
+- [Kanban holidaze](https://github.com/users/tomive01888/projects/11/views/2)
+- [Figma project holidaze](https://www.figma.com/design/Md8qmtG2FMgwvo1laUyAEX/Holidaze_projectExam2?node-id=0-1&t=gufZ72GY3tznweza-1)
+
+---
+
+## 🛠 Built With
+
+<div style="display: flex; gap: 10px;">
+  <a href="https://www.figma.com/">
+    <img title="Figma" height="48px" width="48px" src="https://skillicons.dev/icons?i=figma"/>
+  </a>  
+  <a href="https://react.dev/">
+    <img title="HTML" height="48px" width="48px" src="https://skillicons.dev/icons?i=react"/>
+  </a>  
+  <a href="https://tailwindcss.com/">
+    <img title="Tailwind CSS" height="48px" width="48px" src="https://skillicons.dev/icons?i=tailwind"/>
+  </a>  
+  <a href="https://developer.mozilla.org/en-US/docs/Glossary/TypeScript">
+    <img title="TypeScript" height="48px" width="48px" src="https://skillicons.dev/icons?i=ts"/>
+  </a>  
+  <a href="https://vite.dev/">
+    <img title="Vite" height="48px" width="48px" src="https://skillicons.dev/icons?i=vite"/>
+  </a>
+</div>
 
 ---
 
