@@ -55,7 +55,7 @@
   }
 
   .react-datepicker__month-container {
-    @apply w-full !border-1 !border-blue-500 rounded;
+    @apply w-full !border-1 !border-teal-500 rounded;
   }
 
   /*
