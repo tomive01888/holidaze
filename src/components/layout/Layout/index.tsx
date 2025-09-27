@@ -24,7 +24,7 @@ const Layout = () => {
         href="#main-content"
         className="
           sr-only 
-          focus:not-sr-only focus:absolute focus:z-50 focus:top-4 focus:left-4 bg-white text-black
+          focus:not-sr-only focus:fixed focus:z-[110] focus:top-4 focus:left-4 bg-white text-black
           focus:px-4 focus:py-2 focus:rounded-md focus:shadow-lg
         "
       >
