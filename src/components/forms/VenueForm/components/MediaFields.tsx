@@ -2,6 +2,17 @@ import { useVenueForm } from "../VenueFormContext";
 import Button from "../../../ui/Button";
 import { Star, Trash2 } from "lucide-react";
 
+/**
+ * MediaFields component allows the user to add, remove, and manage
+ * images for a venue. Users can add up to 8 images, set a main cover image,
+ * and provide optional alt text for accessibility.
+ *
+ * @component
+ * @example
+ * return (
+ *   <MediaFields />
+ * )
+ */
 export const MediaFields = () => {
   const {
     formData,

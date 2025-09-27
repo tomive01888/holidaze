@@ -8,8 +8,24 @@ import holidazeLogo from "../../../assets/holidaze_logo.png";
 import { CircleUserRound } from "lucide-react";
 
 /**
- * The main application header. It's responsible for displaying the main navigation,
- * handling the login modal, and reflecting the user's authentication status and role.
+ * Header component for the Holidaze application.
+ *
+ * @component
+ * @description
+ * Displays the top navigation bar with the Holidaze logo, user authentication controls,
+ * and navigation links. It reflects the current user's authentication status and role:
+ * - Venue managers have a neutral-colored header.
+ * - Logged-in users have a teal header.
+ * - Guests see a darker teal header.
+ *
+ * Features:
+ * - Opens a login modal when the "Login" button is clicked or when triggered via `location.state.triggerLogin`.
+ * - Displays user avatar and name when logged in.
+ * - Provides logout functionality for authenticated users.
+ * - Provides navigation links to "Profile" and "Register" for guests.
+ * - Accessible login modal with close functionality.
+ *
+ * @returns {JSX.Element} The header and optional login modal JSX.
  */
 const Header = () => {
   const { user, logout, isLoginModalOpen, openLoginModal, closeLoginModal } = useAuth();

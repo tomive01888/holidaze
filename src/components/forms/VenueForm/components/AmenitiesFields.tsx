@@ -1,10 +1,23 @@
 import { useVenueForm } from "../VenueFormContext";
 
 /**
- * A fieldset component for managing the venue's amenities (meta properties).
- * It consumes the VenueFormContext to get the current form data and the
- * handler function for checkbox changes.
+ * `AmenitiesFields` is a fieldset component for managing the venue's available amenities.
+ * It uses the `useVenueForm` hook to access `formData` and the `handleCheckboxChange`
+ * function for updating boolean checkbox values.
+ *
+ * The component renders checkboxes for:
+ * - Free WiFi Included
+ * - Free Parking
+ * - Breakfast Included
+ * - Pets Welcome
+ *
+ * It also provides a tip for users to indicate amenities clearly for customers.
+ *
+ * @component
+ * @example
+ * <AmenitiesFields />
  */
+
 export const AmenitiesFields = () => {
   const { formData, handleCheckboxChange } = useVenueForm();
 

@@ -1,9 +1,23 @@
 import { useVenueForm } from "../VenueFormContext";
 
 /**
- * A fieldset component for managing the venue's location details.
- * It consumes the VenueFormContext to get the current form data and the
- * generic `handleChange` function for text inputs.
+ * `LocationFields` is a fieldset component for managing the venue's location details.
+ * It uses the `useVenueForm` hook to access `formData` and the generic `handleChange`
+ * function for updating text and number inputs.
+ *
+ * The component includes inputs for:
+ * - Address
+ * - City
+ * - Zip Code
+ * - Country
+ * - Latitude (optional)
+ * - Longitude (optional)
+ *
+ * It also provides tips for the user to help others find the venue more easily.
+ *
+ * @component
+ * @example
+ * <LocationFields />
  */
 export const LocationFields = () => {
   const { formData, handleChange } = useVenueForm();

@@ -7,6 +7,20 @@ import VenueForm from "../../components/forms/VenueForm";
 import { toast } from "react-toastify";
 import { PageTitle } from "../../components/ui/PageTitle";
 
+/**
+ * `CreateVenuePage` is a page component for creating a new venue.
+ * It renders a `VenueForm` and handles submission to the API.
+ *
+ * Features:
+ * - Shows a loading state while submitting.
+ * - Displays success and error notifications using `react-toastify`.
+ * - Navigates to the newly created venue page after successful creation.
+ *
+ * @component
+ * @example
+ * <CreateVenuePage />
+ */
+
 const CreateVenuePage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();

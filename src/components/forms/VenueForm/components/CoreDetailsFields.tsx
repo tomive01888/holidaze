@@ -1,5 +1,21 @@
 import { useVenueForm } from "../VenueFormContext";
 
+/**
+ * `CoreDetailsFields` is a fieldset component for managing the venue's core information.
+ * It uses the `useVenueForm` hook to access `formData` and the generic `handleChange`
+ * function for updating text and number inputs.
+ *
+ * The component includes inputs for:
+ * - Venue Name (required)
+ * - Description (required)
+ * - Price per night (required)
+ * - Max Guests (required)
+ * - Rating (optional)
+ *
+ * @component
+ * @example
+ * <CoreDetailsFields />
+ */
 export const CoreDetailsFields = () => {
   const { formData, handleChange } = useVenueForm();
 

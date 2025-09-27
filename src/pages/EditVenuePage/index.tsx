@@ -10,6 +10,23 @@ import { toast } from "react-toastify";
 import VenueForm from "../../components/forms/VenueForm";
 import { PageTitle } from "../../components/ui/PageTitle";
 
+/**
+ * `EditVenuePage` is a page component for editing an existing venue.
+ *
+ * Features:
+ * - Fetches venue data by `id` from the URL params and populates the `VenueForm`.
+ * - Shows a loading spinner while fetching initial data.
+ * - Handles API errors:
+ *   - 404 or 400 errors render a `NotFoundPage`.
+ *   - Other errors show an inline error message with a back-to-dashboard button.
+ * - Submits updated data to the API and shows success or error toasts.
+ * - Navigates back to the venue page after successful update.
+ *
+ * @component
+ * @example
+ * <EditVenuePage />
+ */
+
 const EditVenuePage = () => {
   const { id } = useParams<{ id: string }>();
   const [initialData, setInitialData] = useState<VenueFormData | null>(null);
