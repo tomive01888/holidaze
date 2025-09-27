@@ -1,9 +1,9 @@
 Hello readme
-# SnapBid
+# Holidaze Project
 
 Add images later
 
-### 🌐 Visit the live site: [Holidaze made by Tom](https://tom-holidaze.netlify.app/)
+### 🌐 Visit the live site: [Holidaze website](https://tom-holidaze.netlify.app/)
 
 # Holidaze
 
