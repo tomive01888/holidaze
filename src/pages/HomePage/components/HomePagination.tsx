@@ -9,15 +9,38 @@ import React, { useState } from "react";
 import { ChevronLeft, ChevronRight, Ellipsis } from "lucide-react";
 import Button from "../../../components/ui/Button";
 
+/**
+ * Props for the HomePagination component.
+ */
 interface HomePaginationProps {
+  /** The currently active page number */
   currentPage: number;
+  /** Total number of pages */
   pageCount: number;
+  /** Number of items to show per page */
   itemsPerPage: number;
+  /**
+   * Callback when the page changes
+   * @param page - The page number to navigate to
+   * @param source - How the page was changed: "keyboard", "mouse", or "input"
+   */
   onPageChange: (page: number, source: "keyboard" | "mouse" | "input") => void;
+  /**
+   * Callback when the number of items per page changes
+   * @param value - New items per page value
+   */
   onItemsPerPageChange: (value: number) => void;
+  /** Optional unique identifier for accessibility and testing purposes */
   uniqueId?: string;
 }
 
+/**
+ * HomePagination component provides a fully accessible pagination UI
+ * including previous/next buttons, page numbers, jump-to-page input, and items-per-page selector.
+ *
+ * @param props - Component props
+ * @returns JSX.Element
+ */
 const HomePagination = ({
   currentPage,
   pageCount,
@@ -28,12 +51,21 @@ const HomePagination = ({
 }: HomePaginationProps) => {
   const [inputValue, setInputValue] = useState<string>("");
 
+  /**
+   * Navigate to a specific page if within valid bounds
+   * @param page - Page number to navigate to
+   * @param source - How the navigation was triggered: "keyboard", "mouse", or "input"
+   */
   const goToPage = (page: number, source: "keyboard" | "mouse" | "input") => {
     if (page >= 1 && page <= pageCount) {
       onPageChange(page, source);
     }
   };
 
+  /**
+   * Handles form submission from the page jump input
+   * @param e - Form event
+   */
   const handleInputSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const pageNum = Number(inputValue);

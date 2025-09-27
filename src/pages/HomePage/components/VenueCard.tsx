@@ -4,19 +4,38 @@ import type { Venue } from "../../../types";
 import { formatCurrency } from "../../../utils/currencyUtils";
 
 /**
- * Props for the VenueCard component.
+ * Props for the `VenueCard` component.
  */
 interface VenueCardProps {
   /**
-   * The venue data object to display in the card.
+   * The venue object containing all necessary data to render the card.
+   *
+   * @property {string} id - Unique identifier of the venue.
+   * @property {string} name - Name of the venue. Defaults to "Untitled Venue" if missing.
+   * @property {number} rating - Average rating of the venue (0–5). If 0, "N/A" is displayed.
+   * @property {number} maxGuests - Maximum number of guests allowed.
+   * @property {number} price - Price per night in the venue's currency.
+   * @property {Array<{ url: string; alt?: string }>} [media] - Optional array of media objects; the first image is displayed. If missing, a placeholder image is shown.
    */
   venue: Venue;
 }
 
 /**
- * A card component to display a summary of a venue.
- * Designed to be accessible and robust, handling missing data gracefully.
- * Typically used inside lists of venues.
+ * A card component that displays a summary of a venue, typically used in lists or grids.
+ *
+ * Features:
+ * - Lazy-loads the first image from the venue's `media` array, falling back to a placeholder.
+ * - Shows venue name, rating, maximum guests, and price per night.
+ * - Fully keyboard-accessible and scrolls into view when focused.
+ * - Handles missing or incomplete data gracefully.
+ *
+ * @example
+ * ```tsx
+ * <VenueCard venue={myVenue} />
+ * ```
+ *
+ * @param {VenueCardProps} props - Props object containing a `venue`.
+ * @returns {JSX.Element} The rendered venue card.
  */
 const VenueCard: React.FC<VenueCardProps> = ({ venue, ...props }) => {
   const placeholderImage = "https://placehold.co/600x400/e2e8f0/475569?text=No+Image";

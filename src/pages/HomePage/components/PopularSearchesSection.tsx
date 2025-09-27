@@ -21,9 +21,21 @@ const popularSearches = [
   "Lake",
 ];
 
+/**
+ * PopularSearchesSection Component
+ *
+ * Renders a section displaying popular search terms that users can click for quick searches.
+ * Users can toggle visibility of the search terms, and the state is persisted in localStorage.
+ *
+ * @param {PopularSearchesSectionProps} props - Component props
+ * @param {(searchTerm: string) => void} props.onSearchChange - Callback when a search term is selected
+ * @returns {JSX.Element} The rendered PopularSearchesSection component
+ */
 const PopularSearchesSection = ({ onSearchChange }: PopularSearchesSectionProps) => {
+  /** Whether the popular searches list is currently visible */
   const [isVisible, setIsVisible] = useState(true);
 
+  // Load visibility preference from localStorage on mount
   useEffect(() => {
     const savedVisibility = localStorage.getItem("popularSearchesVisible");
     if (savedVisibility !== null) {
@@ -31,6 +43,9 @@ const PopularSearchesSection = ({ onSearchChange }: PopularSearchesSectionProps)
     }
   }, []);
 
+  /**
+   * Toggle visibility of the popular searches list and persist to localStorage.
+   */
   const toggleVisibility = useCallback(() => {
     setIsVisible((prev) => {
       const newState = !prev;
@@ -39,6 +54,10 @@ const PopularSearchesSection = ({ onSearchChange }: PopularSearchesSectionProps)
     });
   }, []);
 
+  /**
+   * Handle click on a search term button.
+   * @param {string} term - The selected search term
+   */
   const handleButtonClick = (term: string) => {
     onSearchChange(term);
   };

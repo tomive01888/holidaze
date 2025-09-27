@@ -1,8 +1,3 @@
-/**
- * VenueCardSkeleton.tsx
- * A skeleton placeholder for VenueCard while data is loading.
- */
-
 import React from "react";
 
 interface VenueCardSkeletonProps {
@@ -12,6 +7,31 @@ interface VenueCardSkeletonProps {
   className?: string;
 }
 
+/**
+ * VenueCardSkeleton.tsx
+ *
+ * A visual placeholder for the `VenueCard` component displayed while
+ * venue data is loading. It uses skeleton UI elements with pulse
+ * animations to indicate loading state, maintaining layout consistency
+ * and improving perceived performance.
+ *
+ * This component is purely presentational and does not handle any
+ * interactive behavior or fetch data.
+ *
+ * @component
+ *
+ * @param {Object} props - Component props.
+ * @param {string} [props.className] - Optional additional CSS classes
+ *   to apply to the container, allowing custom styling or layout adjustments.
+ *
+ * @example
+ * // Basic usage
+ * <VenueCardSkeleton />
+ *
+ * @example
+ * // Custom className
+ * <VenueCardSkeleton className="w-80" />
+ */
 const VenueCardSkeleton: React.FC<VenueCardSkeletonProps> = ({ className }) => {
   return (
     <div
