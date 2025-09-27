@@ -98,6 +98,7 @@ const SearchBar = React.forwardRef<HTMLInputElement, SearchBarProps>(
             ref={ref}
             value={inputValue}
             onChange={handleInputChange}
+            onFocus={(e) => e.target.select()}
             placeholder={placeholder}
             className="
             w-full 

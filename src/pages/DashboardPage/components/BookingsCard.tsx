@@ -50,7 +50,7 @@ const BookingCard: React.FC<BookingCardProps> = ({ booking, className }) => {
         </p>
       </div>
 
-      <div className="flex flex-col text-sm flex-shrink-0 bg-neutral-50 rounded p-1 text-black row-start-2 col-start-3 col-span-3 sm:row-start-1 sm:col-start-6">
+      <div className="flex flex-col text-sm flex-shrink-0 bg-neutral-50 rounded p-1 text-black row-start-2 col-start-3 col-span-3 sm:row-start-1 sm:col-start-6 drop-shadow-sm drop-shadow-black/30">
         <p>
           Check-in: <strong className="text-neutral-600">{formatDate(booking.dateFrom)}</strong>
         </p>

@@ -44,6 +44,7 @@ export const LocationFields = () => {
           type="text"
           value={formData.location.address || ""}
           onChange={handleChange}
+          onFocus={(e) => e.target.select()}
           className={inputClasses}
         />
       </div>
@@ -59,6 +60,7 @@ export const LocationFields = () => {
             type="text"
             value={formData.location.city || ""}
             onChange={handleChange}
+            onFocus={(e) => e.target.select()}
             className={inputClasses}
           />
         </div>
@@ -72,6 +74,7 @@ export const LocationFields = () => {
             type="text"
             value={formData.location.zip || ""}
             onChange={handleChange}
+            onFocus={(e) => e.target.select()}
             className={inputClasses}
           />
         </div>
@@ -87,6 +90,7 @@ export const LocationFields = () => {
           type="text"
           value={formData.location.country || ""}
           onChange={handleChange}
+          onFocus={(e) => e.target.select()}
           className={inputClasses}
         />
       </div>
@@ -104,6 +108,7 @@ export const LocationFields = () => {
             step="any" // Allows decimal values
             value={formData.location.lat || ""}
             onChange={handleChange}
+            onFocus={(e) => e.target.select()}
             className={inputClasses}
           />
         </div>
@@ -118,6 +123,7 @@ export const LocationFields = () => {
             step="any"
             value={formData.location.lng || ""}
             onChange={handleChange}
+            onFocus={(e) => e.target.select()}
             className={inputClasses}
           />
         </div>

@@ -51,6 +51,7 @@ export const MediaFields = () => {
             placeholder="https://example.com/image.jpg"
             value={newImageUrl}
             onChange={(e) => setNewImageUrl(e.target.value)}
+            onFocus={(e) => e.target.select()}
             className="mt-1 block w-full px-3 py-2 border border-neutral-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500"
           />
         </div>
@@ -64,6 +65,7 @@ export const MediaFields = () => {
             placeholder="A description of the image"
             value={newImageAlt}
             onChange={(e) => setNewImageAlt(e.target.value)}
+            onFocus={(e) => e.target.select()}
             className="mt-1 block w-full px-3 py-2 border border-neutral-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500"
           />
         </div>

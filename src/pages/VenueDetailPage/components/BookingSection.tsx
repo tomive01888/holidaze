@@ -33,7 +33,7 @@ interface BookingSectionProps {
 const BookingSection: React.FC<BookingSectionProps> = ({ venue, onBookingSuccess }) => {
   const { user, openLoginModal } = useAuth();
   const [dateRange, setDateRange] = useState<[Date | null, Date | null]>([null, null]);
-  const [guests, setGuests] = useState(1);
+  const [guests, setGuests] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [startDate, endDate] = dateRange;
   const nights = calculateNumberOfNights(startDate, endDate);
@@ -86,6 +86,11 @@ const BookingSection: React.FC<BookingSectionProps> = ({ venue, onBookingSuccess
   const handleConfirmBooking = async () => {
     if (!startDate || !endDate || !venue.id) return;
 
+    if (guests < 1) {
+      toast.error(`Please specify at least 1 guest or max ${venue.maxGuests}.`);
+      return;
+    }
+
     const payload: BookingFormData = {
       dateFrom: startDate.toISOString(),
       dateTo: endDate.toISOString(),
@@ -127,15 +132,15 @@ const BookingSection: React.FC<BookingSectionProps> = ({ venue, onBookingSuccess
 
         <div className="mt-4">
           <label htmlFor="guests" className="block font-bold">
-            Guests:
+            Guests (max guests: {venue.maxGuests}):
           </label>
           <input
             id="guests"
             type="number"
             value={guests}
-            min="1"
             max={venue.maxGuests}
             onChange={(e) => setGuests(Math.min(venue.maxGuests, Math.max(1, parseInt(e.target.value) || 1)))}
+            onFocus={(e) => e.target.select()}
             className="p-2 border rounded bg-white w-full mt-1"
           />
         </div>

@@ -70,6 +70,7 @@ export const CoreDetailsFields = () => {
             max="10000"
             value={formData.price}
             onChange={handleChange}
+            onFocus={(e) => e.target.select()}
             required
             className={inputClasses}
           />
@@ -90,6 +91,7 @@ export const CoreDetailsFields = () => {
             max="100"
             value={formData.maxGuests}
             onChange={handleChange}
+            onFocus={(e) => e.target.select()}
             required
             className={inputClasses}
           />
@@ -107,6 +109,7 @@ export const CoreDetailsFields = () => {
             max="5"
             value={formData.rating}
             onChange={handleChange}
+            onFocus={(e) => e.target.select()}
             className={inputClasses}
           />
         </div>

@@ -75,6 +75,7 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({ profile, onClose, o
               name="avatarUrl"
               value={formData.avatarUrl}
               onChange={handleInputChange}
+              onFocus={(e) => e.target.select()}
               className="mt-1 w-full p-2 border rounded"
             />
           </div>
@@ -86,6 +87,7 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({ profile, onClose, o
               name="bannerUrl"
               value={formData.bannerUrl}
               onChange={handleInputChange}
+              onFocus={(e) => e.target.select()}
               className="mt-1 w-full p-2 border rounded"
             />
           </div>
