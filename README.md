@@ -172,11 +172,12 @@ Read more in the link above about which requires authentication and more on url 
 
 ## Resources
 
-- **Noroff Holidaze API** – Used for fetching venues, bookings and user management  
-- **Figma** – For UI/UX mockups and design planning  
+- **Noroff Holidaze API** – Used for fetching venues, bookings and user management
+- **Figma** – For UI/UX mockups and design planning
 - **AI Assistance** – Coding support and logic ideas, verify code structure, suggest optimizations and ensure accessibility compliance (WCAG).
-- **Tailwind CSS Docs** – Reference for styling and utilities  
-- **React Docs** – Reference for component structure and hooks 
+- **Tailwind CSS Docs** – Reference for styling and utilities
+- **React Docs** – Reference for component structure and hooks
+- **Unplash** - All images used in this project are sourced from Unsplash
 
 ---
 
