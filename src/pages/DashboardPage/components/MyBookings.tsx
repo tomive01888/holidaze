@@ -131,7 +131,7 @@ const MyBookings: React.FC<MyBookingsProps> = ({ bookings }) => {
                 whileInView={{ opacity: 1 }}
                 transition={{ duration: 1.3 }}
               >
-                <BookingCard booking={booking} className="!bg-gray-300" />
+                <BookingCard booking={booking} className="!bg-gray-300 !shadow--400/10" />
               </motion.li>
             ))}
           </ul>

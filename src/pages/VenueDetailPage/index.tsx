@@ -15,6 +15,7 @@ import BookingSection from "./components/BookingSection";
 import { PageTitle } from "../../components/ui/PageTitle";
 import Button from "../../components/ui/Button";
 import Spinner from "../../components/ui/Spinner";
+import { formatDate } from "../../utils/dateUtils";
 
 /**
  * Page component that displays full details for a single venue, including:
@@ -42,6 +43,8 @@ const VenueDetailPage = () => {
     try {
       const endpoint = `${endpoints.venues.byId(id)}?_owner=true&_bookings=true`;
       const response = await apiClient.get<SingleVenueApiResponse>(endpoint);
+      console.log(response.data);
+
       setVenue(response.data);
     } catch (err) {
       setError(err as ApiError | Error);
@@ -130,10 +133,18 @@ const VenueDetailPage = () => {
             {venue.name ? venue.name : "Unknown"}
           </h1>
           <p className="text-xl text-neutral-200 mt-1">
-            <span>
-              <span>{venue.location?.city ? `${venue.location?.city}` : "City: N/A"}</span>, {"  "}
-              <span>{venue.location?.country ? `${venue.location?.country}` : "Country: N/A"}</span>
-            </span>
+            {!venue.location?.city && !venue.location?.country ? (
+              <>
+                <span aria-hidden="true">City: N/A, Country: N/A</span>
+                <span className="sr-only">Location not available</span>
+              </>
+            ) : (
+              <>
+                {venue.location?.city || <span aria-hidden="true">City: N/A</span>}
+                {(venue.location?.city || venue.location?.country) && ", "}
+                {venue.location?.country || <span aria-hidden="true">Country: N/A</span>}
+              </>
+            )}
           </p>
         </div>
         <ShareButton />

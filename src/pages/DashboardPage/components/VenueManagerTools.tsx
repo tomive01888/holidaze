@@ -38,7 +38,7 @@ const VenueManagerTools: React.FC<VenueManagerToolsProps> = ({ activeTab, onTabC
     <>
       {/* Create new venue */}
       <Link to="/venue/create" tabIndex={-1}>
-        <Button variant="primary" className="w-full" size="sm">
+        <Button variant="primary" className="w-full">
           + Create New Venue
         </Button>
       </Link>
