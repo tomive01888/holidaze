@@ -8,17 +8,33 @@ import Modal from "../../../components/ui/Modal";
 import { sortBookingsByDate } from "../../../utils/dateUtils";
 
 interface ViewBookingsModalProps {
+  /** ID of the venue whose bookings should be displayed */
   venueId: string;
+  /** Display name of the venue */
   venueName: string;
+  /** Callback fired when the modal is closed */
   onClose: () => void;
 }
 
+/**
+ * A modal component for viewing a venue's bookings.
+ *
+ * Fetches bookings from the API and allows toggling between
+ * upcoming-only and all bookings (upcoming + past).
+ */
 const ViewBookingsModal: React.FC<ViewBookingsModalProps> = ({ venueId, venueName, onClose }) => {
+  /** List of bookings associated with the venue */
   const [bookings, setBookings] = useState<VenueBooking[]>([]);
+  /** Loading state for API fetch */
   const [isLoading, setIsLoading] = useState(true);
+  /** Error message, if fetching bookings fails */
   const [error, setError] = useState<string | null>(null);
+  /** Whether to show all bookings (true) or only upcoming bookings (false) */
   const [showAll, setShowAll] = useState(false);
 
+  /**
+   * Fetch bookings from the API when the component mounts or venueId changes.
+   */
   useEffect(() => {
     const fetchBookings = async () => {
       try {
@@ -34,6 +50,10 @@ const ViewBookingsModal: React.FC<ViewBookingsModalProps> = ({ venueId, venueNam
     fetchBookings();
   }, [venueId]);
 
+  /**
+   * Split bookings into upcoming and past,
+   * then sort them appropriately.
+   */
   const { upcomingBookings, pastBookings } = useMemo(() => {
     const now = new Date();
     const future = bookings.filter((b) => new Date(b.dateTo) >= now);
@@ -44,6 +64,12 @@ const ViewBookingsModal: React.FC<ViewBookingsModalProps> = ({ venueId, venueNam
     };
   }, [bookings]);
 
+  /**
+   * Render a list of bookings or a fallback message if empty.
+   *
+   * @param list - The list of bookings to render
+   * @param emptyText - Message shown if no bookings are available
+   */
   const renderBookingsList = (list: VenueBooking[], emptyText: string) => {
     if (list.length === 0) {
       return <p className="text-center text-neutral-500 py-6">{emptyText}</p>;
@@ -57,6 +83,10 @@ const ViewBookingsModal: React.FC<ViewBookingsModalProps> = ({ venueId, venueNam
     );
   };
 
+  /**
+   * Render modal body content based on loading/error state
+   * and whether to show upcoming-only or all bookings.
+   */
   const renderContent = () => {
     if (isLoading) {
       return (
