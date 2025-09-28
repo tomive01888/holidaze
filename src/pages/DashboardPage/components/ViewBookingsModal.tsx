@@ -134,6 +134,7 @@ const ViewBookingsModal: React.FC<ViewBookingsModalProps> = ({ venueId, venueNam
   return (
     <Modal
       onClose={onClose}
+      closeOnBackdropClick
       aria-labelledby="bookingsModalTitle"
       modalTitle={`Holidaze | Viewing bookings for ${venueName}`}
     >

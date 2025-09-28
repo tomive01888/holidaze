@@ -25,6 +25,11 @@ export interface ModalProps {
    * When the modal closes, the original title will be restored.
    */
   modalTitle?: string;
+  /**
+   * If true, clicking the semi-transparent backdrop outside the modal content
+   * will trigger the `onClose` function. Defaults to `false`.
+   */
+  closeOnBackdropClick?: boolean;
 }
 
 /**
@@ -55,7 +60,14 @@ export interface ModalProps {
  *   <p>Modal content goes here.</p>
  * </Modal>
  */
-const Modal: FC<ModalProps> = ({ children, onClose, className = "", description, modalTitle }) => {
+const Modal: FC<ModalProps> = ({
+  children,
+  onClose,
+  className = "",
+  description,
+  modalTitle,
+  closeOnBackdropClick = false,
+}) => {
   const titleId = useId();
   const descId = useId();
   const modalRef = useRef<HTMLDivElement>(null);
@@ -137,6 +149,7 @@ const Modal: FC<ModalProps> = ({ children, onClose, className = "", description,
 
   return createPortal(
     <div
+      onClick={closeOnBackdropClick ? onClose : undefined}
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm min-h-[110vh] -top-[5vh]"
       role="presentation"
     >
