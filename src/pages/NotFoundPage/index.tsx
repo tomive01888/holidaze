@@ -13,7 +13,7 @@ const NotFoundPage = () => {
         Sorry, we couldn't find the page you're looking for. It might have been moved, deleted, or you may have typed
         the address incorrectly.
       </p>
-      <Link to="/" className="mt-8">
+      <Link to="/" className="mt-8" tabIndex={-1}>
         <Button variant="primary" size="lg">
           Go Back to Homepage
         </Button>

@@ -86,7 +86,7 @@ const EditVenuePage = () => {
         <h1 className="text-4xl font-bold text-error">Oops! Something went wrong.</h1>
         <p className="text-neutral-300 mt-2">We couldn't load the data for this venue.</p>
         <p className="text-neutral-400 text-md mt-1">Error: {error.message}</p>
-        <Link to="/dashboard" className="mt-6 inline-block">
+        <Link to="/dashboard" className="mt-6 inline-block" tabIndex={-1}>
           <Button variant="secondary">Back to Dashboard</Button>
         </Link>
       </div>

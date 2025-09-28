@@ -111,7 +111,7 @@ const VenueDetailPage = () => {
       <div className="text-center py-20">
         <h2 className="text-2xl font-bold text-error">Oops! Something went wrong.</h2>
         <p className="text-neutral-300 mt-2">{error.message}</p>
-        <Link to="/" className="mt-6 inline-block">
+        <Link to="/" className="mt-6 inline-block" tabIndex={-1}>
           <Button variant="primary">Go back to Homepage</Button>
         </Link>
       </div>
