@@ -18,33 +18,33 @@ interface BookingListItemProps {
  */
 const BookingListItem: React.FC<BookingListItemProps> = ({ booking }) => {
   return (
-    <li className="p-4 border rounded-lg bg-neutral-50">
-      <div className="flex items-start gap-4">
+    <li className="py-2 px-4 border rounded-lg bg-neutral-50 flex flex-col md:flex-row justify-between drop-shadow-md drop-shadow-black/25">
+      <div className="flex justify-start gap-3">
         <img
           src={booking.customer.avatar?.url || "/default-avatar.png"}
-          alt={booking.customer.name}
-          className="w-16 h-16 rounded-full object-cover"
+          alt={booking.customer?.name}
+          className="w-18 h-18 rounded-full object-cover bg-black/50"
         />
-        <div className="flex-grow">
+        <div className="mt-2">
           <h4 className="font-bold text-lg">{booking.customer.name}</h4>
           <p className="text-md text-neutral-500">{booking.customer.email}</p>
-          <div className="mt-2 text-md text-neutral-700 space-y-1">
-            <p className="flex items-center gap-2">
-              <Calendar size={14} />
-              <span>
-                {formatDate(booking.dateFrom)} to {formatDate(booking.dateTo)}
-              </span>
-            </p>
-            <p className="flex items-center gap-2">
-              <User size={14} />
-              <span>{booking.guests} Guest(s)</span>
-            </p>
-            <p className="flex items-center gap-2 font-mono text-xs">
-              <Hash size={14} />
-              <span>{booking.id}</span>
-            </p>
-          </div>
         </div>
+      </div>
+
+      <div className="mt-2 text-md text-neutral-700 space-y-1 text-sm md:text-base">
+        <p className="flex items-center gap-2">
+          <Calendar size={18} />
+          <span className="font-bold">{formatDate(booking.dateFrom)}</span> to{" "}
+          <span className="font-bold">{formatDate(booking.dateTo)}</span>
+        </p>
+        <p className="flex items-center gap-2">
+          <User size={18} />
+          <span>{booking.guests} Guest(s)</span>
+        </p>
+        <p className="flex items-center gap-2">
+          <Hash size={18} />
+          <span>{booking.id}</span>
+        </p>
       </div>
     </li>
   );
