@@ -75,7 +75,7 @@ const ViewBookingsModal: React.FC<ViewBookingsModalProps> = ({ venueId, venueNam
 
     if (showAll) {
       return (
-        <div className="space-y-8 max-h-[60vh] overflow-y-auto pr-2">
+        <div className="space-y-8 max-h-[45vh] overflow-y-auto pr-2">
           <div>
             <h4 className="text-lg font-semibold mb-2">Upcoming</h4>
             {renderBookingsList(upcomingBookings, "No upcoming bookings.")}
