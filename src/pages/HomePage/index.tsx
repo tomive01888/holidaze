@@ -71,13 +71,13 @@ const HomePage = () => {
     const signal = abortControllerRef.current.signal;
 
     setIsLoading(true);
+
     setError(null);
 
     try {
       const endpointUrl = query
         ? `${endpoints.venues.search(query)}&limit=${perPage}&page=${pageNum}`
         : `${endpoints.venues.all}?sort=created&sortOrder=desc&limit=${perPage}&page=${pageNum}`;
-
       const response = await apiClient.get<VenuesApiResponse>(endpointUrl, { signal });
 
       if (signal.aborted) return;
@@ -161,7 +161,6 @@ const HomePage = () => {
       setSearchParams(newParams);
 
       if (source === "keyboard") {
-        // Only focus the skip link if there are results to skip to
         setTimeout(() => {
           if (hasResults) skipLinkRef.current?.focus();
         }, 200);
@@ -192,7 +191,7 @@ const HomePage = () => {
   const renderContent = () => {
     if (isLoading) {
       return (
-        <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 px-4">
           {Array.from({ length: itemsPerPage }).map((_, index) => (
             <li key={`skeleton-${index}`}>
               <VenueCardSkeleton />
@@ -237,17 +236,11 @@ const HomePage = () => {
     return (
       <ul
         id="venue-list"
-        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 scroll-mt-[500px] px-4"
+        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 px-4 scroll-mt-[500px]"
         aria-label="Available venues"
       >
         {venues.map((venue) => (
-          <li
-            tabIndex={-1}
-            key={venue.id}
-            data-venue-card
-            className="focus:outline-2 focus:outline-blue-500 focus:outline-offset-2 rounded-lg"
-            aria-label={`Venue: ${venue.name}`}
-          >
+          <li tabIndex={-1} key={venue.id} data-venue-card aria-label={`Venue: ${venue.name}`}>
             <VenueCard venue={venue} />
           </li>
         ))}
