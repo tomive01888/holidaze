@@ -111,7 +111,7 @@ const DashboardPage = () => {
    * - Renders tab-based content ("My Bookings" or "My Venues") for venue managers.
    */
   const tabContent = (
-    <div className="flex flex-col gap-8">
+    <div className="flex flex-col gap-8 bg-black/0">
       <h2 className="text-3xl font-bold text-white border-b pb-3">
         {profileData?.venueManager ? (activeTab === "bookings" ? "My Bookings" : "Manage Venues") : "My Bookings"}
       </h2>
@@ -171,7 +171,7 @@ const DashboardPage = () => {
         </aside>
 
         {/* ======== RIGHT PANEL ======== */}
-        <div className="lg:min-h-[80vh]">{tabContent}</div>
+        <div className="lg:min-h-[80vh] bg-blck/0">{tabContent}</div>
 
         {/* Edit profile modal */}
         {isModalOpen && (

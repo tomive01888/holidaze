@@ -63,7 +63,7 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({ profile, onClose, o
 
   return (
     <Modal onClose={onClose} modalTitle={`Holidaze | Editing ${profile.name} avatar and banner`} className="!max-w-xl">
-      <h2 className="text-3xl font-bold mb-6">Edit Your Profile</h2>
+      <h1 className="text-3xl font-bold mb-6">Edit Your Profile</h1>
       <div className="grid grid-cols-1 gap-8">
         {/* --- Top Side: Form Inputs --- */}
         <div className="space-y-4">
@@ -112,7 +112,7 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({ profile, onClose, o
                 alt="Avatar Preview"
                 className="w-24 aspect-square rounded-full object-cover border-2 border-white shadow-md"
               />
-              <h4 className="text-white font-bold mt-2 text-3xl drop-shadow-md">{profile.name}</h4>
+              <h2 className="text-white font-bold mt-2 text-2xl drop-shadow-md">{profile.name}</h2>
             </div>
           </div>
         </div>
