@@ -15,7 +15,6 @@ import BookingSection from "./components/BookingSection";
 import { PageTitle } from "../../components/ui/PageTitle";
 import Button from "../../components/ui/Button";
 import Spinner from "../../components/ui/Spinner";
-import { formatDate } from "../../utils/dateUtils";
 
 /**
  * Page component that displays full details for a single venue, including:
@@ -43,7 +42,6 @@ const VenueDetailPage = () => {
     try {
       const endpoint = `${endpoints.venues.byId(id)}?_owner=true&_bookings=true`;
       const response = await apiClient.get<SingleVenueApiResponse>(endpoint);
-      console.log(response.data);
 
       setVenue(response.data);
     } catch (err) {

@@ -155,7 +155,7 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ media }) => {
       {hasMultiple && media.length <= 10 && (
         <div
           role="presentation"
-          className="hidden absolute bottom-4 left-1/2 -translate-x-1/2 md:flex items-center gap-2 z-50 "
+          className="hidden absolute w-full bottom-0 left-1/2 -translate-x-1/2 md:flex items-center justify-center gap-2 z-50 bg-black/50 py-1"
           tabIndex={-1}
         >
           {media.map((_, i) => (
@@ -163,8 +163,8 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ media }) => {
               key={i}
               tabIndex={-1}
               onClick={() => goTo(i)}
-              className={`w-6 h-2 rounded-full transition cursor-pointer ${
-                i === currentIndex ? "bg-white w-8 h-3" : "bg-white/50 hover:bg-white/75"
+              className={`w-8 h-3 rounded-full transition cursor-pointer ${
+                i === currentIndex ? "bg-white w-8 h-3" : "bg-white/50 hover:bg-white/75 "
               }`}
               aria-label={`Go to image ${i + 1}`}
             />
