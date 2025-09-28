@@ -97,7 +97,7 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ media }) => {
 
   return (
     <figure
-      className="relative w-full h-96 md:h-[500px] rounded-lg overflow-hidden focus-within:outline-3  focus-within:outline-dashed focus-within:outline-pink-400 focus-within:outline-offset-2"
+      className="relative w-full h-96 md:h-[500px] rounded-lg overflow-hidden focus-within:outline-3  focus-within:outline-dashed focus-within:outline-pink-400 focus-within:outline-offset-2 shadow-lg shadow-black/30"
       aria-label={`Image gallery with ${media.length} images. Currently showing ${currentIndex + 1}`}
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}

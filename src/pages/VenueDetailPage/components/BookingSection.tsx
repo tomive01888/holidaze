@@ -102,7 +102,7 @@ const BookingSection: React.FC<BookingSectionProps> = ({ venue, onBookingSuccess
   };
 
   return (
-    <aside className="sticky top-24 shadow-lg">
+    <aside className="sticky top-24 shadow-lg shadow-black/30">
       <section className="bg-white rounded-lg p-6  bg-linear-to-bl from-teal-400/30 from-10% to-gray-800/40 text-black border-4 border-teal-500 ">
         <div className="flex justify-between items-baseline">
           <h2 className="text-3xl font-bold">Book your stay</h2>

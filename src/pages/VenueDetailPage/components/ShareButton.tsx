@@ -33,7 +33,7 @@ const ShareButton = () => {
       <Button
         onClick={handleShare}
         variant="secondary"
-        className="flex items-center gap-2 self-end md:self-auto"
+        className="flex items-center gap-2 self-end md:self-auto shadow-lg shadow-black/30"
         aria-label={copied ? "Link copied" : "Copy link to clipboard"}
       >
         {copied ? (

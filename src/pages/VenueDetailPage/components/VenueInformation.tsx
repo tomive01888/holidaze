@@ -43,7 +43,7 @@ interface VenueInformationProps {
 const VenueInformation: React.FC<VenueInformationProps> = ({ venue }) => {
   return (
     <section
-      className="p-6 border rounded-lg bg-white shadow-md text-black"
+      className="p-6 border rounded-lg bg-white shadow-lg shadow-black/30 text-black"
       aria-labelledby="venue-information-heading"
     >
       <h2 id="venue-information-heading" className="text-2xl font-bold mb-4">

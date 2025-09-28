@@ -58,7 +58,7 @@ const Amenities: React.FC<AmenitiesProps> = ({ meta }) => {
             <p
               aria-live="polite"
               aria-label={`${isAvailable ? name : `No ${name}`}`}
-              className={`font-bold bg-white/80 w-full p-1 rounded
+              className={`font-bold bg-white/80 w-full p-1 rounded shadow-md shadow-black/30
                 ${isAvailable ? "text-neutral-800" : "text-neutral-400 line-through"}
               `}
             >

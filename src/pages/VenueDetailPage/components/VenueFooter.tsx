@@ -68,7 +68,7 @@ const VenueFooter: React.FC<VenueFooterProps> = ({ venue }) => {
 
   if (isOwner) {
     return (
-      <div className="mt-10 p-6 border-2 border-dashed border-neutral-400 bg-primary-50 rounded-lg text-center text-neutral-100 bg-neutral-700/40">
+      <div className="mt-10 p-6 border-2 border-dashed border-neutral-400 bg-primary-50 rounded-lg text-center text-neutral-100 bg-neutral-700/40 shadow-lg shadow-black/30">
         <h3 className="text-2xl font-bold">You are the owner of this venue</h3>
         <p className="text-neutral-100 mt-2">Manage your property listing and view its bookings from your dashboard.</p>
         <div className="flex justify-center gap-4 mt-6">
@@ -117,7 +117,7 @@ const VenueFooter: React.FC<VenueFooterProps> = ({ venue }) => {
     <div className="mt-10">
       <h2 className="text-3xl font-bold border-b pb-3 mb-4">Meet the Host</h2>
       <div
-        className="relative p-6 rounded-lg overflow-hidden"
+        className="relative p-6 rounded-lg overflow-hidden shadow-lg shadow-black/30"
         style={{
           backgroundImage: `url(${venue.owner?.banner?.url})`,
           backgroundSize: "contain",
