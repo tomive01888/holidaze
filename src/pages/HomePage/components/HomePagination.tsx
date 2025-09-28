@@ -93,7 +93,7 @@ const HomePagination = ({
               goToPage(i, "keyboard");
             }
           }}
-          className={`w-10 aspect-square rounded-lg text-sm md:text-base ${
+          className={`w-10 aspect-square rounded-lg text-sm md:text-base shadow-md shadow-black/30 ${
             i === currentPage ? "bg-neutral-400 text-white font-bold" : "text-white bg-blue-500 hover:bg-blue-600"
           }`}
           aria-label={`Go to page ${i}`}
@@ -121,7 +121,7 @@ const HomePagination = ({
         }}
         aria-label="Go to previous page"
         disabled={currentPage === 1}
-        className="p-2 rounded-lg bg-blue-500 hover:bg-blue-600 disabled:bg-neutral-300 disabled:opacity-50"
+        className="p-2 rounded-lg bg-blue-500 hover:bg-blue-600 disabled:bg-neutral-300 disabled:opacity-50 shadow-md shadow-black/30"
       >
         <ChevronLeft size={24} aria-hidden="true" />
       </button>
@@ -143,7 +143,7 @@ const HomePagination = ({
 
       {/* Mobile compact page indicator */}
       <div
-        className="md:hidden px-3 py-2 border rounded-lg bg-gray-200 text-black w-18 flex justify-center gap-1"
+        className="md:hidden px-3 py-2 border rounded-lg bg-gray-200 text-black w-18 flex justify-center gap-1 shadow-md shadow-black/30"
         aria-label={`Page ${currentPage} of ${pageCount}`}
       >
         <span className="font-bold">{currentPage}</span> / <span>{pageCount}</span>
@@ -158,7 +158,7 @@ const HomePagination = ({
               goToPage(pageCount, "keyboard");
             }
           }}
-          className="hidden md:block w-10 aspect-square text-white rounded-lg bg-blue-500 hover:bg-blue-600 ml-2"
+          className="hidden md:block w-10 aspect-square text-white rounded-lg bg-blue-500 hover:bg-blue-600 ml-2 shadow-md shadow-black/30"
         >
           <p>{pageCount}</p>
         </button>
@@ -174,7 +174,7 @@ const HomePagination = ({
         }}
         aria-label="Go to next page"
         disabled={currentPage === pageCount}
-        className="p-2 rounded-lg bg-blue-500 hover:bg-blue-600 disabled:opacity-50"
+        className="p-2 rounded-lg bg-blue-500 hover:bg-blue-600 disabled:opacity-50 shadow-md shadow-black/30"
       >
         <ChevronRight size={24} aria-hidden="true" />
       </button>
@@ -182,7 +182,7 @@ const HomePagination = ({
       {/* Page jump input */}
       <form
         onSubmit={handleInputSubmit}
-        className="flex items-center border border-neutral-400 rounded-lg  bg-black/20"
+        className="flex items-center border border-neutral-400 rounded-lg  bg-black/20 shadow-md shadow-black/30"
       >
         <label htmlFor={`${uniqueId}-page-jump-input`} className="sr-only">
           Go to page
@@ -211,7 +211,7 @@ const HomePagination = ({
         id={`${uniqueId}-items-per-page-select`}
         value={itemsPerPage}
         onChange={(e) => onItemsPerPageChange(Number(e.target.value))}
-        className="border rounded-lg h-10 px-3 bg-neutral-200 text-black"
+        className="border rounded-lg h-10 px-3 bg-neutral-200 text-black shadow-md shadow-black/30"
         aria-label="Select items per page"
       >
         {[12, 18, 24].map((size) => (

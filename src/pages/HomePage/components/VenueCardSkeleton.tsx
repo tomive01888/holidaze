@@ -35,7 +35,7 @@ interface VenueCardSkeletonProps {
 const VenueCardSkeleton: React.FC<VenueCardSkeletonProps> = ({ className }) => {
   return (
     <div
-      className={`bg-neutral-700 animate-pulse rounded-lg shadow-lg overflow-hidden h-full flex flex-col ${
+      className={`bg-neutral-700 animate-pulse rounded-lg shadow-lg overflow-hidden h-full flex flex-col shadow-lg shadow-black/30  ${
         className || ""
       }`}
     >

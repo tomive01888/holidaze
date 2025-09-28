@@ -50,7 +50,7 @@ const VenueCard: React.FC<VenueCardProps> = ({ venue, ...props }) => {
       {...props}
       tabIndex={0}
     >
-      <div className="bg-neutral-800 relative rounded-lg shadow-lg overflow-hidden transition-all duration-300 ease-in-out group-hover:shadow-primary-800/50 group-hover:-translate-y-1 h-full flex flex-col">
+      <div className="bg-neutral-700 relative rounded-lg shadow-lg shadow-black/30 overflow-hidden transition-all duration-300 ease-in-out group-hover:shadow-primary-800/50 group-hover:-translate-y-1 h-full flex flex-col">
         <img loading="lazy" src={imageUrl} alt={imageAlt} className="w-full h-48 object-cover" />
         <div className="p-4 flex-grow flex flex-col justify-between">
           <h3 className="text-xl font-bold truncate text-white">{venue.name || "Untitled Venue"}</h3>

@@ -35,7 +35,6 @@ const PopularSearchesSection = ({ onSearchChange }: PopularSearchesSectionProps)
   /** Whether the popular searches list is currently visible */
   const [isVisible, setIsVisible] = useState(true);
 
-  // Load visibility preference from localStorage on mount
   useEffect(() => {
     const savedVisibility = localStorage.getItem("popularSearchesVisible");
     if (savedVisibility !== null) {
@@ -90,7 +89,7 @@ const PopularSearchesSection = ({ onSearchChange }: PopularSearchesSectionProps)
               size="md"
               key={term}
               onClick={() => handleButtonClick(term)}
-              className="!bg-transparent underline text-teal-300 font-black drop-shadow-xs drop-shadow-teal-700 hover:scale-110 transition-transform duration-400"
+              className="!bg-transparent underline text-teal-300 font-black drop-shadow-lg drop-shadow-teal-700 hover:scale-110 transition-transform duration-400"
             >
               {term}
             </Button>
