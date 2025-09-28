@@ -72,7 +72,7 @@ const VenueFooter: React.FC<VenueFooterProps> = ({ venue }) => {
         <h3 className="text-2xl font-bold">You are the owner of this venue</h3>
         <p className="text-neutral-100 mt-2">Manage your property listing and view its bookings from your dashboard.</p>
         <div className="flex justify-center gap-4 mt-6">
-          <Link to={`/venue/edit/${venue.id}`}>
+          <Link to={`/venue/edit/${venue.id}`} tabIndex={-1}>
             <Button aria-label="Click to edit venue" variant="primary">
               Edit Venue
             </Button>
